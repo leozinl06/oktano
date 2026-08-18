@@ -1,0 +1,62 @@
+# ==========================================
+# .gitignore para PHP (MVC), JS, HTML, CSS, MySQL
+# ==========================================
+
+# 1. Dependências (Dependencies)
+# Diretórios de pacotes (Composer e NPM)
+/vendor/
+node_modules/
+
+# 2. Configurações Sensíveis e Ambiente (Environment & Secrets)
+# Impede que credenciais do banco de dados (PDO) e chaves secretas sejam expostas
+.env
+.env.local
+.env.*.local
+config/database.php
+config/db.php
+db_connection.php
+
+# 3. Banco de Dados (Database Dumps)
+# Evita o versionamento de scripts com dados reais ou backups do MySQL
+*.sql
+*.sqlite
+*.db
+*.dump
+/database/backups/
+/db/backups/
+
+# 4. Arquivos de Upload do Usuário (User Uploads)
+# Diretórios onde imagens, PDFs ou arquivos gerais serão salvos no servidor
+/public/uploads/
+/assets/uploads/
+/storage/
+*.tmp
+
+# 5. Logs e Erros (Logs & Errors)
+# Evita poluir o repositório com arquivos de log gerados pelo servidor ou Node
+*.log
+error_log
+php_errors.log
+npm-debug.log*
+
+# 6. Editores de Código e IDEs (Editors)
+# Arquivos de configuração locais de editores (ex: VS Code, PhpStorm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 7. Arquivos de Sistema Operacional (OS)
+# Arquivos ocultos gerados pelo Windows ou macOS
+.DS_Store
+.DS_Store?
+._*
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 8. Build e Cache (Opcional)
+# Caso utilize bundlers ou minificadores para otimizar CSS/JS no futuro
+/dist/
+/build/
+/.cache/
