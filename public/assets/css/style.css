@@ -1,0 +1,210 @@
+:root {
+  /* ====== NÚCLEO DO SISTEMA ====== */
+  --cor-primaria: #FF6B00;           /* Cor de maior destaque: botões de ação principal, links importantes, elementos de marca */
+  --cor-secundaria: #1E293B;         /* Contraste com a primária: botões de ação secundária (ex.: "Cancelar", "Voltar") */
+  --cor-hover: #E05E00;              /* Estado de passagem do mouse sobre elementos que usam a cor primária */
+  --cor-selecionado: #FFFAF5;        /* Fundo sutil para itens ativamente selecionados (linha de tabela, card focado) */
+  --cor-marcado: #FF6B00;            /* Preenchimento de checkboxes e radio buttons marcados */
+  --cor-indisponivel: #E2E8F0;       /* Fundo de elementos desativados (botões, campos de formulário bloqueados) */
+  --cor-texto-indisponivel: #94A3B8; /* Texto interno de elementos desativados, com contraste bem reduzido */
+
+  /* ====== TIPOGRAFIA ====== */
+  --texto-primario: #0F172A;        /* Cor padrão para a maioria das escritas (títulos, parágrafos, dados de tabela) */
+  --texto-secundario: #475569;      /* Textos de menor hierarquia: subtítulos, legendas, rótulos de formulário */
+  --texto-sobre-primaria: #FFFFFF;  /* Texto colocado sobre fundos com a cor primária (ex.: dentro de um botão laranja) */
+
+  /* ====== SUPERFÍCIES E BORDAS ====== */
+  --fundo-principal: #F8FAFC;       /* Fundo geral de toda a tela, base para os demais componentes */
+  --fundo-superficie: #FFFFFF;      /* Contêineres de conteúdo (cards, tabelas, modais), cria separação do fundo geral */
+  --fundo-barra-lateral: #0F172A;   /* Fundo do menu de navegação lateral/superior */
+  --fundo-suave: #F1F5F9;           /* Destaque neutro e discreto (cabeçalho de tabela, fundo de campo de código) */
+  --borda-leve: #E2E8F0;            /* Linhas divisórias finas entre seções, linhas de tabela, contorno de card */
+  --borda-campo: #CBD5E1;           /* Borda padrão/repouso de campos de texto (inputs) */
+  --borda-hover: #94A3B8;           /* Borda do campo de texto ao passar o mouse por cima */
+  --anel-foco: #FF6B00;             /* Anel/sombra de foco ao navegar via teclado (Tab) — acessibilidade obrigatória */
+
+  /* ====== FEEDBACK: ERRO ====== */
+  --erro: #DC2626;                  /* Falha crítica, erro de validação ou ação perigosa/irreversível */
+  --texto-erro: #7F1D1D;            /* Mensagens escritas de erro, com alto contraste sobre o fundo de alerta */
+  --fundo-erro: #FEF2F2;            /* Preenchimento suave de banners de erro ou campos de formulário inválidos */
+  --erro-hover: #B91C1C;            /* Botões de erro (ex.: "Confirmar Exclusão") ao passar o mouse */
+
+  /* ====== FEEDBACK: SUCESSO ====== */
+  --sucesso: #16A34A;               /* Conclusão bem-sucedida de uma tarefa (salvar formulário, enviar arquivo) */
+  --texto-sucesso: #14532D;         /* Escritas de sucesso, com leitura nítida sobre o fundo verde claro */
+  --fundo-sucesso: #F0FDF4;         /* Fundo de blocos de mensagens e avisos positivos */
+  --sucesso-hover: #15803D;         /* Botões associados a fluxos positivos, ao passar o mouse */
+
+  /* ====== FEEDBACK: INFORMAÇÃO ====== */
+  --info: #2563EB;                  /* Novidades, dicas do sistema, mensagens neutras sem correção imediata */
+  --texto-info: #1E3A8A;            /* Texto de informativos, com contraste sobre o preenchimento azul sutil */
+  --fundo-info: #EFF6FF;            /* Fundo leve para diálogos, notificações de sistema, tooltips */
+  --info-hover: #1D4ED8;            /* Elementos informativos clicáveis ao receber o ponteiro do mouse */
+
+  /* ====== FEEDBACK: AVISO ====== */
+  --aviso: #D97706;                 /* Situações que exigem cautela (fatura próxima do vencimento, limite quase atingido) */
+  --texto-aviso: #78350F;           /* Texto de alerta legível sobre o fundo amarelo, em tom marrom escuro */
+  --fundo-aviso: #FEF3C7;           /* Tom pastel de fundo para notificações de aviso ou campos a revisar */
+  --aviso-hover: #B45309;           /* Botões de alerta ao receber o foco do mouse */
+
+  /* ====== EXTENSÕES (criadas seguindo o mesmo padrão) ====== */
+  --cor-sobreposicao: rgba(15, 23, 42, 0.55); /* Fundo escurecido atrás de modais/backdrops, derivada de --texto-primario */
+  --cor-sombra: rgba(15, 23, 42, 0.08);       /* Sombra de elevação neutra para cards e superfícies flutuantes */
+  --borda-desabilitado: #CBD5E1;              /* Borda de campos de formulário desabilitados, alinhada a --borda-campo */
+}
+
+/* Resets Básicos e Tipografia */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif; 
+}
+
+body {
+    background-color: var(--fundo-principal);
+    color: var(--texto-primario);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card-superficie {
+    background-color: var(--fundo-superficie);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--cor-sombra);
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.titulo-principal {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--texto-primario);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.subtitulo {
+    font-size: 14px;
+    color: var(--texto-secundario);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto-primario);
+    margin-bottom: 6px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--borda-campo);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--texto-primario);
+    background-color: var(--fundo-superficie);
+    transition: all 0.2s ease-in-out;
+}
+
+.form-input::placeholder {
+    color: var(--texto-secundario);
+}
+
+.form-input:hover {
+    border-color: var(--borda-hover);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--anel-foco);
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2); /*sombra baseada na cor primaria */
+}
+
+.form-input.is-invalid {
+    border-color: var(--erro);
+    background-color: var(--fundo-erro);
+}
+
+.form-error-msg {
+    display: none;
+    color: var(--erro);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.form-input.is-invalid ~ .form-error-msg {
+    display: block;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--texto-secundario); 
+    pointer-events: none; 
+    transition: color 0.2s ease-in-out;
+}
+
+.form-input.com-icone {
+    padding-left: 44px;
+}
+
+.form-input.com-icone:focus ~ .input-icon {
+    color: var(--anel-foco);
+}
+
+.form-input.is-invalid ~ .input-icon {
+    color: var(--erro);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.btn-primario {
+    background-color: var(--cor-primaria);
+    color: var(--texto-sobre-primaria);
+    margin-top: 8px;
+}
+
+.btn-primario:hover {
+    background-color: var(--cor-hover);
+}
+
+.btn-secundario-texto {
+    background-color: transparent;
+    color: var(--texto-primario);
+    margin-top: 12px;
+}
+
+.btn-secundario-texto:hover {
+    background-color: var(--cor-secundaria);
+    color: var(--texto-sobre-primaria);
+}
