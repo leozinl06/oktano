@@ -145,7 +145,7 @@ body {
     margin-top: 6px;
 }
 
-.form-input.is-invalid ~ .form-error-msg {
+.form-group:has(.form-input.is-invalid) .form-error-msg {
     display: block;
 }
 

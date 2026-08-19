@@ -49,7 +49,7 @@
                     <i class="ph ph-lock-key input-icon"></i>
                 </div>
                 
-                <div class="forca-senha-container senha-media" id="indicador-forca">
+                <div class="forca-senha-container" id="indicador-forca">
                     <div class="forca-senha-barra"></div>
                     <div class="forca-senha-barra"></div>
                     <div class="forca-senha-barra"></div>
@@ -73,5 +73,6 @@
         </form>
     </main>
 
+    <script src="/public/assets/js/cadastro.js"></script>
 </body>
 </html>
