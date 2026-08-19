@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (inputConfirmarSenha.value.trim() === ''){
-            definirErro(inputConfirmarSenha, 'Por favor, confirme sua senha criada acima.');
+            definirErro(inputConfirmarSenha, 'Por favor, confirme sua senha.');
             formularioValido = false;
         } else if(inputConfirmarSenha.value.trim() !== inputSenha.value){
             definirErro(inputConfirmarSenha, 'As senhas não coincidem. Digite novamente.');
