@@ -47,6 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    [inputNome, inputEmail, inputSenha, inputConfirmarSenha].forEach(input => {
+        input.addEventListener('input', () => {
+            if(input.classList.contains('is-invalid')){
+                removerErro(input);
+            }
+        });
+    });
+
     form.addEventListener('submit', (e) => {
        let formularioValido = true;
        
