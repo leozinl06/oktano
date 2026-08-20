@@ -43,6 +43,15 @@
             </div>
 
             <div class="form-group">
+                <label for="registro" class="form-label">Registro Profissional (CREF, CREFITO)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="registro" name="registro" class="form-input com-icone" placeholder="Ex: 000000-G/UF" required>
+                    <i class="ph ph-identification-badge input-icon"></i>
+                </div>
+                <span class="form-error-msg"></span>
+            </div>
+
+            <div class="form-group">
                 <label for="senha" class="form-label">Senha</label>
                 <div class="input-wrapper">
                     <input type="password" id="senha" name="senha" class="form-input com-icone" placeholder="*********" required>

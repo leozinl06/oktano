@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const inputNome = document.getElementById('nome');
     const inputEmail = document.getElementById('email');
+    const inputRegistro = document.getElementById('registro');
     const inputSenha = document.getElementById('senha');
     const inputConfirmarSenha = document.getElementById('confirmar-senha');
 
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    [inputNome, inputEmail, inputSenha, inputConfirmarSenha].forEach(input => {
+    [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro].forEach(input => {
         input.addEventListener('input', () => {
             if(input.classList.contains('is-invalid')){
                 removerErro(input);
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
        let formularioValido = true;
        
-       [inputNome, inputEmail, inputSenha, inputConfirmarSenha].forEach(removerErro); //limpa erros
+       [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro].forEach(removerErro); //limpa erros
        
        if (inputNome.value.trim() === ''){
             definirErro(inputNome, 'O nome é obrigatório para o cadastro.');
@@ -70,6 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             formularioValido = false;
         } else if(!isEmailValido(inputEmail.value.trim())){
             definirErro(inputEmail, 'O formato do e-mail parece inválido (ex: seu@email.com).');
+            formularioValido = false;
+        }
+
+        if(inputRegistro.value.trim() === ''){
+            definirErro(inputRegistro, 'O número de registro profissional é obrigatório.');
+            formularioValido = false;
+        } else if (inputRegistro.value.trim().length < 5){
+            definirErro(inputRegistro, 'Insira um registro válido com a sigla do estado.');
             formularioValido = false;
         }
 
