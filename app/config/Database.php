@@ -37,7 +37,7 @@ class Database{
         } catch (PDOException $e){
             error_log("Falha na conexão com o banco de dados Oktano: " . $e->getMessage());
 
-            die("Estamos passando por uma instabilidade. POr favor, tente novamente mais tarde.");
+            die("Estamos passando por uma instabilidade. Por favor, tente novamente mais tarde.");
         }
 
         return $this->conn;

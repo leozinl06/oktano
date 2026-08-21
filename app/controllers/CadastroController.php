@@ -24,29 +24,43 @@ class CadastroController{
             $confirmarSenha = $_POST['confirmar-senha'] ?? '';
 
             if (empty($nome) || empty($email) || empty($registro) || empty($senha)) {
-                return ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
+                header('Location: ' . $_SERVER['PHP_SELF']); // redireciona para a própria página
+                exit;
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                return ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             }
 
             if (strlen($senha) < 8) {
-                return ['sucesso' => false, 'mensagem' => 'A senha deve conter no mínimo 8 caracteres.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             }
 
             if ($senha !== $confirmarSenha) {
-                return ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             }
 
             if($this->personalModel->verificaExistencia($email, $registro)){
-                return ['sucesso' => false, 'mensagem' => 'O e-mail ou registro profissional já estão vinculados a uma conta existente.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O e-mail ou registro profissional já estão vinculados a uma conta existente.'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             }
 
             if($this->personalModel->cadastrar($nome, $email, $registro, $senha)){
-                return ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
+                $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             } else{
-                return ['sucesso' => false, 'mensagem' => 'Ocorreu um erro. Tente novamente'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
             }
         }
 

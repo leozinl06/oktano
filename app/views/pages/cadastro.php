@@ -1,9 +1,17 @@
 <?php
 
+session_start();
+
 require_once __DIR__ . '/../../controllers/CadastroController.php';
 
 $controller = new CadastroController();
-$resultado = $controller->registrar();
+$controller->registrar();
+
+$resultado = null;
+if(isset($_SESSION['resultado'])){
+    $resultado = $_SESSION['resultado'];
+    unset($_SESSION['resultado']);
+}
 
 ?>
 
@@ -30,6 +38,12 @@ $resultado = $controller->registrar();
             <h1 class="titulo-principal">Crie sua conta</h1>
             <p class="subtitulo">Preencha seus dados abaixo</p>
         </header>
+
+        <?php if(isset($resultado)): ?>
+            <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
+                <?= $resultado['mensagem'] ?>
+            </div>
+        <?php endif; ?>
 
         <form action="#" method="POST" novalidate>
             
