@@ -1,3 +1,12 @@
+<?php
+
+require_once __DIR__ . '/../../controllers/CadastroController.php';
+
+$controller = new CadastroController();
+$resultado = $controller->registrar();
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

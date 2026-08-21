@@ -19,7 +19,7 @@ class Personal{
         return $stmt->rowCount() > 0; //retorna true se rowCount > 0 
     }
 
-    public function cadastro($nome, $email, $registro, $senha){
+    public function cadastrar($nome, $email, $registro, $senha){
         $query = 'INSERT INTO ' . $this->tabela . ' (nome, email, registro_profissional, senha)
                 VALUES (:nome, :email, :registro, :senha)';
         
