@@ -58,6 +58,15 @@
             </div>
 
             <div class="form-group">
+                <label for="codigo_vinculo" class="form-label">Código de Vínculo (6 caracteres)</label>
+                <div class="input-wrapper">
+                    <input type="text" id="codigo_vinculo" name="codigo_vinculo" class="form-input com-icone" placeholder="Ex: A1B2C3" maxlength="6" required>
+                    <i class="ph ph-link input-icon"></i>
+                </div>
+                <span class="form-error-msg"></span>
+            </div>
+
+            <div class="form-group">
                 <label for="senha" class="form-label">Senha</label>
                 <div class="input-wrapper">
                     <input type="password" id="senha" name="senha" class="form-input com-icone" placeholder="*********" required>

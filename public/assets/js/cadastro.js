@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputNome = document.getElementById('nome');
     const inputEmail = document.getElementById('email');
     const inputRegistro = document.getElementById('registro');
+    const inputCodigo = document.getElementById('codigo_vinculo');
     const inputSenha = document.getElementById('senha');
     const inputConfirmarSenha = document.getElementById('confirmar-senha');
 
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro].forEach(input => {
+    [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro, inputCodigo].forEach(input => {
         input.addEventListener('input', () => {
             if(input.classList.contains('is-invalid')){
                 removerErro(input);
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
        let formularioValido = true;
        
-       [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro].forEach(removerErro); //limpa erros
+       [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro, inputCodigo].forEach(removerErro); //limpa erros
        
        if (inputNome.value.trim() === ''){
             definirErro(inputNome, 'O nome é obrigatório para o cadastro.');
@@ -79,6 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
             formularioValido = false;
         } else if (inputRegistro.value.trim().length < 5){
             definirErro(inputRegistro, 'Insira um registro válido com a sigla do estado.');
+            formularioValido = false;
+        }
+
+        const regexCodigo = /^[a-zA-Z0-9]{6}$/; //permite 6 e alfanumerico
+        if(inputCodigo.value.trim() === ''){
+            definirErro(inputCodigo, 'O código de vínculo é obrigatório.');
+            formularioValido = false;
+        } else if(!regexCodigo.test(inputCodigo.value.trim())){
+            definirErro(inputCodigo, 'O código deve ter exatamente 6 caracteres (letras e números).');
             formularioValido = false;
         }
 
