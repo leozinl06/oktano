@@ -63,7 +63,7 @@ class CadastroPraticanteController{
             }
 
             if($this->praticanteModel->verificaExistencia($email)){
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Este e-mail já está em uso por outro praticante.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O e-mail já está vinculado a uma conta existente.'];
                 header('Location: /oktano/public/cadastro-praticante');
                 exit;
             }
