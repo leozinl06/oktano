@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crie sua conta (Personal) - Oktano</title>
+    <title>Crie sua conta (Praticante) - Oktano</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
@@ -11,14 +11,13 @@
     <link rel="stylesheet" href="assets/css/cadastro.css">
 </head>
 <body>
-
     <main class="card-superficie">
         <div class="cadastro-logo-container">
             <div class="cadastro-logo-placeholder">Logo</div>
         </div>
-
+        
         <header>
-            <h1 class="titulo-principal">Área do Personal</h1>
+            <h1 class="titulo-principal">Área do Praticante</h1>
             <p class="subtitulo">Preencha seus dados abaixo</p>
         </header>
 
@@ -28,7 +27,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="cadastro/processar" method="POST" novalidate>
+        <form action="cadastro-praticante/processar" method="POST" novalidate>
             
             <div class="form-group">
                 <label for="nome" class="form-label">Nome Completo</label>
@@ -49,18 +48,9 @@
             </div>
 
             <div class="form-group">
-                <label for="registro" class="form-label">Registro Profissional (CREF, CREFITO)</label>
+                <label for="codigo_personal" class="form-label">Código do Personal (6 caracteres)</label>
                 <div class="input-wrapper">
-                    <input type="text" id="registro" name="registro" class="form-input com-icone" placeholder="Ex: 000000-G/UF" required>
-                    <i class="ph ph-identification-badge input-icon"></i>
-                </div>
-                <span class="form-error-msg"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="codigo_vinculo" class="form-label">Código de Vínculo (6 caracteres)</label>
-                <div class="input-wrapper">
-                    <input type="text" id="codigo_vinculo" name="codigo_vinculo" class="form-input com-icone" placeholder="Ex: A1B2C3" maxlength="6" required>
+                    <input type="text" id="codigo_personal" name="codigo_personal" class="form-input com-icone" placeholder="Ex: A1B2C3" maxlength="6" required>
                     <i class="ph ph-link input-icon"></i>
                 </div>
                 <span class="form-error-msg"></span>
@@ -91,12 +81,11 @@
                 <span class="form-error-msg"></span>
             </div>
 
-            <button type="submit" class="btn btn-primario">Cadastrar como Personal</button>
+            <button type="submit" class="btn btn-primario">Cadastrar como Praticante</button>
             <button type="button" class="btn btn-secundario-texto">Voltar</button>
-
         </form>
     </main>
 
-    <script src="assets/js/cadastro.js"></script>
+    <script src="assets/js/cadastro_praticante.js"></script>
 </body>
 </html>
