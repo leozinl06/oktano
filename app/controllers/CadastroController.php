@@ -14,6 +14,16 @@ class CadastroController{
         $this->personalModel = new Personal($this->db); //instancia um personal
     }
 
+    public function index(){
+        $resultado = null;
+        if(isset($_SESSION['resultado'])){
+            $resultado = $_SESSION['resultado'];
+            unset($_SESSION['resultado']);
+        }
+
+        require_once __DIR__ . '/../views/pages/cadastro.php';
+    }
+
     public function registrar(){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -25,41 +35,41 @@ class CadastroController{
 
             if (empty($nome) || empty($email) || empty($registro) || empty($senha)) {
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
-                header('Location: ' . $_SERVER['PHP_SELF']); // redireciona para a própria página
+                header('Location: /oktano/public/cadastro'); // redireciona para a própria página
                 exit;
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: /oktano/public/cadastro');
                 exit;
             }
 
             if (strlen($senha) < 8) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'A senha deve conter no mínimo 8 caracteres.'];
+                header('Location: /oktano/public/cadastro');
                 exit;
             }
 
             if ($senha !== $confirmarSenha) {
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: /oktano/public/cadastro');
                 exit;
             }
 
             if($this->personalModel->verificaExistencia($email, $registro)){
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O e-mail ou registro profissional já estão vinculados a uma conta existente.'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: /oktano/public/cadastro');
                 exit;
             }
 
             if($this->personalModel->cadastrar($nome, $email, $registro, $senha)){
                 $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: /oktano/public/cadastro');
                 exit;
             } else{
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                header('Location: /oktano/public/cadastro');
                 exit;
             }
         }

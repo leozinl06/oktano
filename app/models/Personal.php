@@ -13,7 +13,7 @@ class Personal{
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam('registro', $registro);
+        $stmt->bindParam(':registro', $registro);
         $stmt->execute();
 
         return $stmt->rowCount() > 0; //retorna true se rowCount > 0 

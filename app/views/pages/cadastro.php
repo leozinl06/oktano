@@ -1,20 +1,3 @@
-<?php
-
-session_start();
-
-require_once __DIR__ . '/../../controllers/CadastroController.php';
-
-$controller = new CadastroController();
-$controller->registrar();
-
-$resultado = null;
-if(isset($_SESSION['resultado'])){
-    $resultado = $_SESSION['resultado'];
-    unset($_SESSION['resultado']);
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -24,8 +7,8 @@ if(isset($_SESSION['resultado'])){
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="/public/assets/css/style.css">
-    <link rel="stylesheet" href="/public/assets/css/cadastro.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/cadastro.css">
 </head>
 <body>
 
@@ -45,7 +28,7 @@ if(isset($_SESSION['resultado'])){
             </div>
         <?php endif; ?>
 
-        <form action="#" method="POST" novalidate>
+        <form action="cadastro/processar" method="POST" novalidate>
             
             <div class="form-group">
                 <label for="nome" class="form-label">Nome Completo</label>
@@ -105,6 +88,6 @@ if(isset($_SESSION['resultado'])){
         </form>
     </main>
 
-    <script src="/public/assets/js/cadastro.js"></script>
+    <script src="assets/js/cadastro.js"></script>
 </body>
 </html>
