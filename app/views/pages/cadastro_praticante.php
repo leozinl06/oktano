@@ -82,7 +82,7 @@
             </div>
 
             <button type="submit" class="btn btn-primario">Cadastrar como Praticante</button>
-            <button type="button" class="btn btn-secundario-texto">Voltar</button>
+            <a href="/oktano/public/login/acesso?tipo=praticante" class="btn btn-secundario-texto">Voltar</a>
         </form>
     </main>
 

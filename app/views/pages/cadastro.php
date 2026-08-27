@@ -92,7 +92,7 @@
             </div>
 
             <button type="submit" class="btn btn-primario">Cadastrar como Personal</button>
-            <button type="button" class="btn btn-secundario-texto">Voltar</button>
+            <a href="/oktano/public/login/acesso?tipo=personal" class="btn btn-secundario-texto">Voltar</a>
 
         </form>
     </main>
