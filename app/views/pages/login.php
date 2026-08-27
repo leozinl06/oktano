@@ -13,8 +13,8 @@ $rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cad
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/login.css">
 </head>
 <body>
     <main class="card-superficie">
@@ -33,7 +33,7 @@ $rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cad
             </div>
         <?php endif; ?>
 
-        <form action="login/processar" method="POST" novalidate>
+        <form action="/oktano/public/login/processar" method="POST" novalidate>
             <input type="hidden" name="tipo_usuario" value="<?= $tipo_usuario ?>">
 
             <div class="form-group">
@@ -55,12 +55,14 @@ $rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cad
             </div>
 
             <button type="submit" class="btn btn-primario">Entrar</button>
-
-            <a href="<?= $rota_cadastro ?>" class="btn btn-secundario-texto">Não tem uma conta? Cadastre-se</a>
-            <a href="login" class="btn btn-secundario-texto" style="margin-top: 4px;">Voltar</a>
+            <a href="/oktano/public/login" class="btn btn-secundario-texto">Voltar</a>
+            
+            <div class="link-container">
+                <a href="/oktano/public/<?= $rota_cadastro ?>" class="link-simples">Não tem uma conta? Cadastre-se</a>
+            </div>
         </form>
     </main>
 
-    <script src="assets/js/login.js"></script>
+    <script src="/oktano/public/assets/js/login.js"></script>
 </body>
 </html>

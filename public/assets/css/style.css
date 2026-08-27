@@ -189,7 +189,7 @@ body {
 }
 
 a.btn {
-    display: inline-block;
+    display: block;
     text-align: center;
     text-decoration: none;
     box-sizing: border-box;
@@ -214,6 +214,19 @@ a.btn {
 .btn-secundario-texto:hover {
     background-color: var(--cor-secundaria);
     color: var(--texto-sobre-primaria);
+}
+
+.link-container {
+    text-align: center;
+    margin-top: 32px; 
+}
+
+.link-simples {
+    font-size: 14px;
+    color: var(--texto-secundario);
+    text-decoration: underline;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .alerta {
