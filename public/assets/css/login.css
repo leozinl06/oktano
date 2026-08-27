@@ -1,0 +1,38 @@
+/* assets/css/login.css */
+
+.selecao-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.selecao-card {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--borda-leve);
+    border-radius: 8px;
+    background-color: var(--fundo-suave);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.selecao-card:hover {
+    border-color: var(--anel-foco);
+    background-color: var(--fundo-superficie);
+    box-shadow: 0 4px 6px var(--cor-sombra);
+}
+
+.selecao-icone {
+    font-size: 32px;
+    color: var(--cor-primaria);
+    margin-right: 16px;
+}
+
+.selecao-texto {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--texto-primario);
+}

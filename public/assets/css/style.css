@@ -188,6 +188,13 @@ body {
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
+a.btn {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
 .btn-primario {
     background-color: var(--cor-primaria);
     color: var(--texto-sobre-primaria);
