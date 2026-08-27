@@ -31,8 +31,6 @@
                 <span class="selecao-texto">Sou Praticante</span>
             </a>
         </div>
-
-        <a href="cadastro" class="btn btn-secundario-texto">Não tem uma conta? Cadastre-se</a>
     </main>
 </body>
 </html>
