@@ -24,8 +24,6 @@ O formato padrão para cada commit deve ser:
 
 > `tipo(escopo): descrição curta em letras minúsculas`
 
-**Nota:** O uso do `(escopo)` é opcional, mas o `tipo` e a `descrição` são obrigatórios.
-
 ### Tipos de Commit Permitidos
 
 | Tipo | Descrição |
