@@ -7,8 +7,8 @@
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/cadastro.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/cadastro.css">
 </head>
 <body>
 
@@ -97,6 +97,6 @@
         </form>
     </main>
 
-    <script src="assets/js/cadastro.js"></script>
+    <script src="/oktano/public/assets/js/cadastro.js"></script>
 </body>
 </html>

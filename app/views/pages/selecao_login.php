@@ -7,8 +7,8 @@
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/login.css">
 </head>
 <body>
     <main class="card-superficie">

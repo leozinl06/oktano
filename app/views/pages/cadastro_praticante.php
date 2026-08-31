@@ -7,8 +7,8 @@
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/cadastro.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
+    <link rel="stylesheet" href="/oktano/public/assets/css/cadastro.css">
 </head>
 <body>
     <main class="card-superficie">
@@ -86,6 +86,6 @@
         </form>
     </main>
 
-    <script src="assets/js/cadastro_praticante.js"></script>
+    <script src="/oktano/public/assets/js/cadastro_praticante.js"></script>
 </body>
 </html>
