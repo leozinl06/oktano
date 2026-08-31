@@ -36,11 +36,3 @@ O formato padrão para cada commit deve ser:
 | **chore** | Atualizações de ferramentas, instalação de bibliotecas ou configurações de ambiente. |
 
 ---
-
-## Estrutura de Branches e Pull Requests
-
-Siga este fluxo para enviar suas alterações de forma correta:
-
-1. Crie uma branch a partir da `main` para a sua alteração:
-   ```bash
-   git checkout -b feature/minha-nova-tela
