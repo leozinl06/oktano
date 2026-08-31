@@ -2,7 +2,7 @@
     /* ====== NÚCLEO DO SISTEMA ====== */
     --cor-primaria: #E57A38;
     /* Cor de maior destaque: botões de ação principal, links importantes, elementos de marca */
-    --cor-secundaria: #22262E;
+    --cor-secundaria: #13151b;
     /* Contraste com a primária: botões de ação secundária (ex.: "Cancelar", "Voltar") */
     --cor-hover: #CC682B;
     /* Estado de passagem do mouse sobre elementos que usam a cor primária */
@@ -20,7 +20,7 @@
     /* Cor padrão para a maioria das escritas (títulos, parágrafos, dados de tabela) */
     --texto-secundario: #8E95A2;
     /* Textos de menor hierarquia: subtítulos, legendas, rótulos de formulário */
-    --texto-sobre-primaria: #0E1013;
+    --texto-sobre-primaria: #f6f3ed;
     /* Texto colocado sobre fundos com a cor primária (ex.: dentro de um botão laranja) */
 
     /* ====== SUPERFÍCIES E BORDAS ====== */
