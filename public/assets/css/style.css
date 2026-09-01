@@ -275,6 +275,9 @@ a.btn {
     font-weight: 600;
     text-align: center;
     width: 100%;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .alerta-sucesso {
@@ -287,4 +290,9 @@ a.btn {
     background-color: var(--fundo-erro);
     color: var(--texto-erro);
     border: 1px solid var(--erro);
+}
+
+.alerta-oculto{
+    opacity: 0;
+    transform: translateY(-10px);
 }

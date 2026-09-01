@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const indicadorForca = document.getElementById('indicador-forca');
     const textoForca = document.querySelector('.forca-senha-texto');
 
+    const alertaGlobal = document.querySelector('.alerta');
+
+    if(alertaGlobal){
+        setTimeout(() => {
+            alertaGlobal.classList.add('alerta-oculto');
+
+            setTimeout(() => {
+                alertaGlobal.remove();
+            }, 500);
+        }, 5000);
+    }
+
     const definirErro = (input, mensagem) => { 
         input.classList.add('is-invalid'); //adiciona classe de erro
 

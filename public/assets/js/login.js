@@ -3,6 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputEmail = document.getElementById('email');
     const inputSenha = document.getElementById('senha');
 
+    const alertaGlobal = document.querySelector('.alerta');
+
+    if(alertaGlobal){
+        setTimeout(() => {
+            alertaGlobal.classList.add('alerta-oculto');
+
+            setTimeout(() => {
+                alertaGlobal.remove();
+            }, 500);
+        }, 5000);
+    }
+
     const definirErro = (input, mensagem) => {
         input.classList.add('is-invalid');
         const spanErro = input.closest('.form-group').querySelector('.form-error-msg');
