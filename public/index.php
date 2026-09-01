@@ -13,6 +13,7 @@ $router->adicionar('cadastro-praticante/processar', 'CadastroPraticanteControlle
 
 $router->adicionar('login', 'LoginController', 'index');
 $router->adicionar('login/acesso', 'LoginController', 'acesso');
+$router->adicionar('login/processar', 'LoginController', 'processar');
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 

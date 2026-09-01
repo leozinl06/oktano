@@ -48,4 +48,17 @@ class Personal{
 
         return false;
     }
+
+    public function buscarPorEmail($email){
+        $query = "SELECT * FROM " . $this->tabela . ' WHERE email = :email LIMIT 1';
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
 }
