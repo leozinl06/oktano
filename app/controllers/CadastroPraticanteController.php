@@ -20,6 +20,12 @@ class CadastroPraticanteController{
             unset($_SESSION['resultado']);
         }
 
+        $dadosForm = null;
+        if(isset($_SESSION['dados_form'])){
+            $dadosForm = $_SESSION['dados_form'];
+            unset($_SESSION['dados_form']);
+        }
+
         require_once __DIR__ . '/../views/pages/cadastro_praticante.php';
     }
 
@@ -31,6 +37,8 @@ class CadastroPraticanteController{
 
             $senha = $_POST['senha'] ?? '';
             $confirmarSenha = $_POST['confirmar-senha'] ?? '';
+
+            $_SESSION['dados_form'] = $_POST;
 
             if (empty($nome) || empty($email) || empty($codigo_personal) || empty($senha)) {
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
@@ -71,7 +79,7 @@ class CadastroPraticanteController{
             $id_personal = $this->praticanteModel->buscarIdPersonalPorCodigo($codigo_personal);
 
             if(!$id_personal){
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Personal não encontrado. Verifique o código fornecido.'];
+                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Personal não encontrado. Verifique o código fornecido.', 'campo' => 'codigo_personal'];
                 header('Location: /oktano/public/cadastro-praticante');
                 exit;
             }

@@ -21,7 +21,7 @@
             <p class="subtitulo">Preencha seus dados abaixo</p>
         </header>
 
-        <?php if(isset($resultado)): ?>
+        <?php if(isset($resultado) && !isset($resultado['campo'])): ?>
             <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
                 <?= $resultado['mensagem'] ?>
             </div>
@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label for="nome" class="form-label">Nome Completo</label>
                 <div class="input-wrapper">
-                    <input type="text" id="nome" name="nome" class="form-input com-icone" placeholder="João Silva" required>
+                    <input type="text" id="nome" name="nome" class="form-input com-icone" value="<?= htmlspecialchars($dadosForm['nome'] ?? '') ?>" placeholder="João Silva" required>
                     <i class="ph ph-user input-icon"></i>
                 </div>
                 <span class="form-error-msg"></span>
@@ -41,19 +41,22 @@
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
                 <div class="input-wrapper">
-                    <input type="email" id="email" name="email" class="form-input com-icone" placeholder="joaosilva@exemplo.com" required>
+                    <input type="email" id="email" name="email" class="form-input com-icone" value="<?= htmlspecialchars($dadosForm['email'] ?? '') ?>" placeholder="joaosilva@exemplo.com" required>
                     <i class="ph ph-envelope input-icon"></i>
                 </div>
                 <span class="form-error-msg"></span>
             </div>
 
+            <?php
+                $erroCodigo = (isset($resultado['campo']) && $resultado['campo'] === 'codigo_personal');
+            ?>
             <div class="form-group">
                 <label for="codigo_personal" class="form-label">Código do Personal (6 caracteres)</label>
                 <div class="input-wrapper">
-                    <input type="text" id="codigo_personal" name="codigo_personal" class="form-input com-icone" placeholder="Ex: A1B2C3" maxlength="6" required>
+                    <input type="text" id="codigo_personal" name="codigo_personal" class="form-input com-icone <?= $erroCodigo ? 'is-invalid' : '' ?>" placeholder="Ex: A1B2C3" maxlength="6" value="<?= htmlspecialchars($dadosForm['codigo_personal'] ?? '') ?>" required>
                     <i class="ph ph-link input-icon"></i>
                 </div>
-                <span class="form-error-msg"></span>
+                <span class="form-error-msg"><?= $erroCodigo ? $resultado['mensagem'] : '' ?></span>
             </div>
 
             <div class="form-group">
