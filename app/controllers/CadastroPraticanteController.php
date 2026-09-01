@@ -86,7 +86,7 @@ class CadastroPraticanteController{
 
             if($this->praticanteModel->cadastrar($id_personal, $nome, $email, $senha)){
                 $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
-                header('Location: /oktano/public/cadastro-praticante');
+                header('Location: /oktano/public/acesso?tipo=praticante');
                 exit;
             } else{
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];

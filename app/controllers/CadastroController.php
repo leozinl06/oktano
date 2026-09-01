@@ -72,7 +72,7 @@ class CadastroController{
 
             if($this->personalModel->cadastrar($nome, $email, $registro, strtoupper($codigo_vinculo), $senha)){
                 $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
-                header('Location: /oktano/public/cadastro');
+                header('Location: /oktano/public/login/acesso?tipo=personal');
                 exit;
             } else{
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];
