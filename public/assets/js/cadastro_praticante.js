@@ -1,7 +1,7 @@
 import { configurarValidacaoGlobal } from "./validador";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const { definirErro, removerErro, isEmailValido, configurarForcaSenha } = configurarValidacaoGlobal();
+    const { definirErro, removerErro, isEmailValido, configurarForcaSenha, configurarLimpezaAoDigitar } = configurarValidacaoGlobal();
 
     const form = document.querySelector('form');
 
@@ -15,21 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const indicadorForca = document.getElementById('indicador-forca');
     const textoForca = document.querySelector('.forca-senha-texto');
 
+    const campos = [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputCodigoPersonal];
 
     configurarForcaSenha(inputSenha, indicadorForca, textoForca);
-
-    [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputCodigoPersonal].forEach(input => {
-        input.addEventListener('input', () => {
-            if(input.classList.contains('is-invalid')){
-                removerErro(input);
-            }
-        });
-    });
+    configurarLimpezaAoDigitar(campos);
 
     form.addEventListener('submit', (e) => {
         let formularioValido = true;
         
-        [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputCodigoPersonal].forEach(removerErro);
+        campos.forEach(removerErro);
 
         if (inputNome.value.trim() === ''){
             definirErro(inputNome, 'O nome é obrigatório para o cadastro.');

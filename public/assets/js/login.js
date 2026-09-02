@@ -1,24 +1,20 @@
 import { configurarValidacaoGlobal } from "./validador";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const {definirErro, removerErro, isEmailValido} = configurarValidacaoGlobal();
+    const {definirErro, removerErro, isEmailValido, configurarLimpezaAoDigitar} = configurarValidacaoGlobal();
 
     const form = document.querySelector('form');
     const inputEmail = document.getElementById('email');
     const inputSenha = document.getElementById('senha');
 
-    [inputEmail, inputSenha].forEach(input => {
-        input.addEventListener('input', () => {
-            if(input.classList.contains('is-invalid')){
-                removerErro(input);
-            }
-        });
-    });
+    const campos = [inputEmail, inputSenha];
+
+    configurarLimpezaAoDigitar(campos);
 
     form.addEventListener('submit', (e) => {
         let formularioValido = true;
         
-        [inputEmail, inputSenha].forEach(removerErro);
+        campos.forEach(removerErro);
 
         if(inputEmail.value.trim() === ''){
             definirErro(inputEmail, 'O e-mail é obrigatório para acessar.');
