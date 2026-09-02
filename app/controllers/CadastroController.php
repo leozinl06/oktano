@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Personal.php';
+require_once __DIR__ . '/../core/BaseController.php';
 
-class CadastroController{
+class CadastroController extends BaseController{
     private $db;
     private $personalModel;
 
@@ -26,6 +27,9 @@ class CadastroController{
 
     public function registrar(){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            $url = '/oktano/public/cadastro';
+
             $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $registro = filter_input(INPUT_POST, 'registro', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -35,49 +39,34 @@ class CadastroController{
             $confirmarSenha = $_POST['confirmar-senha'] ?? '';
 
             if (empty($nome) || empty($email) || empty($registro) || empty($codigo_vinculo) || empty($senha)) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
-                header('Location: /oktano/public/cadastro'); // redireciona para a própria página
-                exit;
+                $this->redirecionarComResultado($url, false, 'Todos os campos são obrigatórios');
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'Formato de e-mail inválido.');
             }
 
             if(!preg_match('/^[a-zA-Z0-9]{6}$/', $codigo_vinculo)){
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O código de vínculo deve conter exatamente 6 caracteres alfanuméricos.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'O código deve conter exatamente 6 caracteres.');
             }
 
             if (strlen($senha) < 8) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'A senha deve conter no mínimo 8 caracteres.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'A senha deve conter no mínimo 8 caracteres.');
             }
 
             if ($senha !== $confirmarSenha) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'As senhas não coincidem.');
             }
 
             if($this->personalModel->verificaExistencia($email, $registro, $codigo_vinculo)){
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O e-mail ou registro profissional já estão vinculados a uma conta existente.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'O e-mail ou registro profissional já estão vinculados a uma conta existente.');
             }
 
             if($this->personalModel->cadastrar($nome, $email, $registro, strtoupper($codigo_vinculo), $senha)){
-                $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
-                header('Location: /oktano/public/login/acesso?tipo=personal');
-                exit;
+                $this->redirecionarComResultado('/oktano/public/login/acesso?tipo=personal', true, 'Cadastro realizado com sucesso!');
+            
             } else{
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];
-                header('Location: /oktano/public/cadastro');
-                exit;
+                $this->redirecionarComResultado($url, false, 'Ocorreu um erro interno. Tente novamente mais tarde.');
             }
         }
 

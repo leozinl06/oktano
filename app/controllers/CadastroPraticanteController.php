@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Praticante.php';
+require_once __DIR__ . '/../core/BaseController.php';
 
-class CadastroPraticanteController{
+class CadastroPraticanteController extends BaseController{
     private $db;
     private $praticanteModel;
 
@@ -31,6 +32,9 @@ class CadastroPraticanteController{
 
     public function registrar(){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            $url = '/oktano/public/cadastro-praticante';
+
             $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $codigo_personal = strtoupper(filter_input(INPUT_POST, 'codigo_personal', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -41,39 +45,27 @@ class CadastroPraticanteController{
             $_SESSION['dados_form'] = $_POST;
 
             if (empty($nome) || empty($email) || empty($codigo_personal) || empty($senha)) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'Todos os campos são obrigatórios.');
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Formato de e-mail inválido.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'Formato de e-mail inválido.');
             }
 
             if (!preg_match('/^[A-Z0-9]{6}$/', $codigo_personal)) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O código de vínculo deve conter exatamente 6 caracteres alfanuméricos.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'O código de vínculo deve conter exatamente 6 caracteres.');
             }
 
             if (strlen($senha) < 8) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'A senha deve conter no mínimo 8 caracteres.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'A senha deve conter no mínimo 8 caracteres.');
             }
 
             if ($senha !== $confirmarSenha) {
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'As senhas não coincidem.');
             }
 
             if($this->praticanteModel->verificaExistencia($email)){
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'O e-mail já está vinculado a uma conta existente.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'O e-mail já está vinculado a uma conta existente.');
             }
 
             $id_personal = $this->praticanteModel->buscarIdPersonalPorCodigo($codigo_personal);
@@ -85,13 +77,10 @@ class CadastroPraticanteController{
             }
 
             if($this->praticanteModel->cadastrar($id_personal, $nome, $email, $senha)){
-                $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!'];
-                header('Location: /oktano/public/acesso?tipo=praticante');
-                exit;
+                $this->redirecionarComResultado('/oktano/public/login/acesso?tipo=praticante', true, 'Cadastro realizado com sucesso!');
+                
             } else{
-                $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Ocorreu um erro interno. Tente novamente mais tarde.'];
-                header('Location: /oktano/public/cadastro-praticante');
-                exit;
+                $this->redirecionarComResultado($url, false, 'Ocorreu um erro interno. Tente novamente mais tarde.');
             }
         }
 
