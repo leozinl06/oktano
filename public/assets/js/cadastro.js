@@ -1,4 +1,8 @@
+import { configurarValidacaoGlobal } from "./validador";
+
 document.addEventListener('DOMContentLoaded', () => {
+    const {definirErro, removerErro, isEmailValido, configurarForcaSenha} = configurarValidacaoGlobal();
+
     const form = document.querySelector('form');
 
     const inputNome = document.getElementById('nome');
@@ -11,57 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const indicadorForca = document.getElementById('indicador-forca');
     const textoForca = document.querySelector('.forca-senha-texto');
 
-    const alertaGlobal = document.querySelector('.alerta');
+    configurarForcaSenha(inputSenha, indicadorForca, textoForca);
 
-    if(alertaGlobal){
-        setTimeout(() => {
-            alertaGlobal.classList.add('alerta-oculto');
-
-            setTimeout(() => {
-                alertaGlobal.remove();
-            }, 500);
-        }, 5000);
-    }
-
-    const definirErro = (input, mensagem) => { 
-        input.classList.add('is-invalid'); //adiciona classe de erro
-
-        const spanErro = input.closest('.form-group').querySelector('.form-error-msg'); //encontra span de erro especifica
-        if (spanErro) {
-            spanErro.textContent = mensagem; //adiciona msg na span
-        }
-    };
-
-    const removerErro = (input) => {
-        input.classList.remove('is-invalid'); //remove classe de erro
-    };
-
-    const isEmailValido = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email); //retorna true se o padrão existir
-    };
-
-
-    inputSenha.addEventListener('input', () => {
-        const valorSenha = inputSenha.value;
-
-        indicadorForca.classList.remove('senha-fraca', 'senha-media', 'senha-forte');
-
-        if (valorSenha.length === 0){
-            textoForca.textContent = "Força da senha: -";
-        } else if (valorSenha.length < 6){
-            indicadorForca.classList.add('senha-fraca');
-            textoForca.textContent = "Força da senha: Fraca";
-        } else if (valorSenha.length >= 6 && valorSenha.length < 10){
-            indicadorForca.classList.add('senha-media');
-            textoForca.textContent = "Força da senha: Média";
-        } else {
-            indicadorForca.classList.add('senha-forte');
-            textoForca.textContent = "Força senha: Forte";
-        }
-    });
-
-    [inputNome, inputEmail, inputSenha, inputConfirmarSenha, inputRegistro, inputCodigo].forEach(input => {
+    [inputNome, inputEmail, inputRegistro, inputSenha, inputConfirmarSenha].forEach(input => {
         input.addEventListener('input', () => {
             if(input.classList.contains('is-invalid')){
                 removerErro(input);
