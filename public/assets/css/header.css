@@ -1,0 +1,20 @@
+.header-layout {
+    width: 100%;
+    height: 72px;
+    background-color: var(--fundo-superficie);
+    border-bottom: 1px solid var(--borda-leve);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.header-layout__controles {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.header-layout--personal .nav-principal__item:hover {
+    color: var(--cor-primaria); 
+}

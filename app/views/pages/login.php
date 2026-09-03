@@ -16,7 +16,7 @@ $rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cad
     <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
     <link rel="stylesheet" href="/oktano/public/assets/css/login.css">
 </head>
-<body>
+<body class="layout-auth">
     <main class="card-superficie">
         <div class="cadastro-logo-container">
             <div class="cadastro-logo-placeholder">Logo</div>

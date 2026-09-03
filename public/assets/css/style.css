@@ -101,10 +101,13 @@
 body {
     background-color: var(--fundo-principal);
     color: var(--texto-primario);
+    justify-content: center;
+}
+
+.layout-auth{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
 }
 
 .card-superficie {
@@ -295,4 +298,67 @@ a.btn {
 .alerta-oculto{
     opacity: 0;
     transform: translateY(-10px);
+}
+
+.nav-principal {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.nav-principal__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--texto-secundario);
+    transition: color 0.3s ease;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-principal__item::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--cor-primaria);
+    transition: width 0.3s ease;
+    border-radius: 2px;
+} 
+
+.nav-principal__item:hover {
+    color: var(--cor-primaria);
+}
+
+.nav-principal__item:hover::after{
+    width: 100%;
+}
+
+.nav-principal__icone {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.nav-principal__item:hover .nav-principal__icone{
+    transform: translateY(-2px);
+}
+
+.nav-principal__texto {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.avatar-usuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--fundo-suave);
+    border: 1px solid var(--borda-leve);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--texto-primario);
 }

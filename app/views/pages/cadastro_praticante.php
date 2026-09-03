@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
     <link rel="stylesheet" href="/oktano/public/assets/css/cadastro.css">
 </head>
-<body>
+<body class="layout-auth">
     <main class="card-superficie">
         <div class="cadastro-logo-container">
             <div class="cadastro-logo-placeholder">Logo</div>
