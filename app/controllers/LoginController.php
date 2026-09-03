@@ -61,7 +61,7 @@ class LoginController{
                 $_SESSION['usuario_nome'] = $usuario['nome'];
                 $_SESSION['usuario_tipo'] = $tipo_usuario;
 
-                header('Location: /oktano/public/********');
+                header('Location: /oktano/public/dashboard_' . $tipo_usuario);
                 exit;
             } else{
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'E-mail ou senha incorretos.'];
