@@ -1,4 +1,4 @@
-import { configurarValidacaoGlobal } from "./validador";
+import { configurarValidacaoGlobal } from "./validador.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const {definirErro, removerErro, isEmailValido, configurarLimpezaAoDigitar} = configurarValidacaoGlobal();
