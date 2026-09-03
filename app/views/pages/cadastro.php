@@ -97,6 +97,6 @@
         </form>
     </main>
 
-    <script src="/oktano/public/assets/js/cadastro.js"></script>
+    <script type="module" src="/oktano/public/assets/js/cadastro.js"></script>
 </body>
 </html>

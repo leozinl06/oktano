@@ -63,6 +63,6 @@ $rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cad
         </form>
     </main>
 
-    <script src="/oktano/public/assets/js/login.js"></script>
+    <script type="module" src="/oktano/public/assets/js/login.js"></script>
 </body>
 </html>
