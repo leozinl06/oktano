@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acessar Plataforma - Oktano</title>
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
-    <link rel="stylesheet" href="/oktano/public/assets/css/login.css">
-</head>
+<?php
+$tituloPagina = "Acessar Plataforma - Oktano";
+$estilosCSS = ['login'];
+require_once __DIR__ . '/../components/head.php';
+?>
 <body class="layout-auth">
     <main class="card-superficie">
         <div class="cadastro-logo-container">
