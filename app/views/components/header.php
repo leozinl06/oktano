@@ -4,6 +4,8 @@ $url = "/oktano/public";
 
 $tipoUsuario = $tipoUsuario ?? 'default';
 
+$uriAtual = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 $menus = [
     'personal' => [
         ['url' => $url . '/dashboard_personal', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
@@ -25,20 +27,20 @@ $linksAtuais = $menus[$tipoUsuario] ?? [];
     <div class="header-layout__logo">
         <span class="logo-texto">Oktano</span>
     </div>
-
     <div class="header-layout__controles">
         <nav class="nav-principal">
             <?php foreach($linksAtuais as $link): ?>
-                <a href="<?= htmlspecialchars($link['url']) ?>" class="nav-principal__item">
+                <?php 
+                    $classeAtivo = ($uriAtual === $link['url']) ? 'nav-principal__item--ativo' : '';
+                ?>
+                <a href="<?= htmlspecialchars($link['url']) ?>" class="nav-principal__item <?= $classeAtivo ?>">
                     <i class="ph <?= htmlspecialchars($link['icone']) ?> nav-principal__icone"></i>
                     <span class="nav-principal__texto"><?= htmlspecialchars($link['texto']) ?></span>
                 </a>
             <?php endforeach; ?>
         </nav>
-
         <div class="avatar-usuario">
             <i class="ph ph-user avatar-usuario__icone"></i>
         </div>
     </div>
-
 </header>

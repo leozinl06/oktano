@@ -340,6 +340,21 @@ a.btn {
     width: 100%;
 }
 
+.nav-principal__item:hover,
+.nav-principal__item--ativo {
+    color: var(--cor-primaria);
+}
+
+.nav-principal__item:hover::after,
+.nav-principal__item--ativo::after {
+    width: 100%;
+}
+
+.nav-principal__item:hover .nav-principal__icone,
+.nav-principal__item--ativo .nav-principal__icone {
+    transform: translateY(-2px);
+}
+
 .nav-principal__icone {
     font-size: 20px;
     transition: transform 0.3s ease;
