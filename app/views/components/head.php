@@ -11,7 +11,7 @@
 
     <?php if(isset($estilosCSS) && is_array($estilosCSS)): ?>
         <?php foreach ($estilosCSS as $css): ?>
-            <link rel="stylesheet" href="/oktano/public/assets/css/<?= htmlspecialchars($css) ?>">
+            <link rel="stylesheet" href="/oktano/public/assets/css/<?= htmlspecialchars($css) ?>.css">
         <?php endforeach; ?>
     <?php endif; ?>
 </head>
