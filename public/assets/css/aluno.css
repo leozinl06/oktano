@@ -1,0 +1,140 @@
+.cabecalho-pagina {
+    margin-bottom: 32px;
+}
+
+.aluno-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 800px; 
+}
+
+.aluno-item {
+    background-color: var(--fundo-superficie);
+    border: 1px solid var(--borda-leve);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.aluno-item__cabecalho {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--texto-primario);
+    transition: background-color 0.2s ease;
+}
+
+.aluno-item__cabecalho:hover {
+    background-color: var(--fundo-suave);
+}
+
+.aluno-item__nome {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.aluno-item__icone-expansao {
+    font-size: 20px;
+    color: var(--texto-secundario);
+    transition: transform 0.3s ease;
+}
+
+.aluno-item.is-open .aluno-item__icone-expansao {
+    transform: rotate(180deg);
+}
+
+.aluno-item.is-open .aluno-item__cabecalho {
+    border-bottom: 1px solid var(--borda-leve);
+}
+
+.aluno-item__conteudo-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+}
+
+.aluno-item.is-open .aluno-item__conteudo-wrapper {
+    grid-template-rows: 1fr;
+}
+
+.aluno-item__conteudo {
+    overflow: hidden;
+    padding: 0 24px;
+}
+
+.ficha-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 24px;
+    margin-bottom: 24px;
+}
+
+.ficha-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.ficha-card--ativa {
+    background-color: var(--fundo-suave);
+    border: 1px solid var(--borda-leve);
+    color: var(--texto-primario);
+}
+
+.ficha-card--arquivada {
+    background-color: var(--cor-indisponivel);
+    border: 1px solid var(--borda-desabilitado);
+    color: var(--texto-indisponivel);
+}
+
+.ficha-card--arquivada .ph-eye {
+    color: var(--texto-indisponivel);
+}
+
+.ficha-card--rascunho {
+    background-color: var(--fundo-principal);
+    border: 2px dashed var(--borda-hover);
+    color: var(--texto-secundario);
+}
+
+.ficha-card__titulo {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-icone {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.btn-icone:hover {
+    color: var(--cor-primaria);
+}
+
+.aluno-item__btn-criar {
+    margin-bottom: 24px;
+    width: auto;
+    padding: 12px 24px;
+}
+
+.vazio-estado {
+    text-align: center;
+    padding: 40px 20px;
+}

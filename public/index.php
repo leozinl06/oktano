@@ -18,6 +18,8 @@ $router->adicionar('login/processar', 'LoginController', 'processar');
 $router->adicionar('dashboard_personal', 'DashboardPersonalController', 'index');
 $router->adicionar('dashboard_praticante', 'DashboardPraticanteController', 'index');
 
+$router->adicionar('alunos', 'AlunosController', 'index');
+
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 
 $router->despachar($url);

@@ -1,17 +1,19 @@
 <?php
 
+$url = "/oktano/public";
+
 $tipoUsuario = $tipoUsuario ?? 'default';
 
 $menus = [
     'personal' => [
-        ['url' => '/dashboard_personal', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
-        ['url' => '/alunos', 'icone' => 'ph-users', 'texto' => 'Alunos'],
-        ['url' => '/treinos', 'icone' => 'ph-clipboard-text', 'texto' => 'Treinos']
+        ['url' => $url . '/dashboard_personal', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
+        ['url' => $url . '/alunos', 'icone' => 'ph-users', 'texto' => 'Alunos'],
+        ['url' => $url . '/treinos', 'icone' => 'ph-clipboard-text', 'texto' => 'Treinos']
     ],
     'praticante' => [
-        ['url' => '/dashboard_praticante', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
-        ['url' => '/meus-treinos', 'icone' => 'ph-barbell', 'texto' => 'Meus Treinos'],
-        ['url' => '/meu-perfil', 'icone' => 'ph-user', 'texto' => 'Perfil']
+        ['url' => $url . '/dashboard_praticante', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
+        ['url' => $url . '/meus-treinos', 'icone' => 'ph-barbell', 'texto' => 'Meus Treinos'],
+        ['url' => $url . '/meu-perfil', 'icone' => 'ph-user', 'texto' => 'Perfil']
     ]
 ];
 

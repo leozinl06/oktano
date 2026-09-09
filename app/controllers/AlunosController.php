@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../models/Praticante';
-require_once __DIR__ . '/../models/FichaTreino';
-require_once __DIR__ . '/../core/BaseController';
+require_once __DIR__ . '/../models/Praticante.php';
+require_once __DIR__ . '/../models/FichaTreino.php';
+require_once __DIR__ . '/../core/BaseController.php';
 
 class AlunosController extends BaseController{
 
