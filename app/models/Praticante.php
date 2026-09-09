@@ -67,4 +67,14 @@ class Praticante{
         }
         return false;
     }
+
+    public function buscarAlunosPorPersonal($id_personal){
+        $query = "SELECT id, nome FROM " . $this->tabela . " WHERE id_personal = :id_personal ORDER BY nome ASC";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id_personal', $id_personal);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
