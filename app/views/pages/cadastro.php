@@ -1,3 +1,10 @@
+<?php
+
+$tituloPagina = "Crie sua conta (Personal) - Oktano";
+$estilosCSS = ['cadastro'];
+require_once __DIR__ . '/../components/head.php';
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
