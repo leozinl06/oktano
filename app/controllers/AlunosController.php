@@ -28,7 +28,10 @@ class AlunosController extends BaseController{
 
         foreach($alunos_bruto as $aluno){
             $partes_nome = explode(' ', trim($aluno['nome']));
-            $nome_exibicao = $partes_nome[0] . ' ' . end($partes_nome);
+            $nome_exibicao = $partes_nome[0];
+            if(count($partes_nome) > 1){
+                $nome_exibicao .= ' ' . end($partes_nome);
+            }
 
             $fichas = $fichaTreinoModel->buscarFichasPorAluno($aluno['id']);
 
