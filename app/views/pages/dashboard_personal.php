@@ -5,7 +5,8 @@ require_once __DIR__ . '/../components/head.php';
 ?>
 <body>
     <?php
-        require_once __DIR__ . '/../components/header_personal.php';
+        $tipoUsuario = 'personal'
+        require_once __DIR__ . '/../components/header.php';
     ?>
 </body>
 </html>
