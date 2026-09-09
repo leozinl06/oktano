@@ -1,6 +1,6 @@
 <?php
 $tituloPagina = "Crie sua conta (Aluno) - Oktano";
-$estiloCSS = ['cadastro']; 
+$estilosCSS = ['cadastro']; 
 require_once __DIR__ . '/../components/head.php';
 
 ?>

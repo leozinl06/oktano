@@ -1,5 +1,17 @@
+.container-principal {
+    width: 100%;
+    
+    padding: 40px;
+}
+
 .cabecalho-pagina {
-    margin-bottom: 32px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.cabecalho-pagina .titulo-principal,
+.cabecalho-pagina .subtitulo {
+    text-align: left;
 }
 
 .aluno-lista {
@@ -7,7 +19,6 @@
     flex-direction: column;
     gap: 16px;
     width: 100%;
-    max-width: 800px; 
 }
 
 .aluno-item {
@@ -135,6 +146,7 @@
 }
 
 .vazio-estado {
+    margin: 60px auto;
+    max-width: 450px;
     text-align: center;
-    padding: 40px 20px;
 }
