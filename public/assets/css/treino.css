@@ -167,6 +167,9 @@
 .treino-card__acoes {
     display: flex;
     justify-content: flex-end;
+    align-items: center; 
+    gap: 8px; /* Espaço reduzido para caberem os 3 botões com texto */
+    flex-wrap: wrap; /* Evita que os botões vazem do card em telas pequenas */
     padding-top: 1rem;
     border-top: 1px solid var(--borda-leve);
     margin-top: auto;
@@ -201,4 +204,11 @@
     background-color: var(--cor-indisponivel);
     color: var(--texto-indisponivel);
     border: 1px solid var(--borda-desabilitado);
+}
+
+.treino-card__acoes .btn-secundario-texto {
+    margin-top: 0;
+    padding: 6px 12px; /* Padding mais compacto */
+    width: auto; /* Tira o comportamento de 100% de largura da classe base .btn */
+    font-size: 13px; /* Reduz levemente a fonte para os 3 caberem perfeitamente */
 }

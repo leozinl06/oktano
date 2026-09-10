@@ -1,6 +1,6 @@
 <?php
 $tituloPagina = "Meus Alunos - Oktano";
-$estilosCSS = ['header', 'aluno'];
+$estilosCSS = ['header', 'aluno', 'treino'];
 require_once __DIR__ . '/../components/head.php';
 ?>
 
@@ -47,12 +47,31 @@ require_once __DIR__ . '/../components/head.php';
                                 
                                 <div class="ficha-lista">
                                     <?php foreach ($aluno['fichas'] as $ficha): ?>
-                                        <!-- A classe modificadora muda de acordo com o status da ficha -->
                                         <div class="ficha-card ficha-card--<?= htmlspecialchars($ficha['status']) ?>">
-                                            <span class="ficha-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></span>
-                                            <button class="btn-icone" title="Visualizar ficha">
-                                                <i class="ph ph-eye"></i>
-                                            </button>
+                                            <div class="ficha-card__info">
+                                                <span class="ficha-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></span>
+                                                <span class="treino-card__status badge-<?= htmlspecialchars($ficha['status']) ?>">
+                                                    <?= ucfirst(htmlspecialchars($ficha['status'])) ?>
+                                                </span>
+                                            </div>
+
+                                            <div class="ficha-card__acoes">
+                                                <button class="btn-icone" title="Visualizar ficha">
+                                                    <i class="ph ph-eye"></i>
+                                                </button>
+                                                
+                                                <button class="btn-icone" title="Editar ficha">
+                                                    <i class="ph ph-pencil-simple"></i>
+                                                </button>
+                                                <button class="btn-icone" title="Arquivar ficha">
+                                                    <i class="ph ph-archive"></i>
+                                                </button>
+
+                                                <button class="btn-icone btn-icone--erro" title="Excluir ficha">
+                                                    <i class="ph ph-trash"></i>
+                                                </button>
+                                            </div>
+
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

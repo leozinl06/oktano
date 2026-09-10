@@ -260,6 +260,32 @@ a.btn {
     color: var(--texto-sobre-primaria);
 }
 
+.btn-icone {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.btn-icone:hover {
+    color: var(--cor-primaria);
+}
+
+.btn-icone.btn-icone--erro:hover,
+.btn-icone.btn-icone--erro:hover i {
+    color: var(--erro);
+}
+
+.btn-secundario-texto.btn-secundario-texto--erro:hover {
+    background-color: var(--fundo-erro);
+    color: var(--erro);
+}
+
 .link-container {
     text-align: center;
     margin-top: 32px;

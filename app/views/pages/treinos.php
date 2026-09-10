@@ -47,6 +47,13 @@ require_once __DIR__ . '/../components/head.php';
                                 <button class="btn btn-secundario-texto">
                                     <i class="ph ph-pencil-simple"></i> Editar
                                 </button>
+                                <button class="btn btn-secundario-texto">
+                                    <i class="ph ph-archive"></i> Arquivar
+                                </button>
+                                
+                                <button class="btn btn-secundario-texto btn-secundario-texto--erro">
+                                    <i class="ph ph-trash"></i> Excluir
+                                </button>
                             </div>
                         </article>
                     <?php endforeach; ?>

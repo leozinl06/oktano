@@ -176,3 +176,16 @@
 .is-hidden {
     display: none !important;
 }
+
+/* Agrupamento de informações e ações no card da ficha do aluno */
+.ficha-card__info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ficha-card__acoes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
