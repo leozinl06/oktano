@@ -14,6 +14,15 @@ require_once __DIR__ . '/../components/head.php';
         <header class="cabecalho-pagina">
             <h1 class="titulo-principal">Meus Alunos</h1>
             <p class="subtitulo">Gerencie as fichas de treino dos seus praticantes</p>
+
+            <?php if (!empty($alunos)): ?>
+            <div class="pesquisa-barra">
+                <div class="input-wrapper">
+                    <input type="text" id="pesquisa-aluno" class="form-input com-icone" placeholder="Buscar aluno pelo nome...">
+                    <i class="ph ph-magnifying-glass input-icon"></i>
+                </div>
+            </div>
+            <?php endif; ?>
         </header>
 
         <section class="aluno-lista">
@@ -22,6 +31,10 @@ require_once __DIR__ . '/../components/head.php';
                     <p class="texto-secundario">Nenhum aluno vinculado ainda.</p>
                 </div>
             <?php else: ?>
+                <div id="msg-pesquisa-vazia" class="card-superficie vazio-estado is-hidden">
+                    <p class="texto-secundario">Nenhum aluno encontrado com este nome.</p>
+                </div>
+
                 <?php foreach ($alunos as $aluno): ?>
                     <article class="aluno-item">
                         <button class="aluno-item__cabecalho" aria-expanded="false">
