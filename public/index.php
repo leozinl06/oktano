@@ -10,6 +10,8 @@ $router->adicionar('cadastro', 'CadastroController', 'index');
 $router->adicionar('cadastro/processar', 'CadastroController', 'registrar');
 $router->adicionar('cadastro-praticante', 'CadastroPraticanteController', 'index'); //rotas cadastro
 $router->adicionar('cadastro-praticante/processar', 'CadastroPraticanteController', 'registrar');
+$router->adicionar('cadastro-admin', 'CadastroAdminController', 'index');
+$router->adicionar('cadastro-admin/processar', 'CadastroAdminController', 'registrar');
 
 $router->adicionar('login', 'LoginController', 'index');
 $router->adicionar('login/acesso', 'LoginController', 'acesso'); //rotas login
