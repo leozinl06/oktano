@@ -36,3 +36,11 @@
     font-weight: 600;
     color: var(--texto-primario);
 }
+
+.cadastro-logo-container__imagem {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 280px; 
+    height: auto;
+}

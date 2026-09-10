@@ -18,3 +18,9 @@
 .header-layout--personal .nav-principal__item:hover {
     color: var(--cor-primaria); 
 }
+
+.header-layout__imagem {
+    display: block;
+    max-height: 40px; 
+    width: auto;
+}

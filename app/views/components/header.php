@@ -25,7 +25,7 @@ $linksAtuais = $menus[$tipoUsuario] ?? [];
 
 <header class='header-layout'>
     <div class="header-layout__logo">
-        <span class="logo-texto">Oktano</span>
+        <img src="/oktano/public/assets/img/logo-texto__direita.svg" alt="Logo Oktano" class="header-layout__imagem">
     </div>
     <div class="header-layout__controles">
         <nav class="nav-principal">

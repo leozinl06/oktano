@@ -21,7 +21,7 @@ require_once __DIR__ . '/../components/head.php';
 
     <main class="card-superficie">
         <div class="cadastro-logo-container">
-            <div class="cadastro-logo-placeholder">Logo</div>
+            <img src="/oktano/public/assets/img/logo-texto__acima.svg" alt="Logo Oktano" class="cadastro-logo-container__imagem">
         </div>
 
         <header>

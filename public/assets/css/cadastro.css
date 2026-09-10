@@ -53,3 +53,11 @@
 .senha-forte .forca-senha-barra {
     background-color: var(--sucesso);
 }
+
+.cadastro-logo-container__imagem {
+    display: block;
+    margin: 0 auto;
+    width: 100%; 
+    max-width: 280px; 
+    height: auto;
+}
