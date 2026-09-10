@@ -1,6 +1,13 @@
 <?php
 
-$rota_cadastro = ($tipo_usuario === 'praticante') ? 'cadastro-praticante' : 'cadastro';
+if($tipo_usuario === 'praticante'){
+    $rota_cadastro = 'cadastro-praticante';
+} elseif($tipo_usuario === 'administrador'){
+    $rota_cadastro = 'cadastro-admin';
+} else{
+    $rota_cadastro = 'cadastro';
+}
+
 $tituloPagina = "Login " . ucfirst($tipo_usuario) . " - Oktano";
 $estilosCSS = ['login'];
 require_once __DIR__ . '/../components/head.php';

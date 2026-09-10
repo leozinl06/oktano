@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Personal.php';
 require_once __DIR__ . '/../models/Praticante.php';
+require_once __DIR__ . '/../models/Administrador.php';
 
 class LoginController{
 
@@ -13,7 +14,7 @@ class LoginController{
     public function acesso(){ //exibir tela do form de login
         $tipo = isset($_GET['tipo']) ? filter_var($_GET['tipo'], FILTER_SANITIZE_SPECIAL_CHARS) : ''; //pega o tipo de user na url
 
-        if($tipo === 'personal' || $tipo === 'praticante'){
+        if($tipo === 'personal' || $tipo === 'praticante' || $tipo === 'administrador'){
             $tipo_usuario = $tipo;
 
             $resultado = null;
@@ -50,6 +51,9 @@ class LoginController{
                 $usuario = $model->buscarPorEmail($email);
             } elseif($tipo_usuario === 'praticante'){
                 $model = new Praticante($db);
+                $usuario = $model->buscarPorEmail($email);
+            } elseif($tipo_usuario === 'administrador'){
+                $model = new Administrador($db);
                 $usuario = $model->buscarPorEmail($email);
             }
 
