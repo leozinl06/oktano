@@ -35,7 +35,7 @@ $linksAtuais = $menus[$tipoUsuario] ?? [];
         <nav class="nav-principal">
             <?php foreach($linksAtuais as $link): ?>
                 <?php 
-                    $classeAtivo = ($uriAtual === $link['url']) ? 'nav-principal__item--ativo' : '';
+                    $classeAtivo = ($uriAtual === $link['url'] || strpos($uriAtual, $link['url'] . '/') === 0) ? 'nav-principal__item--ativo' : '';
                 ?>
                 <a href="<?= htmlspecialchars($link['url']) ?>" class="nav-principal__item <?= $classeAtivo ?>">
                     <i class="ph <?= htmlspecialchars($link['icone']) ?> nav-principal__icone"></i>
