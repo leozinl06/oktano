@@ -16,6 +16,10 @@ $menus = [
         ['url' => $url . '/dashboard_praticante', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
         ['url' => $url . '/meus-treinos', 'icone' => 'ph-barbell', 'texto' => 'Meus Treinos'],
         ['url' => $url . '/progesso', 'icone' => 'ph-chart-line-up', 'texto' => 'Progresso']
+    ],
+    'administrador' => [
+        ['url' => $url . '/dashboard_administrador', 'icone' => 'ph-squares-four', 'texto' => 'Início'],
+        ['url' => $url . '/usuarios', 'icone' => 'ph-users', 'texto' => 'Usuários']
     ]
 ];
 

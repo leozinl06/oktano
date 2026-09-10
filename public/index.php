@@ -19,6 +19,7 @@ $router->adicionar('login/processar', 'LoginController', 'processar');
 
 $router->adicionar('dashboard_personal', 'DashboardPersonalController', 'index');
 $router->adicionar('dashboard_praticante', 'DashboardPraticanteController', 'index');
+$router->adicionar('dashboard_administrador', 'DashboardAdminController', 'index');
 
 $router->adicionar('alunos', 'AlunosController', 'index');
 
