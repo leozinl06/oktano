@@ -1,0 +1,204 @@
+/* ==========================================================================
+   Estrutura Principal (Reaproveitamento de Layout)
+   ========================================================================== */
+/* Como as páginas de treinos não importam o aluno.css, a base do layout foi incluída aqui */
+.container-principal {
+    width: 100%;
+    padding: 40px;
+    min-height: calc(100vh - 72px); /* 100vh menos a altura do header principal */
+    display: flex;
+    flex-direction: column;
+}
+
+.container-principal > section {
+    flex-grow: 1; /* Permite que o container de conteúdo expanda */
+    display: flex;
+    flex-direction: column;
+}
+
+.cabecalho-pagina {
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.cabecalho-pagina .titulo-principal, 
+.cabecalho-pagina .subtitulo {
+    text-align: left;
+}
+
+/* Estado vazio centralizado no meio da tela */
+.vazio-estado {
+    margin: auto; /* Centraliza horizontal e verticalmente dentro da section flex */
+    max-width: 450px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   Centralização (Página Nova Ficha)
+   ========================================================================== */
+.conteudo-centralizado {
+    /* Igualamos a largura máxima ao card de autenticação para padronizar */
+    max-width: 450px; 
+    width: 100%;
+    margin: 0 auto; 
+    
+    /* Altura da tela menos o header (72px) e os paddings (80px) */
+    min-height: calc(100vh - 152px); 
+    
+    /* Comportamento idêntico à classe .layout-auth */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; /* Esta é a propriedade que crava o card no centro horizontal */
+}
+
+/* Garante que o card ocupe 100% dos 450px definidos no pai, sem vazar */
+.conteudo-centralizado .card-superficie {
+    width: 100%;
+    margin: 0;
+}
+
+.cabecalho-pagina--central {
+    text-align: center;
+    margin-bottom: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cabecalho-pagina--central .titulo-principal,
+.cabecalho-pagina--central .subtitulo {
+    text-align: center;
+}
+
+/* ==========================================================================
+   Grid de Treinos (Página de Listagem)
+   ========================================================================== */
+.treino-grid {
+    display: grid;
+    /* Cards responsivos: mínimo de 320px, preenchendo o espaço disponível */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ==========================================================================
+   Card de Treino (Componente)
+   ========================================================================== */
+.treino-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    height: 100%;
+    border-left: 4px solid var(--borda-leve); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.treino-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px var(--cor-sombra), 0 4px 6px -2px var(--cor-sombra);
+}
+
+/* Cores das Bordas baseadas no Status e consumindo as variáveis customizadas */
+.treino-card--rascunho { 
+    border-left-color: var(--aviso); 
+}
+
+.treino-card--ativa { 
+    border-left-color: var(--sucesso); 
+}
+
+.treino-card--arquivada { 
+    border-left-color: var(--borda-desabilitado); 
+}
+
+/* Estrutura Interna do Card */
+.treino-card__cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.treino-card__titulo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--texto-primario);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.treino-card__corpo {
+    flex-grow: 1; /* Faz o corpo ocupar o espaço restante, empurrando as ações pro fundo */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.treino-card__aluno {
+    font-size: 0.875rem;
+    color: var(--texto-primario);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.treino-card__aluno i {
+    color: var(--cor-primaria);
+    font-size: 1.1rem;
+}
+
+.treino-card__descricao {
+    font-size: 0.875rem;
+    color: var(--texto-secundario);
+    margin: 0;
+    /* Trunca a descrição em exatamente 3 linhas com reticências (...) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.treino-card__acoes {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--borda-leve);
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   Badges de Status (Pílulas visuais)
+   ========================================================================== */
+.treino-card__status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.badge-rascunho {
+    background-color: var(--fundo-aviso);
+    color: var(--texto-aviso);
+    border: 1px solid var(--aviso);
+}
+
+.badge-ativa {
+    background-color: var(--fundo-sucesso);
+    color: var(--texto-sucesso);
+    border: 1px solid var(--sucesso);
+}
+
+.badge-arquivada {
+    background-color: var(--cor-indisponivel);
+    color: var(--texto-indisponivel);
+    border: 1px solid var(--borda-desabilitado);
+}

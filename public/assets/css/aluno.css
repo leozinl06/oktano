@@ -143,6 +143,8 @@
     margin-bottom: 24px;
     width: auto;
     padding: 12px 24px;
+    text-align: center; 
+    display: block;
 }
 
 .vazio-estado {

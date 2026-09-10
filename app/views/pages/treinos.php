@@ -1,0 +1,58 @@
+<?php
+$tituloPagina = "Treinos - Oktano";
+$estilosCSS = ['header', 'treino'];
+require_once __DIR__ . '/../components/head.php';
+?>
+<body>
+    <?php
+        $tipoUsuario = 'personal';
+        require_once __DIR__ . '/../components/header.php';
+    ?>
+    <main class="container-principal">
+        <header class="cabecalho-pagina">
+            <h1 class="titulo-principal">Gerenciamento de Treinos</h1>
+            <p class="subtitulo">Visão geral de todas as fichas e alunos vinculados</p>
+        </header>
+
+        <section>
+            <?php if(isset($resultado)): ?>
+                <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
+                    <?= $resultado['mensagem'] ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if(empty($fichas)): ?>
+                <div class="card-superficie vazio-estado">
+                    <p class="texto-secundario">Nenhuma ficha de treino cadastrada no sistema.</p>
+                </div>
+            <?php else: ?>
+                <div class="treino-grid"> <!-- Sugestão: aplique display: grid no CSS para listar em cartões -->
+                    <?php foreach ($fichas as $ficha): ?>
+                        <article class="card-superficie treino-card treino-card--<?= htmlspecialchars($ficha['status']) ?>">
+                            <div class="treino-card__cabecalho">
+                                <h3 class="treino-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></h3>
+                                <span class="treino-card__status badge-<?= htmlspecialchars($ficha['status']) ?>">
+                                    <?= ucfirst(htmlspecialchars($ficha['status'])) ?>
+                                </span>
+                            </div>
+                            <div class="treino-card__corpo">
+                                <p class="treino-card__aluno">
+                                    <i class="ph ph-user"></i> Aluno: <strong><?= htmlspecialchars($ficha['nome_aluno']) ?></strong>
+                                </p>
+                                <?php if(!empty($ficha['descricao'])): ?>
+                                    <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <div class="treino-card__acoes">
+                                <button class="btn btn-secundario-texto">
+                                    <i class="ph ph-pencil-simple"></i> Editar
+                                </button>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    </main>
+</body>
+</html>

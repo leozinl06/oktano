@@ -57,7 +57,9 @@ require_once __DIR__ . '/../components/head.php';
                                     <?php endforeach; ?>
                                 </div>
 
-                                <button class="btn btn-primario aluno-item__btn-criar">Criar nova ficha de treino</button>
+                                <a href="/oktano/public/treinos/nova-ficha?aluno_id=<?= htmlspecialchars($aluno['id']) ?>" class="btn btn-primario aluno-item__btn-criar">
+                                    Criar nova ficha de treino
+                                </a>
                                 
                             </div>
                         </div>

@@ -23,6 +23,10 @@ $router->adicionar('dashboard_administrador', 'DashboardAdminController', 'index
 
 $router->adicionar('alunos', 'AlunosController', 'index');
 
+$router->adicionar('treinos', 'TreinosController', 'index');
+$router->adicionar('treinos/nova-ficha', 'TreinosController', 'novaFicha');
+$router->adicionar('treinos/criar-ficha', 'TreinosController', 'criarFicha');
+
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 
 $router->despachar($url);
