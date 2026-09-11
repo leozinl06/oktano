@@ -426,7 +426,7 @@ a.btn {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal-overlay.is-hidden {
+.modal-overlay--oculto {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -444,7 +444,7 @@ a.btn {
     transition: transform 0.3s ease;
 }
 
-.modal-overlay.is-hidden .modal-box {
+.modal-overlay--oculto .modal-box {
     transform: translateY(20px);
 }
 

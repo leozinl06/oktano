@@ -1,4 +1,4 @@
-<div class="modal-overlay is-hidden" id="modal-exclusao-ficha">
+<div class="modal-overlay modal-overlay--oculto" id="modal-exclusao-ficha">
     <div class="modal-box card-superficie">
         <header class="modal-box__cabecalho">
             <div class="modal-box__icone-alerta">

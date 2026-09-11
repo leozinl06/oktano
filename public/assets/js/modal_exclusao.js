@@ -7,13 +7,13 @@ export function configurarModalExclusao(){
     if (!modalOverlay) return;
 
     const fecharModal = () => {
-        modalOverlay.classList.add('is-hidden');
+        modalOverlay.classList.add('modal-overlay--oculto');
         if(inputIdFicha) inputIdFicha.value = '';
     };
 
     const abrirModal = (id) => {
         if(inputIdFicha) inputIdFicha.value = id;
-        modalOverlay.classList.remove('is-hidden');
+        modalOverlay.classList.remove('modal-overlay--oculto');
     };
 
     botoesExcluir.forEach(botao => {
@@ -33,7 +33,7 @@ export function configurarModalExclusao(){
     });
 
     document.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && !modalOverlay.classList.contains('is-hidden')){
+        if(e.key === 'Escape' && !modalOverlay.classList.contains('modal-overlay--oculto')){
             fecharModal();
         }
     });

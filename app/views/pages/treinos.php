@@ -44,9 +44,10 @@ require_once __DIR__ . '/../components/head.php';
                                 <?php endif; ?>
                             </div>
                             <div class="treino-card__acoes">
-                                <a href="/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>" class="btn btn-secundario-texto" title="Editar ficha">
+                                <button type="button" onclick="window.location.href='/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>'" class="btn btn-secundario-texto">
                                     <i class="ph ph-pencil-simple"></i> Editar
-                                </a>
+                                </button>
+                                
                                 <button class="btn btn-secundario-texto">
                                     <i class="ph ph-archive"></i> Arquivar
                                 </button>
