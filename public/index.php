@@ -27,6 +27,9 @@ $router->adicionar('treinos', 'TreinosController', 'index');
 $router->adicionar('treinos/nova-ficha', 'TreinosController', 'novaFicha');
 $router->adicionar('treinos/criar-ficha', 'TreinosController', 'criarFicha');
 $router->adicionar('treinos/excluir-ficha', 'TreinosController', 'excluirFicha');
+$router->adicionar('treinos/editar-ficha', 'TreinosController', 'editarFicha');
+$router->adicionar('treinos/atualizar-ficha', 'TreinosController', 'atualizarFicha');
+
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 
