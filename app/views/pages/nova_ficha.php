@@ -22,7 +22,7 @@ require_once __DIR__ . '/../components/head.php';
                     </div>
                 <?php endif; ?>
 
-                <form action="/oktano/public/treinos/criar-ficha" method="POST">
+                <form action="/oktano/public/treinos/criar-ficha" method="POST" novalidate>
                     <input type="hidden" name="id_aluno" value="<?= htmlspecialchars($aluno['id']) ?>">
 
                     <div class="form-group">
@@ -30,6 +30,7 @@ require_once __DIR__ . '/../components/head.php';
                         <div class="input-wrapper">
                             <input type="text" id="titulo" name="titulo" class="form-input" placeholder="Ex: Hipertrofia A" required>
                         </div>
+                        <span class="form-error-msg"></span>
                     </div>
 
                     <div class="form-group">
@@ -47,6 +48,7 @@ require_once __DIR__ . '/../components/head.php';
                                 <option value="ativa">Ativa</option>
                             </select>
                         </div>
+                        <span class="form-error-msg"></span>
                     </div>
 
                     <button type="submit" class="btn btn-primario">Salvar Ficha</button>
@@ -55,5 +57,6 @@ require_once __DIR__ . '/../components/head.php';
             </section>
         </div>
     </main>
+    <script type="module" src="/oktano/public/assets/js/nova_ficha.js"></script>
 </body>
 </html>
