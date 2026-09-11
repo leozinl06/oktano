@@ -1,3 +1,7 @@
+import { configurarValidacaoGlobal } from "./validador.js";
+
+configurarValidacaoGlobal();
+
 const cabecalhosExpansivo = document.querySelectorAll('.aluno-item__cabecalho');
 
 const fecharTodos = () => {

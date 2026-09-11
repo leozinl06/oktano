@@ -64,5 +64,6 @@ require_once __DIR__ . '/../components/head.php';
         <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
     </main>
     <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
+    <script type="module" src="/oktano/public/assets/js/treinos.js"></script>
 </body>
 </html>

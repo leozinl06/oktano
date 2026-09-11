@@ -44,6 +44,9 @@ class AlunosController extends BaseController{
 
         $alunos = $alunos_limpo;
 
+        $resultado = $_SESSION['resultado'] ?? null;
+        unset($_SESSION['resultado']);
+
         require_once __DIR__ . '/../views/pages/alunos.php';
     }
 }

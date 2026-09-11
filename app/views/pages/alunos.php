@@ -25,6 +25,12 @@ require_once __DIR__ . '/../components/head.php';
             <?php endif; ?>
         </header>
 
+        <?php if(isset($resultado)): ?>
+            <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
+                <?= $resultado['mensagem'] ?>
+            </div>
+        <?php endif; ?>
+
         <section class="aluno-lista">
             <?php if (empty($alunos)): ?>
                 <div class="card-superficie vazio-estado">
