@@ -497,3 +497,23 @@ a.btn {
 .btn-primario--erro:hover {
     background-color: var(--cor-erro-hover, #b91c1c);
 }
+
+.cabecalho-pagina__conteudo-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.modal-box__icone-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--fundo-info);
+    color: var(--info);
+    font-size: 2.5rem;
+}

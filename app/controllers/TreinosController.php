@@ -123,6 +123,65 @@ class TreinosController extends BaseController{
         require_once __DIR__ . '/../views/pages/editar_ficha.php';
     }
 
+    public function arquivados(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        $id_personal = $_SESSION['usuario_id'] ?? null;
+        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
+            header('Location: /oktano/public/login/acesso?tipo=personal');
+            exit;
+        }
+
+        $database = new Database();
+        $db = $database->conectar();
+        $fichaTreinoModel = new FichaTreino($db);
+        
+        $fichas = $fichaTreinoModel->buscarFichasArquivadasPorPersonal($id_personal);
+        
+        $resultado = $_SESSION['resultado'] ?? null;
+        unset($_SESSION['resultado']);
+        
+        require_once __DIR__ . '/../views/pages/treinos_arquivados.php';
+    }
+
+    public function arquivarFicha(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
+
+            $database = new Database();
+            $db = $database->conectar();
+            $fichaTreinoModel = new FichaTreino($db);
+
+            if($fichaTreinoModel->alterarStatusArquivamento($id_ficha, 'arquivada')){
+                $this->redirecionarComResultado($url_retorno, true, 'Ficha arquivada com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao arquivar a ficha.');
+            }
+        }
+    }
+
+    public function desarquivarFicha(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/arquivados';
+
+            $database = new Database();
+            $db = $database->conectar();
+            $fichaTreinoModel = new FichaTreino($db);
+
+            if($fichaTreinoModel->alterarStatusArquivamento($id_ficha, 'rascunho')){
+                $this->redirecionarComResultado($url_retorno, true, 'Ficha restaurada para rascunho com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao restaurar a ficha.');
+            }
+        }
+    }
+
     public function excluirFicha(){
         if(session_status() === PHP_SESSION_NONE) session_start();
         

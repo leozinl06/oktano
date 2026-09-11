@@ -70,7 +70,7 @@ require_once __DIR__ . '/../components/head.php';
                                                     <i class="ph ph-pencil-simple"></i>
                                                 </button>
 
-                                                <button class="btn-icone" title="Arquivar ficha">
+                                                <button class="btn-icone js-btn-arquivar-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>" title="Arquivar ficha">
                                                     <i class="ph ph-archive"></i>
                                                 </button>
 
@@ -95,9 +95,11 @@ require_once __DIR__ . '/../components/head.php';
         </section>
 
         <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
+        <?php require_once __DIR__ . '/../components/modal_arquivar_ficha.php'; ?>
     </main>
 
     <script type="module" src="/oktano/public/assets/js/alunos.js"></script>
     <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
+    <script type="module" src="/oktano/public/assets/js/modal_arquivar.js"></script>
 </body>
 </html>

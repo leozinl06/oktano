@@ -1,5 +1,5 @@
 <?php
-$tituloPagina = "Treinos - Oktano";
+$tituloPagina = "Treinos Arquivados - Oktano";
 $estilosCSS = ['header', 'treino'];
 require_once __DIR__ . '/../components/head.php';
 ?>
@@ -12,11 +12,11 @@ require_once __DIR__ . '/../components/head.php';
         <header class="cabecalho-pagina">
             <div class="cabecalho-pagina__conteudo-topo">
                 <div>
-                    <h1 class="titulo-principal">Gerenciamento de Treinos</h1>
-                    <p class="subtitulo">Visão geral de todas as fichas ativas e alunos vinculados</p>
+                    <h1 class="titulo-principal">Treinos Arquivados</h1>
+                    <p class="subtitulo">Histórico de fichas desativadas do sistema</p>
                 </div>
-                <a href="/oktano/public/treinos/arquivados" class="btn btn-secundario-texto">
-                    <i class="ph ph-archive"></i> Fichas Arquivadas
+                <a href="/oktano/public/treinos" class="btn btn-secundario-texto">
+                    <i class="ph ph-arrow-left"></i> Voltar aos Ativos
                 </a>
             </div>
         </header>
@@ -30,18 +30,17 @@ require_once __DIR__ . '/../components/head.php';
 
             <?php if(empty($fichas)): ?>
                 <div class="card-superficie vazio-estado">
-                    <p class="texto-secundario">Nenhuma ficha de treino cadastrada no sistema.</p>
+                    <p class="texto-secundario">Nenhuma ficha de treino encontra-se arquivada.</p>
                 </div>
             <?php else: ?>
-                <div class="treino-grid"> 
+                <div class="treino-grid">
                     <?php foreach ($fichas as $ficha): ?>
-                        <article class="card-superficie treino-card treino-card--<?= htmlspecialchars($ficha['status']) ?>">
+                        <article class="card-superficie treino-card treino-card--arquivada">
                             <div class="treino-card__cabecalho">
                                 <h3 class="treino-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></h3>
-                                <span class="treino-card__status badge-<?= htmlspecialchars($ficha['status']) ?>">
-                                    <?= ucfirst(htmlspecialchars($ficha['status'])) ?>
-                                </span>
+                                <span class="treino-card__status badge-arquivada">Arquivada</span>
                             </div>
+                            
                             <div class="treino-card__corpo">
                                 <p class="treino-card__aluno">
                                     <i class="ph ph-user"></i> Aluno: <strong><?= htmlspecialchars($ficha['nome_aluno']) ?></strong>
@@ -50,14 +49,14 @@ require_once __DIR__ . '/../components/head.php';
                                     <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
                                 <?php endif; ?>
                             </div>
+                            
                             <div class="treino-card__acoes">
-                                <button type="button" onclick="window.location.href='/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>'" class="btn btn-secundario-texto">
-                                    <i class="ph ph-pencil-simple"></i> Editar
-                                </button>
-                                
-                                <button class="btn btn-secundario-texto js-btn-arquivar-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
-                                    <i class="ph ph-archive"></i> Arquivar
-                                </button>
+                                <form action="/oktano/public/treinos/desarquivar-ficha" method="POST" style="display:inline;">
+                                    <input type="hidden" name="id_ficha" value="<?= htmlspecialchars($ficha['id']) ?>">
+                                    <button type="submit" class="btn btn-secundario-texto">
+                                        <i class="ph ph-arrow-u-up-left"></i> Restaurar
+                                    </button>
+                                </form>
                                 
                                 <button class="btn btn-secundario-texto btn-secundario-texto--erro js-btn-excluir-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
                                     <i class="ph ph-trash"></i> Excluir
@@ -70,10 +69,8 @@ require_once __DIR__ . '/../components/head.php';
         </section>
 
         <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
-        <?php require_once __DIR__ . '/../components/modal_arquivar_ficha.php'; ?>
     </main>
-    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
-    <script type="module" src="/oktano/public/assets/js/modal_arquivar.js"></script>
     <script type="module" src="/oktano/public/assets/js/treinos.js"></script>
+    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
 </body>
 </html>
