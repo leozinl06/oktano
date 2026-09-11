@@ -55,6 +55,36 @@ class FichaTreino{
 
     }
 
+    public function buscarPorId($id_ficha){
+        $query = "SELECT * FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id_ficha, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
+
+    public function atualizar($id_ficha, $titulo, $descricao, $status){
+        $query = "UPDATE " . $this->tabela . " SET titulo = :titulo, descricao = :descricao, status = :status WHERE id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+     
+        $titulo = htmlspecialchars(strip_tags($titulo));
+        $descricao = htmlspecialchars(strip_tags($descricao));
+        $status = htmlspecialchars(strip_tags($status));
+        
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':id', $id_ficha, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+
     public function excluir($id_ficha){
         $query = "DELETE FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
