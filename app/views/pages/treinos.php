@@ -51,7 +51,7 @@ require_once __DIR__ . '/../components/head.php';
                                     <i class="ph ph-archive"></i> Arquivar
                                 </button>
                                 
-                                <button class="btn btn-secundario-texto btn-secundario-texto--erro">
+                                <button class="btn btn-secundario-texto btn-secundario-texto--erro js-btn-excluir-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
                                     <i class="ph ph-trash"></i> Excluir
                                 </button>
                             </div>
@@ -60,6 +60,9 @@ require_once __DIR__ . '/../components/head.php';
                 </div>
             <?php endif; ?>
         </section>
+
+        <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
     </main>
+    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
 </body>
 </html>

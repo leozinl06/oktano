@@ -67,7 +67,7 @@ require_once __DIR__ . '/../components/head.php';
                                                     <i class="ph ph-archive"></i>
                                                 </button>
 
-                                                <button class="btn-icone btn-icone--erro" title="Excluir ficha">
+                                                <button class="btn-icone btn-icone--erro js-btn-excluir-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>" title="Excluir ficha">
                                                     <i class="ph ph-trash"></i>
                                                 </button>
                                             </div>
@@ -86,8 +86,11 @@ require_once __DIR__ . '/../components/head.php';
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
+
+        <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
     </main>
 
     <script type="module" src="/oktano/public/assets/js/alunos.js"></script>
+    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
 </body>
 </html>

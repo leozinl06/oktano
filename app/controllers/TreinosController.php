@@ -84,4 +84,34 @@ class TreinosController extends BaseController{
             }
         }
     }
+
+    public function excluirFicha(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        $id_personal = $_SESSION['usuario_id'] ?? null;
+        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
+            header('Location: /oktano/public/login/acesso?tipo=personal');
+            exit;
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
+
+            if(empty($id_ficha)){
+                $this->redirecionarComResultado($url_retorno, false, 'ID da ficha não fornecido para exclusão.');
+            }
+
+            $database = new Database();
+            $db = $database->conectar();
+            $fichaTreinoModel = new FichaTreino($db);
+
+            if($fichaTreinoModel->excluir($id_ficha)){
+                $this->redirecionarComResultado($url_retorno, true, 'Ficha excluída permanentemente com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir a ficha. Tente novamente.');
+            }
+        }
+    }
 }

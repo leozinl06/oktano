@@ -406,3 +406,94 @@ a.btn {
     justify-content: center;
     color: var(--texto-primario);
 }
+
+/* =========================================
+   Componente: Modal de Exclusão
+========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--cor-fundo-overlay, rgba(0, 0, 0, 0.6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center; /* Centraliza todo o texto do modal */
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.is-hidden .modal-box {
+    transform: translateY(20px);
+}
+
+.modal-box__cabecalho {
+    display: flex;
+    flex-direction: column; /* Coloca o ícone acima do título */
+    align-items: center;
+    gap: 16px;
+}
+
+.modal-box__icone-alerta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;      /* Ícone maior */
+    height: 64px;     /* Ícone maior */
+    border-radius: 50%;
+    background-color: var(--cor-erro-fundo, #fee2e2);
+    color: var(--cor-erro, #dc2626);
+    font-size: 2.5rem; /* Aumentado a fonte do ícone phosphor */
+}
+
+.modal-box__titulo {
+    font-size: 1.25rem;
+    color: var(--cor-texto-principal);
+    font-weight: 600;
+}
+
+.modal-box__corpo {
+    margin-bottom: 8px; /* Dá um respiro antes dos botões */
+}
+
+.modal-box__acoes {
+    display: flex;
+    flex-direction: column; /* Coloca botão confirmar em cima e cancelar embaixo */
+    gap: 12px;
+    width: 100%;
+}
+
+.modal-box__btn {
+    width: 100%;
+    justify-content: center; /* Centraliza o texto e ícones dentro dos botões */
+}
+
+.btn-primario--erro {
+    background-color: var(--cor-erro, #dc2626);
+    color: var(--cor-branco, #ffffff);
+}
+
+.btn-primario--erro:hover {
+    background-color: var(--cor-erro-hover, #b91c1c);
+}

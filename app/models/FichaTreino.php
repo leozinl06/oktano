@@ -54,4 +54,12 @@ class FichaTreino{
         return []; //se não tiver ficha alguma
 
     }
+
+    public function excluir($id_ficha){
+        $query = "DELETE FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(':id', $id_ficha, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
