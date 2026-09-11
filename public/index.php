@@ -33,6 +33,8 @@ $router->adicionar('treinos/arquivados', 'TreinosController', 'arquivados');
 $router->adicionar('treinos/arquivar-ficha', 'TreinosController', 'arquivarFicha');
 $router->adicionar('treinos/desarquivar-ficha', 'TreinosController', 'desarquivarFicha');
 
+$router->adicionar('meus-treinos', 'MeusTreinosController', 'index');
+
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 
