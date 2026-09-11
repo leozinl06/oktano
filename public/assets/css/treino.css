@@ -216,6 +216,12 @@
     border-radius: 8px;
 }
 
+.treino-card__incluir-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.2rem; 
+}
+
 @media (max-width: 600px) {
     .container-principal {
         padding: 24px 16px;

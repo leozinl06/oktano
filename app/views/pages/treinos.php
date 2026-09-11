@@ -49,6 +49,13 @@ require_once __DIR__ . '/../components/head.php';
                                 <?php if(!empty($ficha['descricao'])): ?>
                                     <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
                                 <?php endif; ?>
+
+                                <div class="treino-card__incluir-wrapper">
+                                    <button type="button" class="btn btn-primario treino-card__btn-incluir" data-id="<?= htmlspecialchars($ficha['id']) ?>">
+                                        Incluir treinos
+                                    </button>
+                                </div>
+
                             </div>
                             <div class="treino-card__acoes">
                                 <button type="button" onclick="window.location.href='/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>'" class="btn btn-secundario-texto">
