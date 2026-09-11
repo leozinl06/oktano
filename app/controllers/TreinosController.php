@@ -152,4 +152,33 @@ class TreinosController extends BaseController{
             }
         }
     }
+
+    public function atualizarFicha(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+            $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
+            
+            $url_erro = '/oktano/public/treinos/editar-ficha?id=' . $id_ficha;
+
+            if(empty($titulo) || empty($status) || empty($id_ficha)){
+                $this->redirecionarComResultado($url_erro, false, 'Título e status são obrigatórios.');
+            }
+
+            $database = new Database();
+            $db = $database->conectar();
+            $fichaTreinoModel = new FichaTreino($db);
+
+            if($fichaTreinoModel->atualizar($id_ficha, $titulo, $descricao, $status)){
+                $this->redirecionarComResultado($url_retorno, true, 'Ficha atualizada com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_erro, false, 'Erro ao atualizar a ficha.');
+            }
+        }
+    }
+    
 }
