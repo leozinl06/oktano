@@ -26,7 +26,7 @@ require_once __DIR__ . '/../components/head.php';
                     <p class="texto-secundario">Nenhuma ficha de treino cadastrada no sistema.</p>
                 </div>
             <?php else: ?>
-                <div class="treino-grid"> <!-- Sugestão: aplique display: grid no CSS para listar em cartões -->
+                <div class="treino-grid"> 
                     <?php foreach ($fichas as $ficha): ?>
                         <article class="card-superficie treino-card treino-card--<?= htmlspecialchars($ficha['status']) ?>">
                             <div class="treino-card__cabecalho">
@@ -44,9 +44,9 @@ require_once __DIR__ . '/../components/head.php';
                                 <?php endif; ?>
                             </div>
                             <div class="treino-card__acoes">
-                                <button class="btn btn-secundario-texto">
+                                <a href="/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>" class="btn btn-secundario-texto" title="Editar ficha">
                                     <i class="ph ph-pencil-simple"></i> Editar
-                                </button>
+                                </a>
                                 <button class="btn btn-secundario-texto">
                                     <i class="ph ph-archive"></i> Arquivar
                                 </button>

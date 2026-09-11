@@ -66,9 +66,10 @@ require_once __DIR__ . '/../components/head.php';
                                                     <i class="ph ph-eye"></i>
                                                 </button>
                                                 
-                                                <button class="btn-icone" title="Editar ficha">
-                                                    <i class="ph ph-pencil-simple"></i>
-                                                </button>
+                                                <a href="/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>" class="btn-icone" title="Editar ficha">
+                                                    <i class="ph ph-pencil-simple"></i> Editar
+                                                </a>
+
                                                 <button class="btn-icone" title="Arquivar ficha">
                                                     <i class="ph ph-archive"></i>
                                                 </button>
