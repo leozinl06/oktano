@@ -29,8 +29,8 @@
     flex: 1;
     height: 100%;
     background-color: var(--borda-leve);
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .forca-senha-texto {

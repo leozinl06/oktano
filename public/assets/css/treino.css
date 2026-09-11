@@ -91,8 +91,9 @@
     justify-content: space-between;
     padding: 1.5rem;
     height: 100%;
-    border-left: 4px solid var(--borda-leve); 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid var(--borda-leve);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .treino-card:hover {
@@ -181,11 +182,12 @@
 .treino-card__status {
     font-size: 0.7rem;
     font-weight: 700;
-    padding: 0.35rem 0.75rem;
+    padding: 0.35rem 0.85rem;
     border-radius: 9999px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     white-space: nowrap;
+    line-height: 1.2;
 }
 
 .badge-rascunho {
@@ -202,13 +204,41 @@
 
 .badge-arquivada {
     background-color: var(--cor-indisponivel);
-    color: var(--texto-indisponivel);
+    color: var(--cor-texto-indisponivel);
     border: 1px solid var(--borda-desabilitado);
 }
 
 .treino-card__acoes .btn-secundario-texto {
     margin-top: 0;
-    padding: 6px 12px; /* Padding mais compacto */
-    width: auto; /* Tira o comportamento de 100% de largura da classe base .btn */
-    font-size: 13px; /* Reduz levemente a fonte para os 3 caberem perfeitamente */
+    padding: 7px 14px;
+    width: auto;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .container-principal {
+        padding: 24px 16px;
+    }
+
+    .cabecalho-pagina__conteudo-topo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .cabecalho-pagina__conteudo-topo .btn-secundario {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .treino-card__acoes {
+        justify-content: space-between;
+    }
+
+    .treino-card__acoes .btn-secundario-texto {
+        flex: 1;
+    }
 }

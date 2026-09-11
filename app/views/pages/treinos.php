@@ -11,11 +11,11 @@ require_once __DIR__ . '/../components/head.php';
     <main class="container-principal">
         <header class="cabecalho-pagina">
             <div class="cabecalho-pagina__conteudo-topo">
-                <div>
+                <div class="cabecalho-pagina__titulos">
                     <h1 class="titulo-principal">Gerenciamento de Treinos</h1>
                     <p class="subtitulo">Visão geral de todas as fichas ativas e alunos vinculados</p>
                 </div>
-                <a href="/oktano/public/treinos/arquivados" class="btn btn-secundario-texto">
+                <a href="/oktano/public/treinos/arquivados" class="btn btn-secundario">
                     <i class="ph ph-archive"></i> Fichas Arquivadas
                 </a>
             </div>

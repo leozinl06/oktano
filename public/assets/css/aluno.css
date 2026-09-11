@@ -24,8 +24,13 @@
 .aluno-item {
     background-color: var(--fundo-superficie);
     border: 1px solid var(--borda-leve);
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.aluno-item:hover {
+    border-color: var(--borda-hover);
 }
 
 .aluno-item__cabecalho {
@@ -120,17 +125,18 @@
     background-color: var(--cor-indisponivel);
     border-color: var(--borda-desabilitado);
     border-left-color: var(--borda-desabilitado);
-    color: var(--texto-indisponivel);
+    color: var(--cor-texto-indisponivel);
 }
 
 /* Oculta ou escurece o ícone de olho em fichas arquivadas */
 .ficha-card--arquivada .ph-eye {
-    color: var(--texto-indisponivel);
+    color: var(--cor-texto-indisponivel);
 }
 
 .ficha-card__titulo {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -153,12 +159,13 @@
 }
 
 .aluno-item__btn-criar {
-    margin: 0 auto 24px auto; /* Centraliza o botão com margin horizontal auto */
-    width: fit-content; /* Sobrescreve o width: 100% da classe base .btn */
-    min-width: 250px; /* Dá um tamanho mínimo para não ficar estreito demais */
+    margin: 8px auto 24px auto;
+    width: fit-content;
+    min-width: 250px;
     padding: 12px 24px;
     text-align: center;
-    display: block; /* Necessário para a margin auto funcionar em tags <a> */
+    display: block;
+    border-radius: 10px;
 }
 
 .vazio-estado {
@@ -188,4 +195,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+@media (max-width: 600px) {
+    .container-principal {
+        padding: 24px 16px;
+    }
+
+    .cabecalho-pagina__conteudo-topo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .cabecalho-pagina__conteudo-topo .btn-secundario {
+        width: 100%;
+        justify-content: center;
+    }
 }

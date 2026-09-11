@@ -123,15 +123,18 @@ body {
 }
 
 .titulo-principal {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
     color: var(--texto-primario);
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .subtitulo {
     font-size: 14px;
+    line-height: 1.5;
     color: var(--texto-secundario);
     text-align: center;
     margin-bottom: 32px;
@@ -147,19 +150,22 @@ body {
 .form-label {
     font-size: 13px;
     font-weight: 600;
+    line-height: 1.4;
     color: var(--texto-primario);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
 }
 
 .form-input {
     width: 100%;
-    padding: 12px 14px;
+    padding: 13px 16px;
     border: 1px solid var(--borda-campo);
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 14px;
+    line-height: 1.4;
     color: var(--texto-primario);
     background-color: var(--fundo-superficie);
-    transition: all 0.2s ease-in-out;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
 .form-input::placeholder {
@@ -173,7 +179,7 @@ body {
 .form-input:focus {
     outline: none;
     border-color: var(--anel-foco);
-    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 0 3px var(--cor-selecionado);
     /*sombra baseada na cor primaria */
 }
 
@@ -184,13 +190,17 @@ body {
 
 .form-error-msg {
     display: none;
+    align-items: center;
+    gap: 4px;
     color: var(--erro);
     font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
     margin-top: 6px;
 }
 
 .form-group:has(.form-input.is-invalid) .form-error-msg {
-    display: block;
+    display: flex;
 }
 
 .input-wrapper {
@@ -223,13 +233,18 @@ body {
 
 .btn {
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 15px;
     font-weight: 600;
+    letter-spacing: 0.01em;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
 
 a.btn {
@@ -241,8 +256,10 @@ a.btn {
 
 .btn-primario {
     background-color: var(--cor-primaria);
-    color: var(--texto-sobre-primaria);
+    color: var(--cor-secundaria);
     margin-top: 8px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
 }
 
 .btn-primario:hover {
@@ -300,16 +317,21 @@ a.btn {
 }
 
 .alerta {
-    padding: 16px;
-    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 10px;
     margin-bottom: 24px;
     font-size: 14px;
     font-weight: 600;
+    line-height: 1.4;
     text-align: center;
     width: 100%;
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
 .alerta-sucesso {
@@ -339,11 +361,11 @@ a.btn {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 6px 2px;
     text-decoration: none;
     color: var(--texto-secundario);
     transition: color 0.3s ease;
     position: relative;
-    padding-bottom: 4px;
 }
 
 .nav-principal__item::after{
@@ -416,7 +438,7 @@ a.btn {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: var(--cor-fundo-overlay, rgba(0, 0, 0, 0.6));
+    background-color: var(--cor-sobreposicao);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -434,12 +456,12 @@ a.btn {
 
 .modal-box {
     width: 100%;
-    max-width: 400px;
-    padding: 32px 24px;
+    max-width: 420px;
+    padding: 32px 28px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    text-align: center; /* Centraliza todo o texto do modal */
+    text-align: center;
     transform: translateY(0);
     transition: transform 0.3s ease;
 }
@@ -450,7 +472,7 @@ a.btn {
 
 .modal-box__cabecalho {
     display: flex;
-    flex-direction: column; /* Coloca o ícone acima do título */
+    flex-direction: column; 
     align-items: center;
     gap: 16px;
 }
@@ -459,17 +481,17 @@ a.btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;      /* Ícone maior */
-    height: 64px;     /* Ícone maior */
+    width: 64px;      
+    height: 64px;     
     border-radius: 50%;
-    background-color: var(--cor-erro-fundo, #fee2e2);
-    color: var(--cor-erro, #dc2626);
-    font-size: 2.5rem; /* Aumentado a fonte do ícone phosphor */
+    background-color: var(--fundo-erro);
+    color: var(--erro);
+    font-size: 2.5rem; 
 }
 
 .modal-box__titulo {
     font-size: 1.25rem;
-    color: var(--cor-texto-principal);
+    color: var(--texto-primario);
     font-weight: 600;
 }
 
@@ -490,20 +512,23 @@ a.btn {
 }
 
 .btn-primario--erro {
-    background-color: var(--cor-erro, #dc2626);
-    color: var(--cor-branco, #ffffff);
+    background-color: var(--erro);
+    color: var(--texto-sobre-primaria);
 }
 
 .btn-primario--erro:hover {
-    background-color: var(--cor-erro-hover, #b91c1c);
+    background-color: var(--erro-hover);
 }
 
 .cabecalho-pagina__conteudo-topo {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
+    align-items: center; /* Mantém os itens alinhados verticalmente no centro */
+    gap: 32px;
+}
+
+.cabecalho-pagina__titulos {
+    flex: 1; /* Permite que os títulos cresçam e ocupem o espaço livre */
 }
 
 .modal-box__icone-info {
@@ -516,4 +541,54 @@ a.btn {
     background-color: var(--fundo-info);
     color: var(--info);
     font-size: 2.5rem;
+}
+
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--texto-primario);
+    border: 1px solid var(--borda-leve);
+    border-radius: 8px; /* Ajuste o raio da borda se necessário */
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap; /* Garante que o botão não quebre o texto em duas linhas */
+    flex: 0 0 auto;
+    width: max-content;
+}
+
+.btn-secundario:hover {
+    background-color: var(--borda-hover);
+    border-color: var(--texto-primario);
+}
+
+.btn:focus-visible,
+.btn-icone:focus-visible,
+.link-simples:focus-visible,
+.nav-principal__item:focus-visible,
+.selecao-card:focus-visible,
+.aluno-item__cabecalho:focus-visible {
+    outline: 2px solid var(--anel-foco);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+    .card-superficie {
+        padding: 28px 20px;
+        border-radius: 10px;
+    }
+
+    .titulo-principal {
+        font-size: 22px;
+    }
+
+    .modal-box {
+        padding: 24px 20px;
+    }
 }
