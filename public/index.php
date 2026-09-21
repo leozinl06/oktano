@@ -17,6 +17,8 @@ $router->adicionar('login', 'LoginController', 'index');
 $router->adicionar('login/acesso', 'LoginController', 'acesso'); //rotas login
 $router->adicionar('login/processar', 'LoginController', 'processar');
 
+$router->adicionar('logout', 'LogoutController', 'index');
+
 $router->adicionar('dashboard_personal', 'DashboardPersonalController', 'index');
 $router->adicionar('dashboard_praticante', 'DashboardPraticanteController', 'index');
 $router->adicionar('dashboard_administrador', 'DashboardAdminController', 'index');

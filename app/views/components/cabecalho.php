@@ -55,16 +55,21 @@ $links = $linksPorTipo[$tipoUsuario] ?? [];
 
             <?php if($tipoUsuario): ?>
             <div class="cabecalho__usuario">
-                <i class="ph ph-user-circle" style="font-size:1.3rem;"></i>
+                <i class="ph ph-user-circle cabecalho__icone-usuario"></i>
                 <span><?= htmlspecialchars($nomeUsuario) ?></span>
-                <a href="<?= BASE_URL ?>/logout" class="btn--icone" title="Sair" style="margin-left:auto;">
+                <button type="button" class="btn--icone cabecalho__acao-sair js-btn-abrir-sair" title="Sair">
                     <i class="ph ph-sign-out"></i>
-                </a>
+                </button>
             </div>
             <?php endif; ?>
         </nav>
     </div>
 </header>
+
+<?php if($tipoUsuario): ?>
+    <?php require __DIR__ . '/modal_sair.php'; ?>
+    <script type="module" src="<?= BASE_URL ?>/assets/js/modal_sair.js"></script>
+<?php endif; ?>
 
 <script>
 (() => {
