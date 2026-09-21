@@ -1,0 +1,239 @@
+/* =========================================================
+   OKTANO — LAYOUTS DE PÁGINA
+   ========================================================= */
+
+main{ display: block; }
+
+/* ---------- Layout de autenticação (login/cadastro/seleção) ---------- */
+.tela-auth{
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1025px){
+  .tela-auth{ grid-template-columns: 1fr 1fr; }
+}
+
+.tela-auth__lateral{
+  display: none;
+  position: relative;
+  background: radial-gradient(120% 120% at 20% 20%, #201a4a 0%, #12141a 60%);
+  padding: var(--espaco-7);
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+@media (min-width: 1025px){
+  .tela-auth__lateral{ display: flex; }
+}
+
+.tela-auth__lateral h2{ max-width: 22ch; }
+.tela-auth__lateral p{ max-width: 34ch; margin-top: var(--espaco-3); }
+
+.tela-auth__conteudo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espaco-5);
+  min-height: 100vh;
+}
+
+.tela-auth__caixa{
+  width: 100%;
+  max-width: 420px;
+  padding-block: var(--espaco-6);
+}
+
+.tela-auth__logo{
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  margin-bottom: var(--espaco-6);
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.tela-auth__logo img{ height: 30px; }
+
+.tela-auth__cabecalho{ margin-bottom: var(--espaco-5); }
+.tela-auth__cabecalho p{ margin-top: var(--espaco-2); }
+
+.tela-auth__rodape{
+  margin-top: var(--espaco-5);
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+}
+.tela-auth__rodape a{ color: var(--cor-primaria-hover); font-weight: 600; }
+.tela-auth__rodape a:hover{ text-decoration: underline; }
+
+.linha-senha{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+}
+.linha-senha a{ font-size: 0.82rem; color: var(--cor-texto-secundario); }
+.linha-senha a:hover{ color: var(--cor-primaria-hover); }
+
+/* ---------- Cards de seleção de acesso ---------- */
+.grade-selecao{
+  display: grid;
+  gap: var(--espaco-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 641px){
+  .grade-selecao{ grid-template-columns: repeat(3, 1fr); }
+}
+
+.cartao-selecao{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espaco-3);
+  padding: var(--espaco-5);
+  background-color: var(--cor-superficie);
+  border: 1.5px solid var(--cor-borda);
+  border-radius: var(--raio-lg);
+  text-align: left;
+  transition: border-color var(--transicao-rapida), background-color var(--transicao-rapida), transform var(--transicao-rapida);
+}
+.cartao-selecao:hover{
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-superficie-alta);
+  transform: translateY(-2px);
+}
+.cartao-selecao__icone{
+  width: 48px; height: 48px;
+  border-radius: var(--raio-md);
+  background-color: var(--cor-superficie-alta);
+  color: var(--cor-primaria-hover);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+.cartao-selecao__titulo{ font-weight: 600; color: var(--cor-texto); }
+.cartao-selecao__desc{ font-size: 0.86rem; color: var(--cor-texto-terciario); }
+
+/* ---------- Corpo de páginas internas (pós-login) ---------- */
+.pagina{
+  min-height: calc(100vh - var(--altura-cabecalho));
+  padding-block: var(--espaco-6);
+}
+
+.pagina__cabecalho{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  margin-bottom: var(--espaco-5);
+}
+.pagina__cabecalho p{ margin-top: 4px; }
+
+.pagina__acoes{
+  display: flex;
+  gap: var(--espaco-2);
+  flex-wrap: wrap;
+}
+
+/* ---------- Dashboard: grade de cartões de atalho ---------- */
+.saudacao{ margin-bottom: var(--espaco-6); }
+.saudacao p{ margin-top: 4px; }
+
+.grade-dashboard{
+  display: grid;
+  gap: var(--espaco-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 641px){
+  .grade-dashboard{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1025px){
+  .grade-dashboard{ grid-template-columns: repeat(3, 1fr); }
+}
+
+.cartao-atalho{
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+.cartao-atalho__topo{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cartao-atalho__icone{
+  width: 44px; height: 44px;
+  border-radius: var(--raio-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  background-color: var(--cor-superficie-alta);
+  color: var(--cor-primaria-hover);
+}
+.cartao-atalho__numero{
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.cartao-atalho__link{
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--cor-primaria-hover);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- Grade de fichas de treino ---------- */
+.grade-fichas{
+  display: grid;
+  gap: var(--espaco-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 641px){
+  .grade-fichas{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1025px){
+  .grade-fichas{ grid-template-columns: repeat(3, 1fr); }
+}
+
+.cartao-ficha{
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+.cartao-ficha__topo{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+}
+.cartao-ficha__desc{
+  font-size: 0.88rem;
+  flex-grow: 1;
+}
+.cartao-ficha__acoes{
+  display: flex;
+  gap: var(--espaco-2);
+  padding-top: var(--espaco-2);
+  border-top: 1px solid var(--cor-borda);
+}
+
+/* ---------- Formulário em card (nova/editar ficha) ---------- */
+.card-formulario{
+  max-width: 560px;
+}
+
+/* ---------- Rodapé de formulário genérico ---------- */
+.form-rodape{
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-5);
+}
+@media (max-width: 480px){
+  .form-rodape{ flex-direction: column-reverse; }
+  .form-rodape .btn{ width: 100%; }
+}

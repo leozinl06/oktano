@@ -1,0 +1,91 @@
+/* =========================================================
+   OKTANO — DESIGN TOKENS
+   Paleta escura, inspirada em apps de treino (ref. MFIT Personal):
+   fundo grafite/azulado, superfícies elevadas, acento índigo
+   elétrico para ações primárias e foco, e um conjunto semântico
+   de cores de feedback (sucesso/erro/aviso/info).
+   ========================================================= */
+
+:root{
+  /* --- Cor: base --- */
+  --cor-fundo: #12141a;
+  --cor-superficie: #1b1e27;
+  --cor-superficie-alta: #242838;
+  --cor-superficie-hover: #2a2f42;
+
+  /* --- Cor: ação primária/secundária --- */
+  --cor-primaria: #6c5ce7;
+  --cor-primaria-hover: #7d6ff0;
+  --cor-primaria-texto: #ffffff;
+  --cor-secundaria: #2a2e3a;
+  --cor-secundaria-hover: #343a4a;
+  --cor-secundaria-texto: #e7e9f0;
+
+  /* --- Cor: texto --- */
+  --cor-texto: #f1f2f6;
+  --cor-texto-secundario: #a6acbe;
+  --cor-texto-terciario: #6d7387;
+
+  /* --- Cor: bordas e divisores --- */
+  --cor-borda: #2c303e;
+  --cor-borda-forte: #3a4054;
+
+  /* --- Cor: estados indisponíveis/desabilitados --- */
+  --cor-indisponivel: #1c1f28;
+  --cor-texto-indisponivel: #565c70;
+  --borda-desabilitado: #262a35;
+
+  /* --- Cor: campos de formulário --- */
+  --borda-campo: #333849;
+  --borda-hover: #4a5064;
+  --anel-foco: #6c5ce7;
+  --anel-foco-sombra: rgba(108, 92, 231, 0.35);
+
+  /* --- Cor: feedback semântico --- */
+  --sucesso: #3ddc97;
+  --sucesso-fundo: rgba(61, 220, 151, 0.12);
+  --erro: #ff5d5d;
+  --erro-hover: #e64545;
+  --fundo-erro: rgba(255, 93, 93, 0.12);
+  --texto-erro: #ff8f8f;
+  --aviso: #ffb443;
+  --aviso-fundo: rgba(255, 180, 67, 0.12);
+  --info: #4ea1f7;
+  --info-fundo: rgba(78, 161, 247, 0.12);
+
+  /* --- Cor: sobreposições --- */
+  --cor-sobreposicao: rgba(8, 9, 13, 0.72);
+  --cor-sombra: rgba(0, 0, 0, 0.45);
+
+  /* --- Tipografia --- */
+  --fonte-titulo: "Sora", "Segoe UI", sans-serif;
+  --fonte-corpo: "Inter", "Segoe UI", sans-serif;
+
+  /* --- Raio de borda --- */
+  --raio-sm: 8px;
+  --raio-md: 12px;
+  --raio-lg: 18px;
+  --raio-pill: 999px;
+
+  /* --- Espaçamento --- */
+  --espaco-1: 4px;
+  --espaco-2: 8px;
+  --espaco-3: 12px;
+  --espaco-4: 16px;
+  --espaco-5: 24px;
+  --espaco-6: 32px;
+  --espaco-7: 48px;
+
+  /* --- Sombras --- */
+  --sombra-sm: 0 1px 2px var(--cor-sombra);
+  --sombra-md: 0 8px 24px -8px var(--cor-sombra);
+  --sombra-lg: 0 20px 48px -12px var(--cor-sombra);
+
+  /* --- Transições --- */
+  --transicao-rapida: 200ms ease-in-out;
+  --transicao-padrao: 250ms ease-in-out;
+
+  /* --- Layout --- */
+  --largura-conteudo: 1120px;
+  --altura-cabecalho: 68px;
+}

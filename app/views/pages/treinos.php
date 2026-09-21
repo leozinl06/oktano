@@ -1,86 +1,102 @@
 <?php
-$tituloPagina = "Treinos - Oktano";
-$estilosCSS = ['header', 'treino'];
-require_once __DIR__ . '/../components/head.php';
+$tituloPagina = 'Treinos';
+$paginaAtiva = 'treinos';
+$urlAtual = $_SERVER['REQUEST_URI'] ?? (BASE_URL . '/treinos');
+$urlRetorno = $urlAtual;
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<?php require __DIR__ . '/../components/head.php'; ?>
+</head>
 <body>
-    <?php
-        $tipoUsuario = 'personal';
-        require_once __DIR__ . '/../components/header.php';
-    ?>
-    <main class="container-principal">
-        <header class="cabecalho-pagina">
-            <div class="cabecalho-pagina__conteudo-topo">
-                <div class="cabecalho-pagina__titulos">
-                    <h1 class="titulo-principal">Gerenciamento de Treinos</h1>
-                    <p class="subtitulo">Visão geral de todas as fichas ativas e alunos vinculados</p>
-                </div>
-                <a href="/oktano/public/treinos/arquivados" class="btn btn-secundario">
-                    <i class="ph ph-archive"></i> Fichas Arquivadas
+
+<?php require __DIR__ . '/../components/cabecalho.php'; ?>
+
+<main class="pagina">
+    <div class="container">
+        <div class="pagina__cabecalho">
+            <div>
+                <h1>Fichas de treino</h1>
+                <p>Fichas ativas dos seus alunos.</p>
+            </div>
+            <div class="pagina__acoes">
+                <a href="<?= BASE_URL ?>/treinos/arquivados" class="btn btn--secundario">
+                    <i class="ph ph-archive"></i>
+                    Arquivados
+                </a>
+                <a href="<?= BASE_URL ?>/alunos" class="btn btn--primario">
+                    <i class="ph ph-plus"></i>
+                    Nova ficha
                 </a>
             </div>
-        </header>
+        </div>
 
-        <section>
-            <?php if(isset($resultado)): ?>
-                <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
-                    <?= $resultado['mensagem'] ?>
-                </div>
-            <?php endif; ?>
+        <?php if(!empty($resultado)): ?>
+        <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+            <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+            <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
+        </div>
+        <?php endif; ?>
 
-            <?php if(empty($fichas)): ?>
-                <div class="card-superficie vazio-estado">
-                    <p class="texto-secundario">Nenhuma ficha de treino cadastrada no sistema.</p>
-                </div>
-            <?php else: ?>
-                <div class="treino-grid"> 
-                    <?php foreach ($fichas as $ficha): ?>
-                        <article class="card-superficie treino-card treino-card--<?= htmlspecialchars($ficha['status']) ?>">
-                            <div class="treino-card__cabecalho">
-                                <h3 class="treino-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></h3>
-                                <span class="treino-card__status badge-<?= htmlspecialchars($ficha['status']) ?>">
-                                    <?= ucfirst(htmlspecialchars($ficha['status'])) ?>
-                                </span>
-                            </div>
-                            <div class="treino-card__corpo">
-                                <p class="treino-card__aluno">
-                                    <i class="ph ph-user"></i> Aluno: <strong><?= htmlspecialchars($ficha['nome_aluno']) ?></strong>
-                                </p>
-                                <?php if(!empty($ficha['descricao'])): ?>
-                                    <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
-                                <?php endif; ?>
-
-                                <div class="treino-card__incluir-wrapper">
-                                    <button type="button" class="btn btn-primario treino-card__btn-incluir" data-id="<?= htmlspecialchars($ficha['id']) ?>">
-                                        Incluir treinos
-                                    </button>
-                                </div>
-
-                            </div>
-                            <div class="treino-card__acoes">
-                                <button type="button" onclick="window.location.href='/oktano/public/treinos/editar-ficha?id=<?= htmlspecialchars($ficha['id']) ?>'" class="btn btn-secundario-texto">
-                                    <i class="ph ph-pencil-simple"></i> Editar
+        <?php if(empty($fichas)): ?>
+            <div class="card estado-vazio">
+                <i class="ph ph-clipboard-text"></i>
+                <h3>Nenhuma ficha ativa</h3>
+                <p>Comece criando uma ficha de treino a partir da página de um aluno.</p>
+            </div>
+        <?php else: ?>
+        <div class="tabela-wrapper">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Ficha</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($fichas as $ficha): ?>
+                    <tr>
+                        <td data-rotulo="Aluno"><?= htmlspecialchars($ficha['nome_aluno']) ?></td>
+                        <td data-rotulo="Ficha">
+                            <div class="tabela__titulo-principal"><?= htmlspecialchars($ficha['titulo']) ?></div>
+                            <?php if(!empty($ficha['descricao'])): ?>
+                            <div class="tabela__subtexto"><?= htmlspecialchars($ficha['descricao']) ?></div>
+                            <?php endif; ?>
+                        </td>
+                        <td data-rotulo="Status">
+                            <span class="badge badge--<?= $ficha['status'] ?>"><?= ucfirst($ficha['status']) ?></span>
+                        </td>
+                        <td data-rotulo="Ações">
+                            <div class="tabela__acoes">
+                                <a href="<?= BASE_URL ?>/treinos/editar-ficha?id=<?= $ficha['id'] ?>" class="btn btn--icone" title="Editar ficha">
+                                    <i class="ph ph-pencil-simple"></i>
+                                </a>
+                                <button type="button" class="btn btn--icone js-btn-arquivar-ficha" data-id="<?= $ficha['id'] ?>" title="Arquivar ficha">
+                                    <i class="ph ph-archive"></i>
                                 </button>
-                                
-                                <button class="btn btn-secundario-texto js-btn-arquivar-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
-                                    <i class="ph ph-archive"></i> Arquivar
-                                </button>
-                                
-                                <button class="btn btn-secundario-texto btn-secundario-texto--erro js-btn-excluir-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
-                                    <i class="ph ph-trash"></i> Excluir
+                                <button type="button" class="btn btn--icone js-btn-excluir-ficha" data-id="<?= $ficha['id'] ?>" title="Excluir ficha">
+                                    <i class="ph ph-trash"></i>
                                 </button>
                             </div>
-                        </article>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </section>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+    </div>
+</main>
 
-        <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
-        <?php require_once __DIR__ . '/../components/modal_arquivar_ficha.php'; ?>
-    </main>
-    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
-    <script type="module" src="/oktano/public/assets/js/modal_arquivar.js"></script>
-    <script type="module" src="/oktano/public/assets/js/treinos.js"></script>
+<?php require __DIR__ . '/../components/modal_arquivar.php'; ?>
+<?php require __DIR__ . '/../components/modal_excluir.php'; ?>
+
+<script type="module" src="<?= BASE_URL ?>/assets/js/treinos.js"></script>
+<script type="module" src="<?= BASE_URL ?>/assets/js/modal_arquivar.js"></script>
+<script type="module" src="<?= BASE_URL ?>/assets/js/modal_exclusao.js"></script>
+
 </body>
 </html>

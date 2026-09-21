@@ -1,76 +1,96 @@
 <?php
-$tituloPagina = "Treinos Arquivados - Oktano";
-$estilosCSS = ['header', 'treino'];
-require_once __DIR__ . '/../components/head.php';
+$tituloPagina = 'Treinos arquivados';
+$paginaAtiva = 'treinos/arquivados';
+$urlAtual = $_SERVER['REQUEST_URI'] ?? (BASE_URL . '/treinos/arquivados');
+$urlRetorno = $urlAtual;
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<?php require __DIR__ . '/../components/head.php'; ?>
+</head>
 <body>
-    <?php
-        $tipoUsuario = 'personal';
-        require_once __DIR__ . '/../components/header.php';
-    ?>
-    <main class="container-principal">
-        <header class="cabecalho-pagina">
-            <div class="cabecalho-pagina__conteudo-topo">
-                <div class="cabecalho-pagina__titulos">
-                    <h1 class="titulo-principal">Treinos Arquivados</h1>
-                    <p class="subtitulo">Histórico de fichas desativadas do sistema</p>
-                </div>
-                <a href="/oktano/public/treinos" class="btn btn-secundario">
-                    <i class="ph ph-arrow-left"></i> Voltar aos Ativos
+
+<?php require __DIR__ . '/../components/cabecalho.php'; ?>
+
+<main class="pagina">
+    <div class="container">
+        <div class="pagina__cabecalho">
+            <div>
+                <h1>Fichas arquivadas</h1>
+                <p>Fichas que não estão mais ativas para os alunos.</p>
+            </div>
+            <div class="pagina__acoes">
+                <a href="<?= BASE_URL ?>/treinos" class="btn btn--secundario">
+                    <i class="ph ph-arrow-left"></i>
+                    Voltar para treinos
                 </a>
             </div>
-        </header>
+        </div>
 
-        <section>
-            <?php if(isset($resultado)): ?>
-                <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
-                    <?= $resultado['mensagem'] ?>
-                </div>
-            <?php endif; ?>
+        <?php if(!empty($resultado)): ?>
+        <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+            <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+            <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
+        </div>
+        <?php endif; ?>
 
-            <?php if(empty($fichas)): ?>
-                <div class="card-superficie vazio-estado">
-                    <p class="texto-secundario">Nenhuma ficha de treino encontra-se arquivada.</p>
-                </div>
-            <?php else: ?>
-                <div class="treino-grid">
-                    <?php foreach ($fichas as $ficha): ?>
-                        <article class="card-superficie treino-card treino-card--arquivada">
-                            <div class="treino-card__cabecalho">
-                                <h3 class="treino-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></h3>
-                                <span class="treino-card__status badge-arquivada">Arquivada</span>
-                            </div>
-                            
-                            <div class="treino-card__corpo">
-                                <p class="treino-card__aluno">
-                                    <i class="ph ph-user"></i> Aluno: <strong><?= htmlspecialchars($ficha['nome_aluno']) ?></strong>
-                                </p>
-                                <?php if(!empty($ficha['descricao'])): ?>
-                                    <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="treino-card__acoes">
-                                <form action="/oktano/public/treinos/desarquivar-ficha" method="POST" style="display:inline;">
-                                    <input type="hidden" name="id_ficha" value="<?= htmlspecialchars($ficha['id']) ?>">
-                                    <button type="submit" class="btn btn-secundario-texto">
-                                        <i class="ph ph-arrow-u-up-left"></i> Restaurar
+        <?php if(empty($fichas)): ?>
+            <div class="card estado-vazio">
+                <i class="ph ph-archive"></i>
+                <h3>Nenhuma ficha arquivada</h3>
+                <p>Fichas arquivadas a partir da tela de treinos aparecerão aqui.</p>
+            </div>
+        <?php else: ?>
+        <div class="tabela-wrapper">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Ficha</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($fichas as $ficha): ?>
+                    <tr>
+                        <td data-rotulo="Aluno"><?= htmlspecialchars($ficha['nome_aluno']) ?></td>
+                        <td data-rotulo="Ficha">
+                            <div class="tabela__titulo-principal"><?= htmlspecialchars($ficha['titulo']) ?></div>
+                            <?php if(!empty($ficha['descricao'])): ?>
+                            <div class="tabela__subtexto"><?= htmlspecialchars($ficha['descricao']) ?></div>
+                            <?php endif; ?>
+                        </td>
+                        <td data-rotulo="Status">
+                            <span class="badge badge--arquivada">Arquivada</span>
+                        </td>
+                        <td data-rotulo="Ações">
+                            <div class="tabela__acoes">
+                                <form method="POST" action="<?= BASE_URL ?>/treinos/desarquivar-ficha" onsubmit="return confirm('Restaurar esta ficha para rascunho?');">
+                                    <input type="hidden" name="id_ficha" value="<?= $ficha['id'] ?>">
+                                    <input type="hidden" name="url_retorno" value="<?= htmlspecialchars($urlAtual) ?>">
+                                    <button type="submit" class="btn btn--icone" title="Restaurar ficha">
+                                        <i class="ph ph-arrow-counter-clockwise"></i>
                                     </button>
                                 </form>
-                                
-                                <button class="btn btn-secundario-texto btn-secundario-texto--erro js-btn-excluir-ficha" data-id="<?= htmlspecialchars($ficha['id']) ?>">
-                                    <i class="ph ph-trash"></i> Excluir
+                                <button type="button" class="btn btn--icone js-btn-excluir-ficha" data-id="<?= $ficha['id'] ?>" title="Excluir ficha">
+                                    <i class="ph ph-trash"></i>
                                 </button>
                             </div>
-                        </article>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </section>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+    </div>
+</main>
 
-        <?php require_once __DIR__ . '/../components/modal_exclusao_ficha.php'; ?>
-    </main>
-    <script type="module" src="/oktano/public/assets/js/treinos.js"></script>
-    <script type="module" src="/oktano/public/assets/js/modal_exclusao.js"></script>
+<?php require __DIR__ . '/../components/modal_excluir.php'; ?>
+
+<script type="module" src="<?= BASE_URL ?>/assets/js/modal_exclusao.js"></script>
+
 </body>
 </html>

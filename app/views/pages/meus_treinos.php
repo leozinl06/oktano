@@ -1,52 +1,48 @@
-<?php 
-$tituloPagina = "Meus Treinos - Oktano"; 
-$estilosCSS = ['header', 'treino']; 
-require_once __DIR__ . '/../components/head.php'; 
+<?php
+$tituloPagina = 'Meus treinos';
+$paginaAtiva = 'meus-treinos';
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<?php require __DIR__ . '/../components/head.php'; ?>
+</head>
 <body>
-    <?php
-        $tipoUsuario = 'praticante';
-        require_once __DIR__ . '/../components/header.php';
-    ?>
-    
-    <main class="container-principal">
-        <header class="cabecalho-pagina">
-            <div class="cabecalho-pagina__titulos">
-                <h1 class="titulo-principal">Meus Treinos</h1>
-                <p class="subtitulo">Acesse e acompanhe as suas fichas de treino liberadas.</p>
-            </div>
-        </header>
 
-        <section class="meus-treinos">
-            <?php if (empty($fichasAtivas)): ?>
-                <div class="card-superficie vazio-estado">
-                    <p class="texto-secundario">Nenhum treino disponível no momento.</p>
+<?php require __DIR__ . '/../components/cabecalho.php'; ?>
+
+<main class="pagina">
+    <div class="container">
+        <div class="pagina__cabecalho">
+            <div>
+                <h1>Meus treinos</h1>
+                <p>Fichas ativas montadas pelo seu personal trainer.</p>
+            </div>
+        </div>
+
+        <?php if(empty($fichasAtivas)): ?>
+            <div class="card estado-vazio">
+                <i class="ph ph-barbell"></i>
+                <h3>Nenhuma ficha ativa no momento</h3>
+                <p>Assim que seu personal criar uma ficha de treino para você, ela aparecerá aqui.</p>
+            </div>
+        <?php else: ?>
+        <div class="grade-fichas">
+            <?php foreach($fichasAtivas as $ficha): ?>
+            <div class="card cartao-ficha">
+                <div class="cartao-ficha__topo">
+                    <h3><?= htmlspecialchars($ficha['titulo']) ?></h3>
+                    <span class="badge badge--<?= $ficha['status'] ?>"><?= ucfirst($ficha['status']) ?></span>
                 </div>
-            <?php else: ?>
-                <div class="treino-grid">
-                    <?php foreach ($fichasAtivas as $ficha): ?>
-                        <article class="card-superficie treino-card treino-card--ativa">
-                            <div class="treino-card__cabecalho">
-                                <h3 class="treino-card__titulo"><?= htmlspecialchars($ficha['titulo']) ?></h3>
-                                <i class="ph ph-barbell treino-card__icone-destaque"></i>
-                            </div>
-                            
-                            <div class="treino-card__corpo">
-                                <?php if (!empty($ficha['descricao'])): ?>
-                                    <p class="treino-card__descricao"><?= htmlspecialchars($ficha['descricao']) ?></p>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="treino-card__acoes">
-                                <a href="/oktano/public/meus-treinos/visualizar?id=<?= htmlspecialchars($ficha['id']) ?>" class="btn btn-primario treino-card__btn-iniciar">
-                                    Ver Treino
-                                </a>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </section>
-    </main>
+                <p class="cartao-ficha__desc">
+                    <?= $ficha['descricao'] !== '' ? htmlspecialchars($ficha['descricao']) : 'Sem observações adicionadas pelo personal.' ?>
+                </p>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+</main>
+
 </body>
 </html>

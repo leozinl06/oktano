@@ -1,109 +1,100 @@
-<?php
-
-$tituloPagina = "Crie sua conta (Personal) - Oktano";
-$estilosCSS = ['cadastro'];
-require_once __DIR__ . '/../components/head.php';
-?>
-
+<?php $tituloPagina = 'Cadastro de Personal'; ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crie sua conta (Personal) - Oktano</title>
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <link rel="stylesheet" href="/oktano/public/assets/css/style.css">
-    <link rel="stylesheet" href="/oktano/public/assets/css/cadastro.css">
+<?php require __DIR__ . '/../components/head.php'; ?>
 </head>
-<body class="layout-auth">
+<body>
 
-    <main class="card-superficie">
-        <div class="cadastro-logo-container">
-            <img src="/oktano/public/assets/img/logo-texto__acima.svg" alt="Logo Oktano" class="cadastro-logo-container__imagem">
+<div class="tela-auth">
+    <aside class="tela-auth__lateral">
+        <div class="tela-auth__logo">
+            <img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="">
+            Oktano
         </div>
+        <div>
+            <h2>Leve sua carteira de alunos para o digital.</h2>
+            <p>Monte fichas de treino, acompanhe a evolução dos seus alunos e organize tudo com o código de vínculo do Oktano.</p>
+        </div>
+        <p style="color: var(--cor-texto-terciario); font-size: 0.85rem;">© <?= date('Y') ?> Oktano</p>
+    </aside>
 
-        <header>
-            <h1 class="titulo-principal">Área do Personal</h1>
-            <p class="subtitulo">Preencha seus dados abaixo</p>
-        </header>
-
-        <?php if(isset($resultado)): ?>
-            <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
-                <?= $resultado['mensagem'] ?>
-            </div>
-        <?php endif; ?>
-
-        <form action="cadastro/processar" method="POST" novalidate>
-            
-            <div class="form-group">
-                <label for="nome" class="form-label">Nome Completo</label>
-                <div class="input-wrapper">
-                    <input type="text" id="nome" name="nome" class="form-input com-icone" placeholder="João Silva" required>
-                    <i class="ph ph-user input-icon"></i>
-                </div>
-                <span class="form-error-msg"></span>
+    <div class="tela-auth__conteudo">
+        <div class="tela-auth__caixa">
+            <div class="tela-auth__cabecalho">
+                <h1>Criar conta de Personal</h1>
+                <p>Preencha seus dados profissionais para começar.</p>
             </div>
 
-            <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <div class="input-wrapper">
-                    <input type="email" id="email" name="email" class="form-input com-icone" placeholder="joaosilva@exemplo.com" required>
-                    <i class="ph ph-envelope input-icon"></i>
-                </div>
-                <span class="form-error-msg"></span>
+            <?php if(!empty($resultado)): ?>
+            <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+                <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+                <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
             </div>
+            <?php endif; ?>
 
-            <div class="form-group">
-                <label for="registro" class="form-label">Registro Profissional (CREF, CREFITO)</label>
-                <div class="input-wrapper">
-                    <input type="text" id="registro" name="registro" class="form-input com-icone" placeholder="Ex: 000000-G/UF" required>
-                    <i class="ph ph-identification-badge input-icon"></i>
+            <form method="POST" action="<?= BASE_URL ?>/cadastro/processar" novalidate>
+                <div class="form-group">
+                    <label for="nome" class="form-label">Nome completo</label>
+                    <input type="text" name="nome" id="nome" class="form-input" placeholder="Como você quer ser chamado" autocomplete="name">
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="codigo_vinculo" class="form-label">Código de Vínculo (6 caracteres)</label>
-                <div class="input-wrapper">
-                    <input type="text" id="codigo_vinculo" name="codigo_vinculo" class="form-input com-icone" placeholder="Ex: A1B2C3" maxlength="6" required>
-                    <i class="ph ph-link input-icon"></i>
+                <div class="form-group">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="seu@email.com" autocomplete="email">
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="senha" class="form-label">Senha</label>
-                <div class="input-wrapper">
-                    <input type="password" id="senha" name="senha" class="form-input com-icone" placeholder="*********" required>
-                    <i class="ph ph-lock-key input-icon"></i>
+                <div class="form-group">
+                    <label for="registro" class="form-label">Registro profissional</label>
+                    <input type="text" name="registro" id="registro" class="form-input" placeholder="Ex.: CREF 000000-G/PR">
+                    <span class="form-hint">Inclua a sigla do estado (mínimo de 5 caracteres).</span>
+                    <span class="form-error-msg"></span>
                 </div>
-                
-                <div class="forca-senha-container" id="indicador-forca">
-                    <div class="forca-senha-barra"></div>
-                    <div class="forca-senha-barra"></div>
-                    <div class="forca-senha-barra"></div>
+
+                <div class="form-group">
+                    <label for="codigo_vinculo" class="form-label">Código de vínculo</label>
+                    <input type="text" name="codigo_vinculo" id="codigo_vinculo" class="form-input" placeholder="6 caracteres, ex.: A1B2C3" maxlength="6">
+                    <span class="form-hint">Você usará esse código para vincular seus alunos ao seu perfil.</span>
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="forca-senha-texto"></span>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="confirmar-senha" class="form-label">Confirmar Senha</label>
-                <div class="input-wrapper">
-                    <input type="password" id="confirmar-senha" name="confirmar-senha" class="form-input com-icone" placeholder="*********" required>
-                    <i class="ph ph-shield-check input-icon"></i>
+                <div class="form-group">
+                    <label for="senha" class="form-label">Senha</label>
+                    <div class="campo-senha">
+                        <input type="password" name="senha" id="senha" class="form-input" placeholder="Mínimo de 8 caracteres" autocomplete="new-password">
+                        <button type="button" class="campo-senha__alternar js-alternar-senha" data-alvo="senha" aria-label="Mostrar senha">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                    <div class="forca-senha" id="indicador-forca"><span></span><span></span><span></span></div>
+                    <span class="forca-senha-texto">Força da senha: -</span>
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primario">Cadastrar como Personal</button>
-            <a href="/oktano/public/login/acesso?tipo=personal" class="btn btn-secundario-texto">Voltar</a>
+                <div class="form-group">
+                    <label for="confirmar-senha" class="form-label">Confirmar senha</label>
+                    <input type="password" name="confirmar-senha" id="confirmar-senha" class="form-input" placeholder="Repita a senha" autocomplete="new-password">
+                    <span class="form-error-msg"></span>
+                </div>
 
-        </form>
-    </main>
+                <button type="submit" class="btn btn--primario btn--bloco" style="margin-top: var(--espaco-2);">
+                    Criar conta
+                    <i class="ph ph-arrow-right"></i>
+                </button>
+            </form>
 
-    <script type="module" src="/oktano/public/assets/js/cadastro.js"></script>
+            <p class="tela-auth__rodape">
+                Já tem uma conta?
+                <a href="<?= BASE_URL ?>/login/acesso?tipo=personal">Entrar</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="<?= BASE_URL ?>/assets/js/cadastro.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/alternar-senha.js"></script>
+
 </body>
 </html>

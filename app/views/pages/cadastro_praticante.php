@@ -1,88 +1,96 @@
 <?php
-$tituloPagina = "Crie sua conta (Aluno) - Oktano";
-$estilosCSS = ['cadastro']; 
-require_once __DIR__ . '/../components/head.php';
-
+$tituloPagina = 'Cadastro de Praticante';
+$dadosForm = $dadosForm ?? [];
+$campoComErro = $resultado['campo'] ?? null;
 ?>
-<body class="layout-auth">
-    <main class="card-superficie">
-        <div class="cadastro-logo-container">
-            <img src="/oktano/public/assets/img/logo-texto__acima.svg" alt="Logo Oktano" class="cadastro-logo-container__imagem">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<?php require __DIR__ . '/../components/head.php'; ?>
+</head>
+<body>
+
+<div class="tela-auth">
+    <aside class="tela-auth__lateral">
+        <div class="tela-auth__logo">
+            <img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="">
+            Oktano
         </div>
-        
-        <header>
-            <h1 class="titulo-principal">Área do Praticante</h1>
-            <p class="subtitulo">Preencha seus dados abaixo</p>
-        </header>
+        <div>
+            <h2>Seu treino, sempre à mão.</h2>
+            <p>Vincule-se ao seu personal com o código dele e acompanhe suas fichas de treino no Oktano.</p>
+        </div>
+        <p style="color: var(--cor-texto-terciario); font-size: 0.85rem;">© <?= date('Y') ?> Oktano</p>
+    </aside>
 
-        <?php if(isset($resultado) && !isset($resultado['campo'])): ?>
-            <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
-                <?= $resultado['mensagem'] ?>
-            </div>
-        <?php endif; ?>
-
-        <form action="cadastro-praticante/processar" method="POST" novalidate>
-            
-            <div class="form-group">
-                <label for="nome" class="form-label">Nome Completo</label>
-                <div class="input-wrapper">
-                    <input type="text" id="nome" name="nome" class="form-input com-icone" value="<?= htmlspecialchars($dadosForm['nome'] ?? '') ?>" placeholder="João Silva" required>
-                    <i class="ph ph-user input-icon"></i>
-                </div>
-                <span class="form-error-msg"></span>
+    <div class="tela-auth__conteudo">
+        <div class="tela-auth__caixa">
+            <div class="tela-auth__cabecalho">
+                <h1>Criar conta de Praticante</h1>
+                <p>Peça o código de vínculo ao seu personal trainer para continuar.</p>
             </div>
 
-            <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <div class="input-wrapper">
-                    <input type="email" id="email" name="email" class="form-input com-icone" value="<?= htmlspecialchars($dadosForm['email'] ?? '') ?>" placeholder="joaosilva@exemplo.com" required>
-                    <i class="ph ph-envelope input-icon"></i>
-                </div>
-                <span class="form-error-msg"></span>
+            <?php if(!empty($resultado)): ?>
+            <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+                <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+                <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
             </div>
+            <?php endif; ?>
 
-            <?php
-                $erroCodigo = (isset($resultado['campo']) && $resultado['campo'] === 'codigo_personal');
-            ?>
-            <div class="form-group">
-                <label for="codigo_personal" class="form-label">Código do Personal (6 caracteres)</label>
-                <div class="input-wrapper">
-                    <input type="text" id="codigo_personal" name="codigo_personal" class="form-input com-icone <?= $erroCodigo ? 'is-invalid' : '' ?>" placeholder="Ex: A1B2C3" maxlength="6" value="<?= htmlspecialchars($dadosForm['codigo_personal'] ?? '') ?>" required>
-                    <i class="ph ph-link input-icon"></i>
+            <form method="POST" action="<?= BASE_URL ?>/cadastro-praticante/processar" novalidate>
+                <div class="form-group">
+                    <label for="nome" class="form-label">Nome completo</label>
+                    <input type="text" name="nome" id="nome" class="form-input" placeholder="Como você quer ser chamado" autocomplete="name" value="<?= htmlspecialchars($dadosForm['nome'] ?? '') ?>">
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="form-error-msg"><?= $erroCodigo ? $resultado['mensagem'] : '' ?></span>
-            </div>
 
-            <div class="form-group">
-                <label for="senha" class="form-label">Senha</label>
-                <div class="input-wrapper">
-                    <input type="password" id="senha" name="senha" class="form-input com-icone" placeholder="*********" required>
-                    <i class="ph ph-lock-key input-icon"></i>
+                <div class="form-group">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="seu@email.com" autocomplete="email" value="<?= htmlspecialchars($dadosForm['email'] ?? '') ?>">
+                    <span class="form-error-msg"></span>
                 </div>
-                
-                <div class="forca-senha-container" id="indicador-forca">
-                    <div class="forca-senha-barra"></div>
-                    <div class="forca-senha-barra"></div>
-                    <div class="forca-senha-barra"></div>
+
+                <div class="form-group">
+                    <label for="codigo_personal" class="form-label">Código do seu Personal</label>
+                    <input type="text" name="codigo_personal" id="codigo_personal" class="form-input<?= $campoComErro === 'codigo_personal' ? ' is-invalid' : '' ?>" placeholder="6 caracteres, ex.: A1B2C3" maxlength="6" value="<?= htmlspecialchars($dadosForm['codigo_personal'] ?? '') ?>">
+                    <span class="form-error-msg"><?= $campoComErro === 'codigo_personal' ? htmlspecialchars($resultado['mensagem']) : '' ?></span>
                 </div>
-                <span class="forca-senha-texto"></span>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="confirmar-senha" class="form-label">Confirmar Senha</label>
-                <div class="input-wrapper">
-                    <input type="password" id="confirmar-senha" name="confirmar-senha" class="form-input com-icone" placeholder="*********" required>
-                    <i class="ph ph-shield-check input-icon"></i>
+                <div class="form-group">
+                    <label for="senha" class="form-label">Senha</label>
+                    <div class="campo-senha">
+                        <input type="password" name="senha" id="senha" class="form-input" placeholder="Mínimo de 8 caracteres" autocomplete="new-password">
+                        <button type="button" class="campo-senha__alternar js-alternar-senha" data-alvo="senha" aria-label="Mostrar senha">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                    <div class="forca-senha" id="indicador-forca"><span></span><span></span><span></span></div>
+                    <span class="forca-senha-texto">Força da senha: -</span>
+                    <span class="form-error-msg"></span>
                 </div>
-                <span class="form-error-msg"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primario">Cadastrar como Praticante</button>
-            <a href="/oktano/public/login/acesso?tipo=praticante" class="btn btn-secundario-texto">Voltar</a>
-        </form>
-    </main>
+                <div class="form-group">
+                    <label for="confirmar-senha" class="form-label">Confirmar senha</label>
+                    <input type="password" name="confirmar-senha" id="confirmar-senha" class="form-input" placeholder="Repita a senha" autocomplete="new-password">
+                    <span class="form-error-msg"></span>
+                </div>
 
-    <script type="module" src="/oktano/public/assets/js/cadastro_praticante.js"></script>
+                <button type="submit" class="btn btn--primario btn--bloco" style="margin-top: var(--espaco-2);">
+                    Criar conta
+                    <i class="ph ph-arrow-right"></i>
+                </button>
+            </form>
+
+            <p class="tela-auth__rodape">
+                Já tem uma conta?
+                <a href="<?= BASE_URL ?>/login/acesso?tipo=praticante">Entrar</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="<?= BASE_URL ?>/assets/js/cadastro_praticante.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/alternar-senha.js"></script>
+
 </body>
 </html>

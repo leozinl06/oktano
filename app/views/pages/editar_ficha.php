@@ -1,64 +1,77 @@
 <?php
-$tituloPagina = "Editar Ficha - Oktano";
-$estilosCSS = ['header', 'treino'];
-require_once __DIR__ . '/../components/head.php';
+$tituloPagina = 'Editar ficha';
+$paginaAtiva = 'treinos';
+$urlVoltar = $url_origem ?? (BASE_URL . '/treinos');
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<?php require __DIR__ . '/../components/head.php'; ?>
+</head>
 <body>
-    <?php
-        $tipoUsuario = 'personal';
-        require_once __DIR__ . '/../components/header.php';
-    ?>
-    <main class="container-principal">
-        <div class="conteudo-centralizado">
-            <header class="cabecalho-pagina cabecalho-pagina--central">
-                <h1 class="titulo-principal">Editar Ficha de Treino</h1>
-                <p class="subtitulo">Atualizando a ficha de: <strong><?= htmlspecialchars($aluno['nome']) ?></strong></p>
-            </header>
 
-            <section class="card-superficie">
-                <?php if(isset($resultado)): ?>
-                    <div class="alerta <?= $resultado['sucesso'] ? 'alerta-sucesso' : 'alerta-erro' ?>">
-                        <?= $resultado['mensagem'] ?>
-                    </div>
-                <?php endif; ?>
+<?php require __DIR__ . '/../components/cabecalho.php'; ?>
 
-                <form action="/oktano/public/treinos/atualizar-ficha" method="POST" novalidate>
-                    <input type="hidden" name="id_ficha" value="<?= htmlspecialchars($ficha['id']) ?>">
-                    <input type="hidden" name="url_retorno" value="<?= htmlspecialchars($url_origem) ?>">
+<main class="pagina">
+    <div class="container">
+        <a href="<?= htmlspecialchars($urlVoltar) ?>" class="btn btn--texto btn--pequeno" style="padding-left:0; margin-bottom: var(--espaco-3);">
+            <i class="ph ph-arrow-left"></i> Voltar
+        </a>
 
-                    <div class="form-group">
-                        <label for="titulo" class="form-label">Título da Ficha</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="titulo" name="titulo" class="form-input" value="<?= htmlspecialchars($ficha['titulo']) ?>" placeholder="Ex: Hipertrofia A" required>
-                        </div>
-                        <span class="form-error-msg"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descricao" class="form-label">Descrição (Opcional)</label>
-                        <div class="input-wrapper">
-                            <textarea id="descricao" name="descricao" class="form-input" rows="4" placeholder="Observações gerais da ficha..."><?= htmlspecialchars($ficha['descricao']) ?></textarea>
-                        </div>
-                        <span class="form-error-msg"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status" class="form-label">Status Inicial</label>
-                        <div class="input-wrapper">
-                            <select id="status" name="status" class="form-input" required>
-                                <option value="rascunho" <?= $ficha['status'] === 'rascunho' ? 'selected' : '' ?>>Rascunho</option>
-                                <option value="ativa" <?= $ficha['status'] === 'ativa' ? 'selected' : '' ?>>Ativa</option>
-                            </select>
-                        </div>
-                        <span class="form-error-msg"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-primario">Atualizar Ficha</button>
-                    <a href="<?= htmlspecialchars($url_origem) ?>" class="btn btn-secundario-texto">Cancelar</a>
-                </form>
-            </section>
+        <div class="pagina__cabecalho">
+            <div>
+                <h1>Editar ficha de treino</h1>
+                <p>Aluno: <strong style="color: var(--cor-texto);"><?= htmlspecialchars($aluno['nome']) ?></strong></p>
+            </div>
         </div>
-    </main>
-    <script type="module" src="/oktano/public/assets/js/editar_ficha.js"></script>
+
+        <?php if(!empty($resultado)): ?>
+        <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+            <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+            <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
+        </div>
+        <?php endif; ?>
+
+        <div class="card card-formulario">
+            <form method="POST" action="<?= BASE_URL ?>/treinos/atualizar-ficha" novalidate>
+                <input type="hidden" name="id_ficha" value="<?= $ficha['id'] ?>">
+                <input type="hidden" name="url_retorno" value="<?= htmlspecialchars($urlVoltar) ?>">
+
+                <div class="form-group">
+                    <label for="titulo" class="form-label">Título da ficha</label>
+                    <input type="text" name="titulo" id="titulo" class="form-input" value="<?= htmlspecialchars($ficha['titulo']) ?>">
+                    <span class="form-error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao" class="form-label">Descrição <span class="opcional">(opcional)</span></label>
+                    <textarea name="descricao" id="descricao" class="form-textarea"><?= htmlspecialchars($ficha['descricao']) ?></textarea>
+                    <span class="form-error-msg"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="rascunho" <?= $ficha['status'] === 'rascunho' ? 'selected' : '' ?>>Rascunho</option>
+                        <option value="ativa" <?= $ficha['status'] === 'ativa' ? 'selected' : '' ?>>Ativa</option>
+                        <option value="arquivada" <?= $ficha['status'] === 'arquivada' ? 'selected' : '' ?>>Arquivada</option>
+                    </select>
+                    <span class="form-error-msg"></span>
+                </div>
+
+                <div class="form-rodape">
+                    <a href="<?= htmlspecialchars($urlVoltar) ?>" class="btn btn--secundario">Cancelar</a>
+                    <button type="submit" class="btn btn--primario">
+                        <i class="ph ph-check"></i>
+                        Salvar alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script type="module" src="<?= BASE_URL ?>/assets/js/editar_ficha.js"></script>
+
 </body>
 </html>
