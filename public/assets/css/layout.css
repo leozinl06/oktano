@@ -55,7 +55,11 @@ main{ display: block; }
   font-weight: 700;
   font-size: 1.2rem;
 }
-.tela-auth__logo img{ height: 30px; }
+.tela-auth__logo img{
+   height: 72px;
+   width: auto;
+   max-width: 100%; 
+}
 
 .tela-auth__cabecalho{ margin-bottom: var(--espaco-5); }
 .tela-auth__cabecalho p{ margin-top: var(--espaco-2); }

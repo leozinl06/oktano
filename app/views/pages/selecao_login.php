@@ -9,8 +9,7 @@
 <div class="tela-auth">
     <aside class="tela-auth__lateral">
         <div class="tela-auth__logo">
-            <img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="">
-            Oktano
+            <img src="<?= BASE_URL ?>/assets/img/logo-texto__direita.svg" alt="">
         </div>
         <div>
             <h2>Treino acompanhado, resultado de verdade.</h2>
