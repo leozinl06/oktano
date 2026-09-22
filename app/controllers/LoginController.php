@@ -4,6 +4,7 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Personal.php';
 require_once __DIR__ . '/../models/Praticante.php';
 require_once __DIR__ . '/../models/Administrador.php';
+require_once __DIR__ . '/../core/RateLimiter.php';
 
 class LoginController{
 
@@ -35,6 +36,19 @@ class LoginController{
             $tipo_usuario = filter_input(INPUT_POST, 'tipo_usuario', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $senha = $_POST['senha'] ?? '';
+            $ip_usuario = $_SERVER['REMOTE_ADDR']; //pega ip usuario
+
+            $rateLimiter = new RateLimiter();
+
+            if(!$rateLimiter->verificar($ip_usuario)){
+                $minutos = $rateLimiter->getMinutosRestantes($ip_usuario);
+                $_SESSION['resultado'] = [
+                    'sucesso' => false,
+                    'mensagem' => "Muitas tentativas falhas. Tente novamente em {$minutos} minuto(s)."
+                ];
+                header("Location: /oktano/public/login/acesso?tipo=$tipo_usuario");
+                exit;
+            }
 
             if(empty($email) || empty($senha) || empty($tipo_usuario)){
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'Todos os campos são obrigatórios.'];
@@ -58,6 +72,8 @@ class LoginController{
             }
 
             if($usuario && password_verify($senha, $usuario['senha'])){
+
+                $rateLimiter->limpar($ip_usuario); //login bem-sucedido: limpa historico de falhas
                 
                 session_regenerate_id(true); //previne ataques de roubo de sessão
 
@@ -68,6 +84,9 @@ class LoginController{
                 header('Location: /oktano/public/dashboard_' . $tipo_usuario);
                 exit;
             } else{
+
+                $rateLimiter->registrarFalha($ip_usuario); //login falhou: registra tentativa pra este IP
+
                 $_SESSION['resultado'] = ['sucesso' => false, 'mensagem' => 'E-mail ou senha incorretos.'];
                 header("Location: /oktano/public/login/acesso?tipo=$tipo_usuario");
             }
