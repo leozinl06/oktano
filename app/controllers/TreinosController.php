@@ -77,10 +77,12 @@ class TreinosController extends BaseController{
             $db = $database->conectar();
             $fichaTreinoModel = new FichaTreino($db);
 
-            if($fichaTreinoModel->cadastrar($id_aluno, $titulo, $descricao, $status)){
-                $this->redirecionarComResultado('/oktano/public/treinos', true, 'Ficha criada com sucesso!');
-            } else {
-                $this->redirecionarComResultado($url, false, 'Erro ao criar ficha.');
+            $id_nova_ficha = $fichaTreinoModel->cadastrar($id_aluno, $titulo, $descricao, $status);
+
+            if($id_nova_ficha){
+                $this->redirecionarComResultado('/oktano/public/treinos/detalhes?id=' . $id_nova_ficha, true, 'Ficha criada com sucesso!');
+            } else{
+                $this->redirecionarComResultado($url, false, 'Erro ao criar a ficha.');
             }
         }
     }
@@ -238,6 +240,41 @@ class TreinosController extends BaseController{
                 $this->redirecionarComResultado($url_erro, false, 'Erro ao atualizar a ficha.');
             }
         }
+    }
+
+    public function detalhesFicha(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+
+        $id_personal = $_SESSION['usuario_id'] ?? null;
+        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
+            header('Location: /oktano/public/login/acesso?tipo=personal');
+            exit;
+        }
+
+        $id_ficha = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+        if(!$id_ficha){
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha não especificada.');
+        }
+
+        $database = new Database();
+        $db = $database->conectar();
+        $fichaTreinoModel = new FichaTreino($db);
+        $praticanteModel = new Praticante($db);
+
+        $ficha = $fichaTreinoModel->buscarPorId($id_ficha);
+        if($ficha){
+            $aluno = $praticanteModel->buscarPorId($ficha['id_praticante']);
+        }
+
+        if(!$ficha || !$aluno || $aluno['id_personal'] != $id_personal){
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
+        }
+
+        $resultado = $_SESSION['resultado'] ?? null;
+        unset($_SESSION['resultado']);
+
+        require_once __DIR__ . '/../views/pages/detalhes_ficha.php';
     }
     
 }

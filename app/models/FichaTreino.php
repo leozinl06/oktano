@@ -23,7 +23,11 @@ class FichaTreino{
         $stmt->bindParam(':descricao', $descricao);
         $stmt->bindParam(':status', $status);
 
-        return $stmt->execute();
+       if($stmt->execute()){
+        return $this->conn->lastInsertId(); //retorna o ID da ficha criada
+       }
+
+       return false;
     }
 
     public function buscarFichasPorPersonal($id_personal){

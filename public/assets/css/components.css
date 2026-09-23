@@ -438,6 +438,17 @@
 .tabela__titulo-principal{ font-weight: 600; color: var(--cor-texto); }
 .tabela__subtexto{ color: var(--cor-texto-terciario); font-size: 0.82rem; }
 
+.tabela__ficha-link {
+    text-decoration: none;
+    color: var(--cor-texto); 
+    display: inline-block;
+    transition: color 0.2s ease-in-out;
+}
+
+.tabela__ficha-link:hover {
+    color: var(--cor-primaria); 
+}
+
 @media (max-width: 768px){
   .tabela thead{ display: none; }
   .tabela, .tabela tbody, .tabela tbody tr, .tabela tbody td{ display: block; width: 100%; }

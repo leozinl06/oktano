@@ -61,7 +61,9 @@ $urlRetorno = $urlAtual;
                     <tr>
                         <td data-rotulo="Aluno"><?= htmlspecialchars($ficha['nome_aluno']) ?></td>
                         <td data-rotulo="Ficha">
-                            <div class="tabela__titulo-principal"><?= htmlspecialchars($ficha['titulo']) ?></div>
+                            <a href="<?= BASE_URL ?>/treinos/detalhes?id=<?= $ficha['id'] ?>" class="tabela__titulo-principal tabela__ficha-link">
+                                <?= htmlspecialchars($ficha['titulo']) ?>
+                            </a>
                             <?php if(!empty($ficha['descricao'])): ?>
                             <div class="tabela__subtexto"><?= htmlspecialchars($ficha['descricao']) ?></div>
                             <?php endif; ?>
@@ -71,6 +73,9 @@ $urlRetorno = $urlAtual;
                         </td>
                         <td data-rotulo="Ações">
                             <div class="tabela__acoes">
+                                <a href="<?= BASE_URL ?>/treinos/detalhes?id=<?= $ficha['id'] ?>" class="btn btn--icone" title="Ver detalhes">
+                                    <i class="ph ph-eye"></i>
+                                </a>
                                 <a href="<?= BASE_URL ?>/treinos/editar-ficha?id=<?= $ficha['id'] ?>" class="btn btn--icone" title="Editar ficha">
                                     <i class="ph ph-pencil-simple"></i>
                                 </a>

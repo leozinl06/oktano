@@ -241,3 +241,34 @@ main{ display: block; }
   .form-rodape{ flex-direction: column-reverse; }
   .form-rodape .btn{ width: 100%; }
 }
+
+/* Componentes: Detalhes da Ficha */
+.ficha-voltar {
+    margin-bottom: var(--espaco-3);
+}
+
+.ficha-voltar__btn {
+    padding-left: 0;
+}
+
+.ficha-meta {
+    color: var(--cor-texto);
+}
+
+.ficha-meta__destaque {
+    font-weight: 600;
+}
+
+.ficha-detalhes {
+    margin-bottom: var(--espaco-4);
+}
+
+.ficha-detalhes__texto {
+    margin-top: var(--espaco-2);
+}
+
+.ficha-acoes {
+    display: flex;
+    gap: var(--espaco-3);
+    flex-wrap: wrap;
+}
