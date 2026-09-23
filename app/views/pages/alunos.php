@@ -65,10 +65,11 @@ $paginaAtiva = 'alunos';
                         <?php else: ?>
                             <?php foreach($aluno['fichas'] as $ficha): ?>
                             <div class="aluno-item__ficha">
-                                <div>
-                                    <div style="font-weight:600;"><?= htmlspecialchars($ficha['titulo']) ?></div>
+                                <div class="aluno-item__ficha-info">
+                                    <span class="aluno-item__ficha-titulo"><?= htmlspecialchars($ficha['titulo']) ?></span>
                                     <span class="badge badge--<?= $ficha['status'] ?>"><?= ucfirst($ficha['status']) ?></span>
                                 </div>
+                                
                                 <a href="<?= BASE_URL ?>/treinos/editar-ficha?id=<?= $ficha['id'] ?>" class="btn btn--secundario btn--pequeno">
                                     <i class="ph ph-pencil-simple"></i>
                                     Editar

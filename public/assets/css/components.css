@@ -550,6 +550,12 @@
   visibility: visible;
 }
 
+.aluno-item__ficha-info {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-2); 
+}
+
 .aluno-item__ficha{
   display: flex;
   align-items: center;
@@ -558,6 +564,11 @@
   padding: var(--espaco-3);
   background-color: var(--cor-superficie-alta);
   border-radius: var(--raio-sm);
+}
+
+.aluno-item__ficha-titulo {
+    font-weight: 600;
+    color: var(--cor-texto);
 }
 
 .aluno-item.is-hidden{ display: none; }
