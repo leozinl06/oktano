@@ -272,3 +272,40 @@ main{ display: block; }
     gap: var(--espaco-3);
     flex-wrap: wrap;
 }
+
+/* Layout: Página de Erro 404 */
+.pagina-erro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--cor-fundo);
+    padding: var(--espaco-4);
+}
+
+.erro-container {
+    text-align: center;
+    max-width: 480px;
+    background: var(--cor-superficie);
+    padding: var(--espaco-5);
+    border-radius: var(--raio-lg);
+    box-shadow: var(--sombra-sm);
+}
+
+.erro-container__icone {
+    font-size: 4rem;
+    color: var(--cor-primaria);
+    margin-bottom: var(--espaco-3);
+}
+
+.erro-container__titulo {
+    font-size: 2rem;
+    margin-bottom: var(--espaco-2);
+    color: var(--cor-texto);
+}
+
+.erro-container__texto {
+    color: var(--cor-texto-secundario);
+    margin-bottom: var(--espaco-4);
+    line-height: 1.5;
+}

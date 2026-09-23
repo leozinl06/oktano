@@ -28,7 +28,7 @@ class Router{
             $controller->$nomeAcao(); //executa funcao dentro do controller
         } else{
             http_response_code(404);
-            echo "<h1>Error 404 - Pagina não encontrada</h1>";
+            require_once __DIR__ . '/../views/pages/404.php';
         }
     }
 }
