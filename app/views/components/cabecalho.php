@@ -33,8 +33,7 @@ $links = $linksPorTipo[$tipoUsuario] ?? [];
 <header class="cabecalho">
     <div class="cabecalho__conteudo">
         <a href="<?= BASE_URL ?>/<?= $tipoUsuario ? 'dashboard_' . $tipoUsuario : '' ?>" class="cabecalho__logo">
-            <img src="<?= BASE_URL ?>/assets/img/logo.svg" alt="">
-            Oktano
+            <img src="<?= BASE_URL ?>/assets/img/logo-texto__direita.svg" alt="">
         </a>
 
         <button type="button" class="cabecalho__toggle" id="botao-menu-mobile" aria-expanded="false" aria-controls="nav-principal" aria-label="Abrir menu de navegação">

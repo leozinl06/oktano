@@ -52,6 +52,15 @@
 }
 .btn--icone:hover{ background-color: var(--cor-superficie-alta); color: var(--cor-texto); }
 
+.cabecalho__acao-sair:hover{
+  background-color: var(--fundo-erro);
+  color: var(--erro);
+}
+
+.js-btn-excluir-ficha:hover{
+  color: var(--erro);
+}
+
 .btn:disabled,
 .btn[disabled]{
   background-color: var(--cor-indisponivel);
