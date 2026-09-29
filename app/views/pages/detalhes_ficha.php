@@ -52,6 +52,52 @@ $paginaAtiva = 'treinos';
                     Reordenar Treinos
                 </button>
             </div>
+
+            <div class="treinos-lista">
+                <div class="treinos-lista__cabecalho">
+                    <h2>Divisões de Treino</h2>
+                </div>
+
+                <?php if(empty($treinos)): ?>
+                    <div class="card estado-vazio">
+                        <i class="ph ph-barbell"></i>
+                        <h3>Nenhum treino adicionado</h3>
+                        <p>Crie a primeira divisão de treino para começar a montar os exercícios.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="grade-treinos">
+                        <?php foreach($treinos as $treino): ?>
+                        <div class="card treino-card">
+                            <div class="treino-card__topo">
+                                <div class="treino-card__info">
+                                    <h3 class="treino-card__titulo"><?= htmlspecialchars($treino['titulo']) ?></h3>
+                                    <?php if(!empty($treino['descricao'])): ?>
+                                        <p class="treino-card__desc"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="treino-card__acoes">
+                                    <button type="button" class="btn btn--icone" title="Editar Treino">
+                                        <i class="ph ph-pencil-simple"></i>
+                                    </button>
+                                    <button type="button" class="btn btn--icone" title="Excluir Treino">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="treino-card__corpo">
+                                <p class="form-hint" style="margin-bottom: var(--espaco-3);">Nenhum exercício cadastrado ainda.</p>
+                                
+                                <button type="button" class="btn btn--primario btn--pequeno">
+                                    <i class="ph ph-plus"></i>
+                                    Adicionar Exercícios
+                                </button>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
         </div>
     </main>
     <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>

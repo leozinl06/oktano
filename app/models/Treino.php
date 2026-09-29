@@ -24,8 +24,8 @@ class Treino{
         
         $stmt = $this->conn->prepare($query);
 
-        $titulo = htmlspecialchars(strip_tags($titulo));
-        $descricao = htmlspecialchars(strip_tags($descricao));
+        $titulo = strip_tags($titulo);
+        $descricao = strip_tags($descricao);
 
         $stmt->bindParam(':id_ficha_treino', $id_ficha_treino, PDO::PARAM_INT);
         $stmt->bindParam(':titulo', $titulo);
@@ -33,5 +33,17 @@ class Treino{
         $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
 
         return $stmt->execute();
+    }
+
+    public function buscarPorFicha($id_ficha_treino){
+        $query = "SELECT * FROM " . $this->tabela . " 
+                WHERE id_ficha_treino = :id_ficha_treino 
+                ORDER BY ordem ASC";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_ficha_treino', $id_ficha_treino, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

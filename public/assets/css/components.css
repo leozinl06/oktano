@@ -598,3 +598,64 @@
   color: var(--cor-texto-terciario);
 }
 .campo-busca input{ padding-left: 2.4rem; }
+
+/* =========================================
+   LISTA E CARDS DE TREINOS (detalhes_ficha)
+   ========================================= */
+.treinos-lista {
+    margin-top: var(--espaco-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-3);
+}
+
+.treinos-lista__cabecalho {
+    margin-bottom: var(--espaco-2);
+}
+
+.grade-treinos {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-3);
+}
+
+.treino-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-3);
+}
+
+.treino-card__topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--espaco-3);
+    border-bottom: 1px solid var(--cor-borda);
+    padding-bottom: var(--espaco-3);
+}
+
+.treino-card__info {
+    flex: 1;
+}
+
+.treino-card__titulo {
+    margin-bottom: var(--espaco-1);
+    color: var(--cor-texto);
+}
+
+.treino-card__desc {
+    color: var(--cor-texto-secundario);
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.treino-card__acoes {
+    display: flex;
+    gap: var(--espaco-1);
+}
+
+.treino-card__corpo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

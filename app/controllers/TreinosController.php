@@ -265,6 +265,7 @@ class TreinosController extends BaseController{
         $db = $database->conectar();
         $fichaTreinoModel = new FichaTreino($db);
         $praticanteModel = new Praticante($db);
+        
 
         $ficha = $fichaTreinoModel->buscarPorId($id_ficha);
         if($ficha){
@@ -274,6 +275,9 @@ class TreinosController extends BaseController{
         if(!$ficha || !$aluno || $aluno['id_personal'] != $id_personal){
             $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
         }
+
+        $treinoModel = new Treino($db);
+        $treinos = $treinoModel->buscarPorFicha($id_ficha);
 
         $resultado = $_SESSION['resultado'] ?? null;
         unset($_SESSION['resultado']);
@@ -289,7 +293,7 @@ class TreinosController extends BaseController{
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
             $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+            $descricao = trim($_POST['descricao'] ?? '');
             
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
             
