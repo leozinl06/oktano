@@ -1,0 +1,37 @@
+<?php
+
+class Treino{
+    private $conn;
+    private $tabela = 'treino';
+
+    public function __construct($db){
+        $this->conn = $db;
+    }
+
+    public function cadastrar($id_ficha_treino, $titulo, $descricao){
+        //busca maior ordem para os treinos da ficha atual
+        $queryOrdem = "SELECT MAX(ordem) as max_ordem FROM " . $this->tabela . " WHERE id_ficha_treino = :id_ficha_treino";
+        $stmtOrdem = $this->conn->prepare($queryOrdem);
+
+        $stmtOrdem->bindParam(':id_ficha_treino', $id_ficha_treino, PDO::PARAM_INT);
+        $stmtOrdem->execute();
+
+        $row = $stmtOrdem->fetch(PDO::FETCH_ASSOC);
+        $ordem = ($row['max_ordem'] !== null) ? (int)$row['max_ordem'] + 1 : 1;
+
+        $query = "INSERT INTO " . $this->tabela . " (id_ficha_treino, titulo, descricao, ordem) 
+                VALUES (:id_ficha_treino, :titulo, :descricao, :ordem)";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $titulo = htmlspecialchars(strip_tags($titulo));
+        $descricao = htmlspecialchars(strip_tags($descricao));
+
+        $stmt->bindParam(':id_ficha_treino', $id_ficha_treino, PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':ordem', $ordem, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+}

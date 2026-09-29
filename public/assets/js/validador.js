@@ -13,7 +13,11 @@ export function configurarValidacaoGlobal() {
         if (spanErro) spanErro.textContent = mensagem;
     };
 
-    const removerErro = (input) => input.classList.remove('is-invalid');
+    const removerErro = (input) => {
+        input.classList.remove('is-invalid');
+        const spanErro = input.closest('.form-group')?.querySelector('.form-error-msg');
+        if (spanErro) spanErro.textContent = '';
+    };
 
     const isEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 

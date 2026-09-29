@@ -43,7 +43,7 @@ $paginaAtiva = 'treinos';
             </div>
 
             <div class="ficha-acoes">
-                <button type="button" class="btn btn--primario">
+                <button type="button" class="btn btn--primario js-btn-adicionar-treino">
                     <i class="ph ph-plus"></i>
                     Adicionar Treinos
                 </button>
@@ -54,5 +54,9 @@ $paginaAtiva = 'treinos';
             </div>
         </div>
     </main>
+    <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>
+
+    <script type="module" src="<?= BASE_URL ?>/assets/js/detalhes_ficha.js"></script>
+
 </body>
 </html>

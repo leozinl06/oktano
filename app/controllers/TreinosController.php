@@ -4,6 +4,8 @@ require_once __DIR__ . '/../models/FichaTreino.php';
 require_once __DIR__ . '/../models/Praticante.php';
 require_once __DIR__ . '/../core/BaseController.php';
 
+require_once __DIR__ . '/../models/Treino.php';
+
 class TreinosController extends BaseController{
 
     public function index(){
@@ -26,6 +28,8 @@ class TreinosController extends BaseController{
 
         require_once __DIR__ . '/../views/pages/treinos.php';
     }
+
+    //-----------------FICHA-----------------
 
     public function novaFicha(){
         if(session_status() === PHP_SESSION_NONE) session_start();
@@ -276,5 +280,32 @@ class TreinosController extends BaseController{
 
         require_once __DIR__ . '/../views/pages/detalhes_ficha.php';
     }
+
+    //-----------------TREINO DA FICHA-----------------
     
+    public function adicionarTreino(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+            
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
+            
+            if(empty($titulo) || empty($id_ficha)){
+                $this->redirecionarComResultado($url_retorno, false, 'O título do treino é obrigatório.');
+            }
+
+            $database = new Database();
+            $db = $database->conectar();
+            $treinoModel = new Treino($db);
+
+            if($treinoModel->cadastrar($id_ficha, $titulo, $descricao)){
+                $this->redirecionarComResultado($url_retorno, true, 'Treino adicionado com sucesso!');
+            } else{
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao adicionar o treino. Tente novamente.');
+            }
+        }
+    }
 }
