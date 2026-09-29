@@ -35,6 +35,28 @@ class Treino{
         return $stmt->execute();
     }
 
+    public function atualizar($id, $titulo, $descricao) {
+        $query = "UPDATE " . $this->tabela . " SET titulo = :titulo, descricao = :descricao WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        
+        $titulo = trim(strip_tags($titulo));
+        $descricao = trim(strip_tags($descricao));
+        
+        $stmt->bindParam(':titulo', $titulo);
+        $stmt->bindParam(':descricao', $descricao);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+
+    public function excluir($id) {
+        $query = "DELETE FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+
     public function buscarPorFicha($id_ficha_treino){
         $query = "SELECT * FROM " . $this->tabela . " 
                 WHERE id_ficha_treino = :id_ficha_treino 

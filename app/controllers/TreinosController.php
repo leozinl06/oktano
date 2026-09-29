@@ -312,4 +312,54 @@ class TreinosController extends BaseController{
             }
         }
     }
+
+    public function editarTreino(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $descricao = trim($_POST['descricao'] ?? ''); // Preserva as quebras de linha reais
+            
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
+            
+            if(empty($titulo) || empty($id_treino)){
+                $this->redirecionarComResultado($url_retorno, false, 'O título do treino é obrigatório.');
+            }
+            
+            $database = new Database();
+            $db = $database->conectar();
+            $treinoModel = new Treino($db);
+
+            if($treinoModel->atualizar($id_treino, $titulo, $descricao)){
+                $this->redirecionarComResultado($url_retorno, true, 'Treino atualizado com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao atualizar o treino.');
+            }
+        }
+    }
+
+    public function excluirTreino(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+        
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
+            
+            if(empty($id_treino)){
+                $this->redirecionarComResultado($url_retorno, false, 'ID do treino não fornecido.');
+            }
+            
+            $database = new Database();
+            $db = $database->conectar();
+            $treinoModel = new Treino($db);
+            
+            if($treinoModel->excluir($id_treino)){
+                $this->redirecionarComResultado($url_retorno, true, 'Treino excluído com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir o treino.');
+            }
+        }
+    }
 }

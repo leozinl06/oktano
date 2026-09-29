@@ -50,7 +50,16 @@
   border-radius: var(--raio-sm);
   color: var(--cor-texto-secundario);
 }
-.btn--icone:hover{ background-color: var(--cor-superficie-alta); color: var(--cor-texto); }
+
+.btn--icone:hover{ 
+  background-color: var(--cor-superficie-alta); 
+  color: var(--cor-texto); 
+}
+
+.btn--icone-perigo:hover {
+  color: var(--erro);
+  background-color: var(--fundo-erro); 
+}
 
 .cabecalho__acao-sair:hover{
   background-color: var(--fundo-erro);

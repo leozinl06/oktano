@@ -37,6 +37,8 @@ $router->adicionar('treinos/desarquivar-ficha', 'TreinosController', 'desarquiva
 $router->adicionar('treinos/detalhes', 'TreinosController', 'detalhesFicha');
 
 $router->adicionar('treinos/adicionar-treino', 'TreinosController', 'adicionarTreino');
+$router->adicionar('treinos/editar-treino', 'TreinosController', 'editarTreino');
+$router->adicionar('treinos/excluir-treino', 'TreinosController', 'excluirTreino');
 
 $router->adicionar('meus-treinos', 'MeusTreinosController', 'index');
 

@@ -68,6 +68,7 @@ $paginaAtiva = 'treinos';
                     <div class="grade-treinos">
                         <?php foreach($treinos as $treino): ?>
                         <div class="card treino-card">
+                            
                             <div class="treino-card__topo">
                                 <div class="treino-card__info">
                                     <h3 class="treino-card__titulo"><?= htmlspecialchars($treino['titulo']) ?></h3>
@@ -75,15 +76,23 @@ $paginaAtiva = 'treinos';
                                         <p class="treino-card__desc"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
                                     <?php endif; ?>
                                 </div>
+                                
                                 <div class="treino-card__acoes">
-                                    <button type="button" class="btn btn--icone" title="Editar Treino">
+                                    <button type="button" class="btn btn--icone js-btn-editar-treino" 
+                                            data-id="<?= $treino['id'] ?>" 
+                                            data-titulo="<?= htmlspecialchars($treino['titulo']) ?>" 
+                                            data-descricao="<?= htmlspecialchars($treino['descricao']) ?>" 
+                                            title="Editar Treino">
                                         <i class="ph ph-pencil-simple"></i>
                                     </button>
-                                    <button type="button" class="btn btn--icone" title="Excluir Treino">
+                                    <button type="button" class="btn btn--icone btn--icone-perigo js-btn-excluir-treino" 
+                                            data-id="<?= $treino['id'] ?>" 
+                                            title="Excluir Treino">
                                         <i class="ph ph-trash"></i>
                                     </button>
                                 </div>
-                            </div>
+                            </div> 
+
                             <div class="treino-card__corpo">
                                 <p class="form-hint" style="margin-bottom: var(--espaco-3);">Nenhum exercício cadastrado ainda.</p>
                                 
@@ -101,6 +110,8 @@ $paginaAtiva = 'treinos';
         </div>
     </main>
     <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>
+    <?php require __DIR__ . '/../components/modal_editar_treino.php'; ?>
+    <?php require __DIR__ . '/../components/modal_excluir_treino.php'; ?>
 
     <script type="module" src="<?= BASE_URL ?>/assets/js/detalhes_ficha.js"></script>
 
