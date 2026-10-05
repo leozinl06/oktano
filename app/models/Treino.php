@@ -68,4 +68,18 @@ class Treino{
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarPorId($id){
+        $query = "SELECT * FROM " . $this->tabela . " WHERE id = :id LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if($stmt->rowCount() > 0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return false;
+    }
 }

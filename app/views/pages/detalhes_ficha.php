@@ -96,10 +96,10 @@ $paginaAtiva = 'treinos';
                             <div class="treino-card__corpo">
                                 <p class="form-hint" style="margin-bottom: var(--espaco-3);">Nenhum exercício cadastrado ainda.</p>
                                 
-                                <button type="button" class="btn btn--primario btn--pequeno">
+                                <a href="<?= BASE_URL ?>/treinos/buscar-exercicios?id_treino=<?= $treino['id'] ?>" class="btn btn--primario btn--pequeno">
                                     <i class="ph ph-plus"></i>
                                     Adicionar Exercícios
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <?php endforeach; ?>

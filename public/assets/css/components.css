@@ -668,3 +668,66 @@
     flex-direction: column;
     align-items: flex-start;
 }
+
+.card-pesquisa-api {
+    margin-bottom: var(--espaco-4);
+}
+
+.loader-pesquisa {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-2);
+    color: var(--cor-primaria);
+    font-weight: 600;
+    margin-top: var(--espaco-3);
+}
+
+.grade-busca-exercicios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--espaco-3);
+    margin-bottom: var(--espaco-5);
+}
+
+.cartao-exercicio-api {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cartao-exercicio-api__imagem img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.cartao-exercicio-api__corpo {
+    padding: var(--espaco-3);
+    flex-grow: 1;
+}
+
+.cartao-exercicio-api__titulo {
+    font-size: 1.1rem;
+    margin-bottom: var(--espaco-2);
+    color: var(--cor-texto);
+}
+
+.cartao-exercicio-api__rodape {
+    padding: var(--espaco-3);
+    border-top: 1px solid var(--cor-borda);
+    background-color: var(--cor-fundo-secundario);
+}
+
+/* Posicionamento do erro de API para ocupar toda a grade */
+.erro-grid-inteiro {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--espaco-4);
+}
+
+.cartao-exercicio-api__musculos {
+    font-size: 0.85rem;
+    margin-bottom: var(--espaco-2);
+}
