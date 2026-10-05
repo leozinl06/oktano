@@ -134,25 +134,18 @@ export function configurarDetalhesFicha() {
     cabecalhosTreino.forEach(cabecalho => {
         cabecalho.addEventListener('click', () => {
             const card = cabecalho.closest('.treino-card');
-            const corpo = card.querySelector('.treino-card__corpo');
             const icone = cabecalho.querySelector('.treino-card__chevron');
             
-            const estaAberto = cabecalho.getAttribute('aria-expanded') === 'true';
+            // Alterna a classe is-open que aciona o CSS Grid
+            const isAberto = card.classList.toggle('is-open');
+            cabecalho.setAttribute('aria-expanded', isAberto);
             
-            if (estaAberto) {
-                corpo.classList.add('is-hidden');
-                cabecalho.setAttribute('aria-expanded', 'false');
-                if (icone) {
-                    icone.classList.remove('ph-caret-up');
-                    icone.classList.add('ph-caret-down');
-                }
+            if (isAberto) {
+                icone.classList.remove('ph-caret-down');
+                icone.classList.add('ph-caret-up');
             } else {
-                corpo.classList.remove('is-hidden');
-                cabecalho.setAttribute('aria-expanded', 'true');
-                if (icone) {
-                    icone.classList.remove('ph-caret-down');
-                    icone.classList.add('ph-caret-up');
-                }
+                icone.classList.remove('ph-caret-up');
+                icone.classList.add('ph-caret-down');
             }
         });
     });
