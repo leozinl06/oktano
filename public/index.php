@@ -35,10 +35,13 @@ $router->adicionar('treinos/arquivados', 'TreinosController', 'arquivados');
 $router->adicionar('treinos/arquivar-ficha', 'TreinosController', 'arquivarFicha');
 $router->adicionar('treinos/desarquivar-ficha', 'TreinosController', 'desarquivarFicha');
 $router->adicionar('treinos/detalhes', 'TreinosController', 'detalhesFicha');
+$router->adicionar('treinos/reordenar', 'TreinosController', 'reordenarTreinos');
 
 $router->adicionar('treinos/adicionar-treino', 'TreinosController', 'adicionarTreino');
 $router->adicionar('treinos/editar-treino', 'TreinosController', 'editarTreino');
 $router->adicionar('treinos/excluir-treino', 'TreinosController', 'excluirTreino');
+
+
 $router->adicionar('treinos/buscar-exercicios', 'ExerciciosController', 'index');
 $router->adicionar('api/exercicios/buscar', 'ExerciciosController', 'pesquisarApi');
 $router->adicionar('treinos/adicionar-exercicio', 'ExerciciosController', 'adicionarAoTreino');

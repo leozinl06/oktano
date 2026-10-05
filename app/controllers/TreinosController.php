@@ -293,6 +293,39 @@ class TreinosController extends BaseController{
         require_once __DIR__ . '/../views/pages/detalhes_ficha.php';
     }
 
+    public function reordenarTreinos(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $ordem_treinos = $_POST['treinos_ordem'] ?? []; 
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
+
+            if(empty($ordem_treinos) || empty($id_ficha)){
+                $this->redirecionarComResultado($url_retorno, false, 'Nenhuma ordem recebida.');
+            }
+
+            $database = new Database();
+            $db = $database->conectar();
+            $treinoModel = new Treino($db);
+
+            $sucesso = true;
+
+            foreach($ordem_treinos as $index => $id_treino) {
+                $nova_ordem = $index + 1; 
+                if(!$treinoModel->atualizarOrdem($id_treino, $nova_ordem)) {
+                    $sucesso = false;
+                }
+            }
+
+            if($sucesso){
+                $this->redirecionarComResultado($url_retorno, true, 'Ordem dos treinos atualizada com sucesso!');
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao salvar a nova ordem de alguns treinos.');
+            }
+        }
+    }
+
     //-----------------TREINO DA FICHA-----------------
     
     public function adicionarTreino(){

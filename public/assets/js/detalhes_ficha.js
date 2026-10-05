@@ -150,6 +150,75 @@ export function configurarDetalhesFicha() {
         });
     });
 
+    // ==========================================
+    // 6. MODAL: REORDENAR TREINOS
+    // ==========================================
+    const modalReordenar = document.getElementById('modal-reordenar-treino');
+    const btnAbrirReordenar = document.querySelector('.js-btn-reordenar-treino');
+    const listaReordenar = document.getElementById('lista-reordenar-treinos');
+
+    if (modalReordenar && btnAbrirReordenar && listaReordenar) {
+        btnAbrirReordenar.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalReordenar.classList.remove('modal-overlay--oculto');
+        });
+
+        document.querySelectorAll('.js-modal-fechar-reordenar').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalReordenar.classList.add('modal-overlay--oculto');
+            });
+        });
+
+        listaReordenar.addEventListener('click', (e) => {
+            const btnUp = e.target.closest('.js-move-up');
+            const btnDown = e.target.closest('.js-move-down');
+            const liItem = e.target.closest('.item-reordenavel');
+
+            if (!liItem) return;
+
+            // Identifica o elemento vizinho que vai trocar de lugar
+            let sibling = null;
+            if (btnUp && liItem.previousElementSibling) {
+                sibling = liItem.previousElementSibling;
+            } else if (btnDown && liItem.nextElementSibling) {
+                sibling = liItem.nextElementSibling;
+            }
+
+            if (!sibling) return; // Não faz nada se já está no topo ou no fundo
+
+            // 1. Grava as posições originais na tela antes de mover (First)
+            const liRect = liItem.getBoundingClientRect();
+            const siblingRect = sibling.getBoundingClientRect();
+
+            // 2. Faz a troca no DOM instantaneamente
+            if (btnUp) {
+                listaReordenar.insertBefore(liItem, sibling);
+            } else {
+                listaReordenar.insertBefore(sibling, liItem);
+            }
+
+            // 3. Pega as novas posições após a troca (Last)
+            const newLiRect = liItem.getBoundingClientRect();
+            const newSiblingRect = sibling.getBoundingClientRect();
+
+            // 4. Cria a ilusão de animação movendo os itens de volta de onde vieram e deslizando para a posição atual (Invert & Play)
+            liItem.animate([
+                { transform: `translateY(${liRect.top - newLiRect.top}px)` },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 250, // Velocidade da animação em milissegundos
+                easing: 'ease-in-out'
+            });
+
+            sibling.animate([
+                { transform: `translateY(${siblingRect.top - newSiblingRect.top}px)` },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 250,
+                easing: 'ease-in-out'
+            });
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', configurarDetalhesFicha);

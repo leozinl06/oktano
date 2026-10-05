@@ -82,4 +82,14 @@ class Treino{
 
         return false;
     }
+
+    public function atualizarOrdem($id_treino, $nova_ordem){
+        $query = "UPDATE " . $this->tabela . " SET ordem = :ordem WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':ordem', $nova_ordem, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id_treino, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

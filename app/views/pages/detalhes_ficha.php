@@ -50,7 +50,7 @@ $paginaAtiva = 'treinos';
                     <i class="ph ph-plus"></i>
                     Adicionar Treinos
                 </button>
-                <button type="button" class="btn btn--secundario">
+                <button type="button" class="btn btn--secundario js-btn-reordenar-treino">
                     <i class="ph ph-arrows-down-up"></i>
                     Reordenar Treinos
                 </button>
@@ -170,6 +170,7 @@ $paginaAtiva = 'treinos';
     <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_editar_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_excluir_treino.php'; ?>
+    <?php require __DIR__ . '/../components/modal_reordenar_treinos.php'; ?>
 
     <script type="module" src="<?= BASE_URL ?>/assets/js/detalhes_ficha.js"></script>
 
