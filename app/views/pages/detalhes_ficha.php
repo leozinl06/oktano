@@ -140,8 +140,7 @@ $paginaAtiva = 'treinos';
                                                                             title="Séries e Repetições">
                                                                             <i class="ph ph-arrows-out-line-horizontal"></i>
                                                                             <span>
-                                                                                <?= $ex['series'] ?>x
-                                                                                <?= htmlspecialchars($ex['repeticoes']) ?>
+                                                                                <?= $ex['series'] ?>x<?= htmlspecialchars($ex['repeticoes']) ?>
                                                                             </span>
                                                                         </div>
                                                                         <div class="param-badge" title="Tempo de Descanso">
