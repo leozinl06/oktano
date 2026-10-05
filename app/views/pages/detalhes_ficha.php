@@ -69,44 +69,57 @@ $paginaAtiva = 'treinos';
                         <?php foreach($treinos as $treino): ?>
                         <div class="card treino-card">
                             
-                            <div class="treino-card__topo">
+                            <button type="button" class="treino-card__cabecalho js-treino-accordion" aria-expanded="false">
                                 <div class="treino-card__info">
                                     <h3 class="treino-card__titulo"><?= htmlspecialchars($treino['titulo']) ?></h3>
-                                    <?php if(!empty($treino['descricao'])): ?>
-                                        <p class="treino-card__desc"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
+                                    <span class="form-hint"><?= count($treino['exercicios']) ?> exercício(s)</span>
+                                </div>
+                                <i class="ph ph-caret-down treino-card__chevron"></i>
+                            </button>
+
+                            <div class="treino-card__corpo is-hidden">
+                                <?php if(!empty($treino['descricao'])): ?>
+                                    <p class="treino-card__desc"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
+                                <?php endif; ?>
+
+                                <div class="treino-card__acoes-barra">
+                                    <a href="<?= BASE_URL ?>/treinos/buscar-exercicios?id_treino=<?= $treino['id'] ?>" class="btn btn--primario btn--pequeno">
+                                        <i class="ph ph-plus"></i> Adicionar
+                                    </a>
+                                    <div>
+                                        <button type="button" class="btn btn--icone js-btn-editar-treino" data-id="<?= $treino['id'] ?>" data-titulo="<?= htmlspecialchars($treino['titulo']) ?>" data-descricao="<?= htmlspecialchars($treino['descricao']) ?>" title="Editar Treino">
+                                            <i class="ph ph-pencil-simple"></i>
+                                        </button>
+                                        <button type="button" class="btn btn--icone btn--icone-perigo js-btn-excluir-treino" data-id="<?= $treino['id'] ?>" title="Excluir Treino">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="lista-exercicios">
+                                    <?php if(empty($treino['exercicios'])): ?>
+                                        <p class="form-hint">Nenhum exercício cadastrado ainda.</p>
+                                    <?php else: ?>
+                                        <?php foreach($treino['exercicios'] as $ex): ?>
+                                        <div class="lista-exercicios__item">
+                                            <div class="lista-exercicios__info">
+                                                <strong><?= htmlspecialchars($ex['nome']) ?></strong>
+                                                <span class="badge badge--rascunho" style="align-self: flex-start; margin-top: 4px;"><?= htmlspecialchars($ex['musculo']) ?></span>
+                                            </div>
+                                            <div class="lista-exercicios__params">
+                                                <span class="badge badge--ativa" title="Séries e Repetições"><?= $ex['series'] ?>x<?= htmlspecialchars($ex['repeticoes']) ?></span>
+                                                <span class="badge badge--neutro" title="Tempo de Descanso"><i class="ph ph-clock"></i> <?= $ex['tempo_descanso_seg'] ?>s</span>
+                                            </div>
+                                        </div>
+                                        <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div>
-                                
-                                <div class="treino-card__acoes">
-                                    <button type="button" class="btn btn--icone js-btn-editar-treino" 
-                                            data-id="<?= $treino['id'] ?>" 
-                                            data-titulo="<?= htmlspecialchars($treino['titulo']) ?>" 
-                                            data-descricao="<?= htmlspecialchars($treino['descricao']) ?>" 
-                                            title="Editar Treino">
-                                        <i class="ph ph-pencil-simple"></i>
-                                    </button>
-                                    <button type="button" class="btn btn--icone btn--icone-perigo js-btn-excluir-treino" 
-                                            data-id="<?= $treino['id'] ?>" 
-                                            title="Excluir Treino">
-                                        <i class="ph ph-trash"></i>
-                                    </button>
-                                </div>
-                            </div> 
-
-                            <div class="treino-card__corpo">
-                                <p class="form-hint" style="margin-bottom: var(--espaco-3);">Nenhum exercício cadastrado ainda.</p>
-                                
-                                <a href="<?= BASE_URL ?>/treinos/buscar-exercicios?id_treino=<?= $treino['id'] ?>" class="btn btn--primario btn--pequeno">
-                                    <i class="ph ph-plus"></i>
-                                    Adicionar Exercícios
-                                </a>
                             </div>
                         </div>
                         <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
-            </div>
-
+                    <?php endif; ?>
+                </div>
         </div>
     </main>
     <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>

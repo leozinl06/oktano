@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // (Mantenha o código existente que busca os dados intacto)
+
+    // Modifique levemente a injeção do HTML no renderizarResultados para enviar mais dados (data-musculo):
     function renderizarResultados(exercicios) {
         const fragmento = document.createDocumentFragment();
 
@@ -63,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const cartao = document.createElement('div');
             cartao.classList.add('card', 'cartao-exercicio-api');
 
-            // Mapeamento baseado no Schema da ExerciseDB
             const parteDoCorpo = ex.bodyPart || 'Não classificado';
             const alvo = ex.target || 'Diversos';
             const equipamento = ex.equipment || 'Sem equipamento';
@@ -77,7 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="badge badge--ativa">${parteDoCorpo}</span>
                 </div>
                 <div class="cartao-exercicio-api__rodape">
-                    <button type="button" class="btn btn--primario btn--bloco js-selecionar-exercicio" data-api-id="${ex.id}" data-nome="${ex.name}">
+                    <button type="button" class="btn btn--primario btn--bloco js-selecionar-exercicio" 
+                        data-api-id="${ex.id}" 
+                        data-nome="${nomeCapitalizado}" 
+                        data-musculo="${alvo}">
                         <i class="ph ph-plus"></i> Adicionar
                     </button>
                 </div>
@@ -87,4 +92,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gradeResultados.appendChild(fragmento);
     }
+
+    // LÓGICA DO MODAL
+    const modalConfigurar = document.getElementById('modal-configurar-exercicio');
+    const formConfigurar = document.getElementById('form-configurar-exercicio');
+    
+    // Event Delegation para capturar cliques nos botões recém-criados
+    gradeResultados.addEventListener('click', (e) => {
+        const btn = e.target.closest('.js-selecionar-exercicio');
+        if(btn) {
+            // Preenche os campos ocultos com os dados da API
+            document.getElementById('modal-exercicio-api_id').value = btn.getAttribute('data-api-id');
+            document.getElementById('modal-exercicio-nome').value = btn.getAttribute('data-nome');
+            document.getElementById('modal-exercicio-musculo').value = btn.getAttribute('data-musculo');
+            
+            // Atualiza o título do Modal
+            document.getElementById('titulo-modal-exercicio').textContent = btn.getAttribute('data-nome');
+            
+            // Exibe o modal
+            modalConfigurar.classList.remove('modal-overlay--oculto');
+        }
+    });
+
+    // Fechar modal
+    document.querySelectorAll('.js-modal-fechar-configurar').forEach(btn => {
+        btn.addEventListener('click', () => {
+            modalConfigurar.classList.add('modal-overlay--oculto');
+            formConfigurar.reset();
+        });
+    });
+
+    // Fechar ao clicar fora ou apertar ESC
+    modalConfigurar.addEventListener('click', (e) => {
+        if(e.target === modalConfigurar) {
+            modalConfigurar.classList.add('modal-overlay--oculto');
+            formConfigurar.reset();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && !modalConfigurar.classList.contains('modal-overlay--oculto')){
+            modalConfigurar.classList.add('modal-overlay--oculto');
+            formConfigurar.reset();
+        }
+    });
 });

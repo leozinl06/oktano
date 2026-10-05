@@ -3,6 +3,7 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/FichaTreino.php';
 require_once __DIR__ . '/../models/Praticante.php';
 require_once __DIR__ . '/../core/BaseController.php';
+require_once __DIR__ . '/../models/TreinoExercicio.php';
 
 require_once __DIR__ . '/../models/Treino.php';
 
@@ -277,7 +278,14 @@ class TreinosController extends BaseController{
         }
 
         $treinoModel = new Treino($db);
-        $treinos = $treinoModel->buscarPorFicha($id_ficha);
+        $treinoExercicioModel = new TreinoExercicio($db);
+
+        $treinosBrutos = $treinoModel->buscarPorFicha($id_ficha);
+        $treinos = [];
+        foreach($treinosBrutos as $t){
+            $t['exercicios'] = $treinoExercicioModel->buscarPorTreino($t['id']);
+            $treinos[] = $t;
+        }
 
         $resultado = $_SESSION['resultado'] ?? null;
         unset($_SESSION['resultado']);

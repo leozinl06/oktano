@@ -125,6 +125,38 @@ export function configurarDetalhesFicha() {
             });
         }
     });
+
+    // ==========================================
+    // 5. ACORDEÃO: EXPANDIR/RECOLHER TREINOS
+    // ==========================================
+    const cabecalhosTreino = document.querySelectorAll('.js-treino-accordion');
+    
+    cabecalhosTreino.forEach(cabecalho => {
+        cabecalho.addEventListener('click', () => {
+            const card = cabecalho.closest('.treino-card');
+            const corpo = card.querySelector('.treino-card__corpo');
+            const icone = cabecalho.querySelector('.treino-card__chevron');
+            
+            const estaAberto = cabecalho.getAttribute('aria-expanded') === 'true';
+            
+            if (estaAberto) {
+                corpo.classList.add('is-hidden');
+                cabecalho.setAttribute('aria-expanded', 'false');
+                if (icone) {
+                    icone.classList.remove('ph-caret-up');
+                    icone.classList.add('ph-caret-down');
+                }
+            } else {
+                corpo.classList.remove('is-hidden');
+                cabecalho.setAttribute('aria-expanded', 'true');
+                if (icone) {
+                    icone.classList.remove('ph-caret-down');
+                    icone.classList.add('ph-caret-up');
+                }
+            }
+        });
+    });
+
 }
 
 document.addEventListener('DOMContentLoaded', configurarDetalhesFicha);

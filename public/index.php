@@ -41,6 +41,7 @@ $router->adicionar('treinos/editar-treino', 'TreinosController', 'editarTreino')
 $router->adicionar('treinos/excluir-treino', 'TreinosController', 'excluirTreino');
 $router->adicionar('treinos/buscar-exercicios', 'ExerciciosController', 'index');
 $router->adicionar('api/exercicios/buscar', 'ExerciciosController', 'pesquisarApi');
+$router->adicionar('treinos/adicionar-exercicio', 'ExerciciosController', 'adicionarAoTreino');
 
 $router->adicionar('meus-treinos', 'MeusTreinosController', 'index');
 

@@ -731,3 +731,74 @@
     font-size: 0.85rem;
     margin-bottom: var(--espaco-2);
 }
+
+/* --- Acordeão de Treinos --- */
+.treino-card {
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.treino-card__cabecalho {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    border: none;
+    padding: var(--espaco-4);
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.treino-card__cabecalho:hover {
+    background-color: var(--cor-fundo-secundario);
+}
+
+.treino-card__corpo {
+    padding: 0 var(--espaco-4) var(--espaco-4) var(--espaco-4);
+    border-top: 1px solid var(--cor-borda);
+}
+
+.treino-card__desc {
+    margin-bottom: var(--espaco-3);
+    font-size: 0.95rem;
+}
+
+.treino-card__acoes-barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espaco-3);
+    padding-bottom: var(--espaco-3);
+    border-bottom: 1px dashed var(--cor-borda);
+}
+
+/* --- Lista de Exercícios --- */
+.lista-exercicios {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-2);
+}
+
+.lista-exercicios__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--espaco-3);
+    background-color: var(--cor-fundo-secundario);
+    border-radius: var(--raio-md);
+    border: 1px solid var(--cor-borda);
+}
+
+.lista-exercicios__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.lista-exercicios__params {
+    display: flex;
+    gap: var(--espaco-2);
+    align-items: center;
+}
