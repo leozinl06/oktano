@@ -1,3 +1,7 @@
+import { configurarValidacaoGlobal } from "./validador.js";
+
+configurarValidacaoGlobal();
+
 document.addEventListener('DOMContentLoaded', () => {
     const inputPesquisa = document.getElementById('input-pesquisa-api');
     const gradeResultados = document.getElementById('grade-resultados');

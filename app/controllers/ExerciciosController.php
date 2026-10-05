@@ -30,6 +30,9 @@ class ExerciciosController extends BaseController {
 
         $tituloPagina = 'Buscar Exercícios - ' . htmlspecialchars($treino['titulo']);
         $paginaAtiva = 'treinos';
+
+        $resultado = $_SESSION['resultado'] ?? null;
+        unset($_SESSION['resultado']);
         
         require_once __DIR__ . '/../views/pages/buscar_exercicios.php';
     }
