@@ -136,4 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
             formConfigurar.reset();
         }
     });
+
+    // Fechar modal ao submeter
+    formConfigurar.addEventListener('submit', () => {
+        modalConfigurar.classList.add('modal-overlay--oculto');
+    });
 });

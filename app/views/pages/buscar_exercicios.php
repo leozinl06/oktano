@@ -11,6 +11,14 @@
                 <i class="ph ph-arrow-left"></i> Voltar para a Ficha
             </a>
 
+            <!-- EXIBIÇÃO DE ALERTAS DE SUCESSO/ERRO -->
+            <?php if(!empty($resultado)): ?>
+            <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
+                <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
+                <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
+            </div>
+            <?php endif; ?>
+
             <div class="pagina__cabecalho">
                 <div>
                     <h1>Pesquisar para: <?= htmlspecialchars($treino['titulo']) ?></h1>
@@ -20,13 +28,6 @@
                 </div>
             </div>
 
-            <!-- EXIBIÇÃO DE ALERTAS DE SUCESSO/ERRO -->
-            <?php if(!empty($resultado)): ?>
-            <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
-                <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
-                <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
-            </div>
-            <?php endif; ?>
 
             <div class="card card-pesquisa-api">
                 <div class="campo-busca">
