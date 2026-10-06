@@ -34,7 +34,13 @@ class TreinoExercicio{
     }
 
     public function buscarPorTreino($id_treino) {
-        $query = "SELECT te.*, e.nome, e.musculo 
+        $query = "SELECT te.*, e.nome, e.musculo,
+                         (SELECT es.carga_utilizada 
+                          FROM exercicio_sessao es 
+                          INNER JOIN sessao s ON es.id_sessao = s.id 
+                          WHERE es.id_treino_exercicio = te.id 
+                          ORDER BY s.data_realizacao DESC 
+                          LIMIT 1) AS ultima_carga
                   FROM " . $this->tabela . " te
                   INNER JOIN exercicio e ON te.id_exercicio = e.id
                   WHERE te.id_treino = :id_treino

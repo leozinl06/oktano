@@ -873,3 +873,69 @@
   border-left: 4px solid var(--cor-primaria);
   margin-top: var(--espaco-2);
 }
+
+/* =========================================
+   COMPONENTES DE EXECUÇÃO DE TREINO
+   ========================================= */
+
+/* Modificador para modais compactos */
+.modal--pequeno {
+  max-width: 320px;
+  margin-inline: auto;
+}
+
+/* Modificadores para a caixa de métricas */
+.metrica-box--clicavel {
+  cursor: pointer;
+  transition: border-color var(--transicao-rapida), background-color var(--transicao-rapida);
+}
+.metrica-box--clicavel:hover {
+  border-color: var(--cor-primaria);
+  background-color: var(--cor-superficie-alta);
+}
+
+.metrica-box__acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-metrica-editar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto-secundario);
+  font-size: 1.1rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color var(--transicao-rapida), color var(--transicao-rapida);
+}
+.btn-metrica-editar:hover {
+  color: var(--cor-primaria);
+  background-color: var(--cor-borda);
+}
+
+/* Cronômetro tabular (evita o botão tremer quando os números mudam) */
+.cronometro-ativo {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+}
+
+/* Display gigante para o modal de descanso */
+.cronometro-display {
+  font-family: var(--fonte-titulo);
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--cor-texto);
+  margin: var(--espaco-4) 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Área inferior da tela de treino */
+.execucao-rodape {
+  margin-top: var(--espaco-6);
+  display: flex;
+  flex-direction: column;
+}
