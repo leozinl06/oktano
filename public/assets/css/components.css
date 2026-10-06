@@ -985,3 +985,29 @@
   color: var(--cor-primaria);
   font-weight: 700;
 }
+
+/* =========================================
+   HISTÓRICO DE SESSÕES (Painel Personal)
+   ========================================= */
+.historico-ficha {
+  margin-bottom: var(--espaco-5);
+}
+.historico-ficha__titulo {
+  margin-bottom: var(--espaco-3);
+  padding-bottom: var(--espaco-2);
+  border-bottom: 1px solid var(--cor-borda);
+  font-size: 1.1rem;
+  color: var(--cor-texto);
+}
+.historico-treino {
+  padding: var(--espaco-4);
+  margin-bottom: var(--espaco-3);
+  border: 1px solid var(--cor-borda);
+  background-color: var(--cor-superficie);
+  border-radius: var(--raio-md);
+}
+.historico-treino__titulo {
+  margin-bottom: var(--espaco-3);
+  color: var(--cor-primaria-hover);
+  font-size: 1.05rem;
+}

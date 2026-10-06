@@ -53,6 +53,8 @@ $router->adicionar('meus-treinos/detalhes', 'MeusTreinosController', 'detalhes')
 $router->adicionar('meus-treinos/exercicios', 'MeusTreinosController', 'exercicios');
 $router->adicionar('meus-treinos/salvar-sessao', 'MeusTreinosController', 'salvarSessao');
 
+$router->adicionar('sessoes', 'SessoesController', 'index');
+
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 

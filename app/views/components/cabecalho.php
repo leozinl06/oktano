@@ -18,6 +18,7 @@ $linksPorTipo = [
         ['rota' => 'alunos', 'label' => 'Alunos', 'icone' => 'ph-users'],
         ['rota' => 'treinos', 'label' => 'Treinos', 'icone' => 'ph-barbell'],
         ['rota' => 'treinos/arquivados', 'label' => 'Arquivados', 'icone' => 'ph-archive'],
+        ['rota' => 'sessoes', 'label' => 'Sessões', 'icone' => 'ph-calendar-check'],
     ],
     'praticante' => [
         ['rota' => 'dashboard_praticante', 'label' => 'Painel', 'icone' => 'ph-squares-four'],
