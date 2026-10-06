@@ -882,6 +882,17 @@
 .modal--pequeno {
   max-width: 320px;
   margin-inline: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal--pequeno .modal__acoes {
+  flex-direction: column-reverse;
+}
+
+.modal--pequeno .modal__acoes .btn {
+  width: 100%;
+  justify-content: center;
 }
 
 /* Modificadores para a caixa de métricas */
@@ -938,4 +949,39 @@
   margin-top: var(--espaco-6);
   display: flex;
   flex-direction: column;
+}
+
+/* --- Seleção de Nível de Fadiga --- */
+.selecao-fadiga {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  margin-bottom: var(--espaco-4);
+}
+.fadiga-opcao input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.fadiga-opcao label {
+  display: block;
+  padding: var(--espaco-3);
+  background-color: var(--cor-superficie-alta);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transicao-rapida);
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+.fadiga-opcao input[type="radio"]:focus-visible + label {
+  box-shadow: 0 0 0 3px var(--anel-foco-sombra);
+}
+.fadiga-opcao input[type="radio"]:checked + label {
+  background-color: var(--cor-primaria-clara);
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+  font-weight: 700;
 }

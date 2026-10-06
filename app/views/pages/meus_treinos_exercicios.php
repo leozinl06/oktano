@@ -59,7 +59,7 @@
                                     <span class="metrica-box__rotulo">Descanso <i class="ph-bold ph-play-circle" style="vertical-align: middle;"></i></span>
                                 </div>
                                 <!-- Métrica Carga -->
-                                <div class="metrica-box metrica-carga" data-id-exercicio="<?= $ex['id'] ?>">
+                                <div class="metrica-box metrica-carga" data-id-treino-exercicio="<?= $ex['id'] ?>" data-id-exercicio="<?= $ex['id_exercicio'] ?>">
                                     <?php 
                                         // Formata a carga para remover casas decimais desnecessárias (ex: 20.00 vira 20)
                                         $cargaAtual = !empty($ex['ultima_carga']) ? (float)$ex['ultima_carga'] : 0;
@@ -136,6 +136,52 @@
                     <i class="ph-bold ph-play"></i>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Nível de Fadiga -->
+    <div class="modal-overlay modal-overlay--oculto" id="modal-fadiga" role="dialog" aria-modal="true">
+        <div class="modal modal--pequeno">
+            <h3 class="modal__titulo" style="text-align: center;">Treino Concluído!</h3>
+            
+            <!-- ADICIONADO: Visor do tempo final do treino -->
+            <div id="tempo-final-treino" class="cronometro-display" style="margin-top: 0; margin-bottom: var(--espaco-2); font-size: 2.5rem; color: var(--cor-primaria);">
+                00:00
+            </div>
+            
+            <p class="modal__texto" style="text-align: center;">Como você avalia a sua percepção de esforço no treino de hoje?</p>
+            
+            <form id="form-finalizar-sessao" novalidate>
+                <div class="selecao-fadiga">
+                    <div class="fadiga-opcao">
+                        <input type="radio" name="fadiga" id="fadiga-1" value="1" required>
+                        <label for="fadiga-1">Muito Leve</label>
+                    </div>
+                    <div class="fadiga-opcao">
+                        <input type="radio" name="fadiga" id="fadiga-2" value="2">
+                        <label for="fadiga-2">Leve</label>
+                    </div>
+                    <div class="fadiga-opcao">
+                        <input type="radio" name="fadiga" id="fadiga-3" value="3">
+                        <label for="fadiga-3">Moderado</label>
+                    </div>
+                    <div class="fadiga-opcao">
+                        <input type="radio" name="fadiga" id="fadiga-4" value="4">
+                        <label for="fadiga-4">Intenso</label>
+                    </div>
+                    <div class="fadiga-opcao">
+                        <input type="radio" name="fadiga" id="fadiga-5" value="5">
+                        <label for="fadiga-5">Muito Intenso (Exaustivo)</label>
+                    </div>
+                </div>
+                
+                <div class="modal__acoes">
+                    <button type="button" class="btn btn--secundario js-fechar-fadiga">Cancelar</button>
+                    <button type="submit" class="btn btn--primario" id="btn-salvar-sessao">
+                        <i class="ph-bold ph-check"></i> Salvar Alteração
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
