@@ -309,3 +309,19 @@ main{ display: block; }
     margin-bottom: var(--espaco-4);
     line-height: 1.5;
 }
+
+/* ---------- Tela de Execução do Treino (Praticante) ---------- */
+.execucao-cabecalho {
+  text-align: center;
+  margin-bottom: var(--espaco-4);
+}
+.execucao-cabecalho__titulo {
+  font-size: 2rem;
+  margin-bottom: var(--espaco-2);
+}
+.lista-exercicios-tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+  margin-top: var(--espaco-5);
+}

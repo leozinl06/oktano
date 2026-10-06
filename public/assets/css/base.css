@@ -69,6 +69,10 @@ p{ color: var(--cor-texto-secundario); }
   padding-inline: var(--espaco-4);
 }
 
+.container--estreito {
+  max-width: 600px;
+}
+
 /* --- Foco visível global, conforme WCAG AA --- */
 a:focus-visible,
 button:focus-visible,
