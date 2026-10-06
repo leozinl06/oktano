@@ -47,16 +47,6 @@ $paginaAtiva = 'alunos';
                     <span class="form-error-msg"></span>
                 </div>
 
-                <div class="form-group">
-                    <label for="status" class="form-label">Status inicial</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">Selecione...</option>
-                        <option value="rascunho">Rascunho</option>
-                        <option value="ativa">Ativa</option>
-                    </select>
-                    <span class="form-error-msg"></span>
-                </div>
-
                 <div class="form-rodape">
                     <a href="<?= BASE_URL ?>/alunos" class="btn btn--secundario">Cancelar</a>
                     <button type="submit" class="btn btn--primario">

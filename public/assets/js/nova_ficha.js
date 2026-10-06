@@ -4,7 +4,6 @@ const {definirErro, removerErro, configurarLimpezaAoDigitar} = configurarValidac
 
 const form = document.querySelector('form');
 const inputTitulo = document.getElementById('titulo');
-const selectStatus = document.getElementById('status');
 
 const campos = [inputTitulo, selectStatus];
 
@@ -18,11 +17,6 @@ if(form){
 
         if (inputTitulo.value.trim() === '') {
             definirErro(inputTitulo, 'O título da ficha é obrigatório.');
-            formularioValido = false;
-        }
-
-        if (selectStatus.value.trim() === '') {
-            definirErro(selectStatus, 'O status inicial é obrigatório.');
             formularioValido = false;
         }
 

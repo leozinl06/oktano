@@ -70,11 +70,12 @@ class TreinosController extends BaseController{
             $id_aluno = filter_input(INPUT_POST, 'id_aluno', FILTER_SANITIZE_NUMBER_INT);
             $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
             $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
-            $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $status = 'rascunho';
 
             $url = '/oktano/public/treinos/nova-ficha?aluno_id=' . $id_aluno;
 
-            if(empty($titulo) || empty($status)){
+            if(empty($titulo)){
                 $this->redirecionarComResultado($url, false, 'Título e status são obrigatórios.');
             }
 
@@ -121,6 +122,10 @@ class TreinosController extends BaseController{
         if(!$ficha || !$aluno || $aluno['id_personal'] != $id_personal){
             $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
         }
+
+        $treinoModel = new Treino($db);
+        $treinosDaFicha = $treinoModel->buscarPorFicha($id_ficha);
+        $podeAtivar = count($treinosDaFicha) > 0;
 
         $resultado = $_SESSION['resultado'] ?? null;
         unset($_SESSION['resultado']);
@@ -237,6 +242,15 @@ class TreinosController extends BaseController{
 
             $database = new Database();
             $db = $database->conectar();
+
+            if($status === 'ativa'){
+                $treinoModel = new Treino($db);
+                $treinosDaFicha = $treinoModel->buscarPorFicha($id_ficha);
+                if(empty($treinosDaFicha)){
+                    $this->redirecionarComResultado($url_erro, false, 'A ficha precisa ter ao menos um treino.');
+                }
+            }
+
             $fichaTreinoModel = new FichaTreino($db);
 
             if($fichaTreinoModel->atualizar($id_ficha, $titulo, $descricao, $status)){

@@ -53,9 +53,18 @@ $urlVoltar = $url_origem ?? (BASE_URL . '/treinos');
                     <label for="status" class="form-label">Status</label>
                     <select name="status" id="status" class="form-select">
                         <option value="rascunho" <?= $ficha['status'] === 'rascunho' ? 'selected' : '' ?>>Rascunho</option>
-                        <option value="ativa" <?= $ficha['status'] === 'ativa' ? 'selected' : '' ?>>Ativa</option>
+                        
+                        <?php if ($podeAtivar || $ficha['status'] === 'ativa'): ?>
+                            <option value="ativa" <?= $ficha['status'] === 'ativa' ? 'selected' : '' ?>>Ativa</option>
+                        <?php endif; ?>
+                        
                         <option value="arquivada" <?= $ficha['status'] === 'arquivada' ? 'selected' : '' ?>>Arquivada</option>
                     </select>
+                    
+                    <?php if (!$podeAtivar && $ficha['status'] !== 'ativa'): ?>
+                        <p class="form-hint"><i class="ph ph-info"></i> Adicione ao menos um treino à ficha para poder ativá-la.</p>
+                    <?php endif; ?>
+                    
                     <span class="form-error-msg"></span>
                 </div>
 
