@@ -49,6 +49,7 @@ $router->adicionar('api/exercicios/buscar', 'ExerciciosController', 'pesquisarAp
 $router->adicionar('treinos/adicionar-exercicio', 'ExerciciosController', 'adicionarAoTreino');
 
 $router->adicionar('meus-treinos', 'MeusTreinosController', 'index');
+$router->adicionar('meus-treinos/detalhes', 'MeusTreinosController', 'detalhes');
 
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';

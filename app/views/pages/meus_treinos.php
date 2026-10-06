@@ -37,6 +37,12 @@ $paginaAtiva = 'meus-treinos';
                 <p class="cartao-ficha__desc">
                     <?= $ficha['descricao'] !== '' ? htmlspecialchars($ficha['descricao']) : 'Sem observações adicionadas pelo personal.' ?>
                 </p>
+
+                <div class="cartao-ficha__rodape" style="margin-top: var(--espaco-4);">
+                    <a href="<?= BASE_URL ?>/meus-treinos/detalhes?id=<?= $ficha['id'] ?>" class="btn btn--primario btn--bloco">
+                        <i class="ph ph-eye"></i> Ver Treinos
+                    </a>
+                </div>
             </div>
             <?php endforeach; ?>
         </div>
