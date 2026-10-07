@@ -8,13 +8,13 @@ class Sessao{
         $this->conn = $db;
     }
 
-    public function cadastrar($id_treino, $duracao_minutos, $nivel_fadiga){
-        $query = "INSERT INTO " . $this->tabela . " (id_treino, data_realizacao, duracao_minutos, nivel_fadiga) 
+    public function cadastrar($id_treino, $duracao_segundos, $nivel_fadiga){
+        $query = "INSERT INTO " . $this->tabela . " (id_treino, data_realizacao, duracao_segundos, nivel_fadiga) 
                   VALUES (:id_treino, NOW(), :duracao, :fadiga)";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id_treino', $id_treino, PDO::PARAM_INT);
-        $stmt->bindParam(':duracao', $duracao_minutos, PDO::PARAM_INT);
+        $stmt->bindParam(':duracao', $duracao_segundos, PDO::PARAM_INT);
         $stmt->bindParam(':fadiga', $nivel_fadiga, PDO::PARAM_INT);
 
         if($stmt->execute()){
@@ -24,7 +24,7 @@ class Sessao{
     }
 
     public function buscarSessoesPorPersonal($id_personal) {
-        $query = "SELECT s.id, s.data_realizacao, s.duracao_minutos, s.nivel_fadiga,
+        $query = "SELECT s.id, s.data_realizacao, s.duracao_segundos, s.nivel_fadiga,
                          t.titulo AS treino_titulo, t.id AS treino_id,
                          f.titulo AS ficha_titulo, f.id AS ficha_id,
                          p.nome AS aluno_nome, p.id AS aluno_id

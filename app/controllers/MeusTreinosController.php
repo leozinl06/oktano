@@ -115,7 +115,7 @@ class MeusTreinosController extends BaseController{
 
         $dados = json_decode(file_get_contents('php://input'), true);
 
-        if(!isset($dados['id_treino'], $dados['duracao_minutos'], $dados['nivel_fadiga'], $dados['exercicios'])) {
+        if(!isset($dados['id_treino'], $dados['duracao_segundos'], $dados['nivel_fadiga'], $dados['exercicios'])) {
             echo json_encode(['sucesso' => false, 'mensagem' => 'Dados incompletos.']);
             return;
         }
@@ -134,7 +134,7 @@ class MeusTreinosController extends BaseController{
             
             $id_sessao = $sessaoModel->cadastrar(
                 $dados['id_treino'], 
-                $dados['duracao_minutos'], 
+                $dados['duracao_segundos'], 
                 $dados['nivel_fadiga']
             );
 
@@ -143,14 +143,11 @@ class MeusTreinosController extends BaseController{
             }
 
             foreach($dados['exercicios'] as $ex) {
-                // Passamos 1 para série e 0 para repetições (valores descontinuados no futuro)
                 $esModel->cadastrar(
                     $id_sessao,
                     $ex['id_treino_exercicio'],
                     $ex['id_exercicio'],
-                    1, 
-                    $ex['carga'],
-                    0 
+                    $ex['carga']
                 );
             }
 

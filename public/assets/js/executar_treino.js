@@ -133,8 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSalvarSessao.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Salvando...';
             btnSalvarSessao.disabled = true;
 
-            const duracaoMinutos = Math.ceil(treinoSegundos / 60);
-
             const exerciciosSessao = [];
             document.querySelectorAll('.metrica-carga').forEach(el => {
                 const idTreinoExercicio = el.getAttribute('data-id-treino-exercicio');
@@ -152,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const payload = {
                 id_treino: parseInt(idTreino, 10),
-                duracao_minutos: duracaoMinutos,
+                duracao_segundos: treinoSegundos,
                 nivel_fadiga: parseInt(fadigaSelecionada.value, 10),
                 exercicios: exerciciosSessao
             };

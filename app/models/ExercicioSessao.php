@@ -7,18 +7,16 @@ class ExercicioSessao{
         $this->conn = $db;
     }
 
-    public function cadastrar($id_sessao, $id_treino_exercicio, $id_exercicio, $numero_serie, $carga_utilizada, $repeticoes_realizadas){
+    public function cadastrar($id_sessao, $id_treino_exercicio, $id_exercicio, $carga_utilizada){
         $query = "INSERT INTO " . $this->tabela . " 
-                  (id_sessao, id_treino_exercicio, id_exercicio, numero_serie, carga_utilizada, repeticoes_realizadas) 
-                  VALUES (:sessao, :treino_ex, :ex, :serie, :carga, :reps)";
+                  (id_sessao, id_treino_exercicio, id_exercicio, carga_utilizada) 
+                  VALUES (:sessao, :treino_ex, :ex, :carga)";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':sessao', $id_sessao, PDO::PARAM_INT);
         $stmt->bindParam(':treino_ex', $id_treino_exercicio, PDO::PARAM_INT);
         $stmt->bindParam(':ex', $id_exercicio, PDO::PARAM_INT);
-        $stmt->bindParam(':serie', $numero_serie, PDO::PARAM_INT);
         $stmt->bindParam(':carga', $carga_utilizada);
-        $stmt->bindParam(':reps', $repeticoes_realizadas, PDO::PARAM_INT);
         
         return $stmt->execute();
     }

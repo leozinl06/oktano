@@ -64,7 +64,7 @@
                                                                     <?php foreach ($treino['sessoes'] as $sessao): ?>
                                                                         <tr>
                                                                             <td data-rotulo="Data"><?= $sessao['data'] ?></td>
-                                                                            <td data-rotulo="Duração"><?= $sessao['duracao'] ?> min</td>
+                                                                            <td data-rotulo="Duração"><?= $sessao['duracao'] ?></td>
                                                                             <td data-rotulo="Fadiga">
                                                                                 <span class="badge badge--ativa">Nível <?= $sessao['fadiga'] ?></span>
                                                                             </td>

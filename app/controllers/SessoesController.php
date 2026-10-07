@@ -39,9 +39,14 @@ class SessoesController extends BaseController{
 
             $dataFormatada = date('d/m/Y H:i', strtotime($row['data_realizacao']));
 
+            $segundosTotais = (int)$row['duracao_segundos'];
+            $minutos = floor($segundosTotais/60);
+            $segundos = $segundosTotais % 60;
+            $duracaoFormatada = sprintf('%02d:%02d', $minutos, $segundos);
+
             $historico[$alunoId]['fichas'][$fichaId]['treinos'][$treinoId]['sessoes'][] = [
                 'data' => $dataFormatada,
-                'duracao' => $row['duracao_minutos'],
+                'duracao' => $duracaoFormatada,
                 'fadiga' => $row['nivel_fadiga']
             ];
         }
