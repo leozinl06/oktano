@@ -55,6 +55,8 @@ $router->adicionar('meus-treinos/salvar-sessao', 'MeusTreinosController', 'salva
 
 $router->adicionar('sessoes', 'SessoesController', 'index');
 
+$router->adicionar('api/admin/estatisticas', 'DashboardAdminController', 'apiEstatisticas');
+
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 

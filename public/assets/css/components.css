@@ -1044,3 +1044,29 @@
   height: 300px;
   width: 100%;
 }
+
+/* =========================================
+   ESTADO VAZIO DOS GRÁFICOS
+   ========================================= */
+.grafico-estado-vazio {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cor-superficie);
+  text-align: center;
+  padding: var(--espaco-4);
+  z-index: 10;
+}
+.grafico-estado-vazio i {
+  font-size: 2.5rem;
+  color: var(--cor-texto-terciario);
+  margin-bottom: var(--espaco-3);
+}
+.grafico-estado-vazio p {
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: var(--espaco-3);
+}

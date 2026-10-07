@@ -97,15 +97,31 @@ class Praticante{
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
     }
 
-    public function obterEstatisticasMensais() {
+    public function obterEstatisticasMensais($inicio = null, $fim = null){
+        $where = '';
+        if($inicio && $fim){
+            $where = "WHERE DATE_FORMAT(data_cadastro, '%Y-%m') BETWEEN :inicio AND :fim";
+        }
+        
         $query = "SELECT DATE_FORMAT(data_cadastro, '%m/%Y') as mes_ano, 
                          DATE_FORMAT(data_cadastro, '%Y-%m') as ordenacao, 
                          COUNT(id) as total
                   FROM " . $this->tabela . "
+                  $where
                   GROUP BY mes_ano, ordenacao
-                  ORDER BY ordenacao ASC
-                  LIMIT 12";
+                  ORDER BY ordenacao ASC";
+                  
+        if(!$inicio || !$fim){
+            $query .= " LIMIT 12"; // Predefinição: últimos 12 meses se não houver filtro
+        }
+        
         $stmt = $this->conn->prepare($query);
+        
+        if($inicio && $fim){
+            $stmt->bindValue(':inicio', $inicio);
+            $stmt->bindValue(':fim', $fim);
+        }
+        
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
