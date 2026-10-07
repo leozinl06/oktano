@@ -1,17 +1,21 @@
 import { configurarValidacaoGlobal } from "./validador.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Importa as funções visuais de erro do sistema
     const { definirErro, removerErro, configurarLimpezaAoDigitar } = configurarValidacaoGlobal();
 
     const ctxPersonais = document.getElementById('grafico-personais');
     const ctxPraticantes = document.getElementById('grafico-praticantes');
     
+    // Captura as cores do root para manter o design system
     const rootStyles = getComputedStyle(document.documentElement);
     const corPrimaria = rootStyles.getPropertyValue('--cor-primaria').trim() || '#FF5722';
     const corInfo = rootStyles.getPropertyValue('--info').trim() || '#3b82f6';
 
-    const charts = {};
+    const charts = {}; 
+    const filtrosAtivos = {
+        personais: { inicio: null, fim: null },
+        praticantes: { inicio: null, fim: null }
+    };
 
     const criarConfiguracaoGrafico = (dados, rotulo, corPrincipal) => {
         return {
@@ -36,14 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { precision: 0 }
+                        ticks: { precision: 0 },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
                     }
                 }
             }
         };
     };
 
-    // Inicialização
+    // Inicialização dos gráficos
     if (ctxPersonais && window.dadosPersonais) {
         charts['personais'] = new Chart(ctxPersonais, criarConfiguracaoGrafico(window.dadosPersonais, 'Novos Personais', corPrimaria));
     }
@@ -51,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         charts['praticantes'] = new Chart(ctxPraticantes, criarConfiguracaoGrafico(window.dadosPraticantes, 'Novos Alunos', corInfo));
     }
 
-    // Lógica do Modal de Filtro
+    // --- LÓGICA DO MODAL DE FILTRO ---
     const modalFiltro = document.getElementById('modal-filtro-periodo');
     const formFiltro = document.getElementById('form-filtro-periodo');
     const inputTipoAlvo = document.getElementById('filtro-tipo-alvo');
@@ -59,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputFim = document.getElementById('filtro-fim');
     const camposData = [inputInicio, inputFim];
 
-    // Remove a classe de erro assim que o usuário altera o valor do input
     configurarLimpezaAoDigitar(camposData);
     
     document.querySelectorAll('.js-abrir-filtro').forEach(btn => {
@@ -79,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', fecharModalFiltro);
     });
 
-    // Filtra ao submeter o formulário
     formFiltro.addEventListener('submit', async (e) => {
         e.preventDefault();
         camposData.forEach(removerErro);
@@ -88,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const inicio = inputInicio.value;
         const fim = inputFim.value;
 
-        // Validação personalizada visual
         if (!inicio) {
             definirErro(inputInicio, 'Selecione o mês de início.');
             return;
@@ -112,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fecharModalFiltro();
     });
 
-    // Limpa o filtro retornando ao padrão
     document.querySelectorAll('.js-redefinir-grafico').forEach(btn => {
         btn.addEventListener('click', async () => {
             const tipo = btn.dataset.tipo;
@@ -123,15 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Exportar (Provisório)
-    document.querySelectorAll('.js-exportar-dados').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('A funcionalidade de exportação estará disponível em breve!');
-        });
-    });
-
-    // Função de requisição para a API
     async function atualizarGrafico(tipo, inicio, fim) {
         let url = `${window.BASE_URL}/api/admin/estatisticas?tipo=${tipo}`;
         if (inicio && fim) {
@@ -140,13 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const res = await fetch(url);
-
             if(!res.ok){
                 throw new Error(`Erro HTTP: ${res.status}`);
             }
 
             const dados = await res.json();
-
             if (dados.erro) {
                 alert("Falha na API: " + dados.erro);
                 return;
@@ -170,9 +163,85 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 totalDisplay.textContent = dados.total;
             }
+
+            filtrosAtivos[tipo].inicio = inicio;
+            filtrosAtivos[tipo].fim = fim;
+
         } catch (error) {
             console.error("Erro ao buscar estatísticas:", error);
-            alert("Não foi possível carregar os dados. Verifique se a rota da API foi adicionada corretamente no index.php.");
+            alert("Não foi possível carregar os dados.");
         }
     }
+
+    // --- LÓGICA DE EXPORTAÇÃO (.XLS) ---
+    document.querySelectorAll('.js-exportar-dados').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tipo = btn.dataset.tipo;
+            const chart = charts[tipo];
+            const filtro = filtrosAtivos[tipo];
+            const dados = chart.data;
+
+            if (dados.labels.length === 0) {
+                alert('Não há dados visíveis para exportar neste período.');
+                return;
+            }
+
+            const tituloBase = tipo === 'personais' ? 'Relatório de Personais Registrados' : 'Relatório de Alunos Registrados';
+            const periodoTexto = (filtro.inicio && filtro.fim) ? `Período: ${filtro.inicio} a ${filtro.fim}` : 'Período: Histórico Geral Completo';
+
+            let htmlTable = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <style>
+                        th { background-color: #6c5ce7; color: white; font-weight: bold; padding: 10px; border: 1px solid #ccc; font-family: sans-serif; }
+                        td { padding: 10px; border: 1px solid #ccc; text-align: center; font-family: sans-serif; }
+                        h2, p { font-family: sans-serif; }
+                    </style>
+                </head>
+                <body>
+                    <h2>${tituloBase}</h2>
+                    <p><b>${periodoTexto}</b></p>
+                    <p><small>Gerado pelo Oktano Dashboard Administrativo</small></p>
+                    <br>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mês / Ano</th>
+                                <th>Total de Novos Registros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            for (let i = 0; i < dados.labels.length; i++) {
+                htmlTable += `<tr><td>${dados.labels[i]}</td><td>${dados.datasets[0].data[i]}</td></tr>`;
+            }
+
+            htmlTable += `
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            let filename = `Oktano_Relatorio_${tipo}`;
+            if (filtro.inicio && filtro.fim) {
+                filename += `_${filtro.inicio}_ate_${filtro.fim}`;
+            } else {
+                filename += `_geral`;
+            }
+            filename += `.xls`;
+
+            const blob = new Blob([htmlTable], { type: 'application/vnd.ms-excel;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
 });

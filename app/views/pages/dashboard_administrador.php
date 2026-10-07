@@ -31,7 +31,7 @@ $nomeUsuario = $_SESSION['usuario_nome'] ?? '';
                         <button type="button" class="btn btn--icone js-abrir-filtro" data-tipo="personais" title="Selecionar Período">
                             <i class="ph ph-calendar-blank"></i>
                         </button>
-                        <button type="button" class="btn btn--secundario btn--pequeno js-exportar-dados">
+                        <button type="button" class="btn btn--secundario btn--pequeno js-exportar-dados" data-tipo="personais">
                             <i class="ph ph-download-simple"></i> Exportar
                         </button>
                     </div>
@@ -59,7 +59,7 @@ $nomeUsuario = $_SESSION['usuario_nome'] ?? '';
                         <button type="button" class="btn btn--icone js-abrir-filtro" data-tipo="praticantes" title="Selecionar Período">
                             <i class="ph ph-calendar-blank"></i>
                         </button>
-                        <button type="button" class="btn btn--secundario btn--pequeno js-exportar-dados">
+                        <button type="button" class="btn btn--secundario btn--pequeno js-exportar-dados" data-tipo="praticantes">
                             <i class="ph ph-download-simple"></i> Exportar
                         </button>
                     </div>
