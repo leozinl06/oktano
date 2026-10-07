@@ -1011,3 +1011,36 @@
   color: var(--cor-primaria-hover);
   font-size: 1.05rem;
 }
+
+/* =========================================
+   CARTÃO DE GRÁFICO (Dashboard Admin)
+   ========================================= */
+.grafico-card__cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--espaco-4);
+}
+
+.grafico-card__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico-card__titulo {
+  color: var(--cor-texto-secundario);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.grafico-card__total {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+}
+
+.grafico-card__canvas-wrapper {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}

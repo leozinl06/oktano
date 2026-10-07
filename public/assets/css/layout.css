@@ -325,3 +325,10 @@ main{ display: block; }
   gap: var(--espaco-4);
   margin-top: var(--espaco-5);
 }
+
+/* ---------- Dashboard Admin: Grade de gráficos ---------- */
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--espaco-4);
+}

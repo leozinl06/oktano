@@ -61,4 +61,27 @@ class Personal{
         }
         return false;
     }
+
+    public function obterTotal(){
+        $query = "SELECT COUNT(id) as total FROM " . $this->tabela;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+    }
+
+    public function obterEstatisticasMensais(){
+        $query = "SELECT DATE_FORMAT(data_cadastro, '%m/%Y') as mes_ano, 
+                        DATE_FORMAT(data_cadastro, '%Y/%m') as ordenacao, 
+                        COUNT(id) as total 
+                FROM " . $this->tabela . " 
+                GROUP BY mes_ano, ordenacao 
+                ORDER BY ordenacao ASC 
+                LIMIT 12";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
