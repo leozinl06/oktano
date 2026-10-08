@@ -1,101 +1,28 @@
 <?php
 
-class Personal{
-    private $conn;
-    private $tabela = 'personal';
+require_once __DIR__ . '/../core/BaseModel.php';
+require_once __DIR__ . '/../core/ContaUsuario.php';
+require_once __DIR__ . '/../core/EstatisticasMensais.php';
 
-    public function __construct($db){
-        $this->conn = $db;
-    }
+class Personal extends BaseModel{
+    use ContaUsuario, EstatisticasMensais;
+    
+    protected $tabela = 'personal';
 
     public function verificaExistencia($email, $registro, $codigo_vinculo){ //checa duplicidade
-        $query = 'SELECT id FROM ' . $this->tabela . 
-                ' WHERE email = :email 
-                OR registro_profissional = :registro 
-                OR codigo_vinculo = :codigo LIMIT 1';
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':registro', $registro);
-        $stmt->bindParam(':codigo', $codigo_vinculo);
-        $stmt->execute();
-
-        return $stmt->rowCount() > 0; //retorna true se rowCount > 0 
+        return (bool) $this->buscarUm(
+            "SELECT id FROM " . $this->tabela . ' WHERE email = :email OR registro_profissional = :registro OR codigo_vinculo = :codigo LIMIT 1',
+            ['email' => $email, 'registro' => $registro, 'codigo' => $codigo_vinculo]
+        );
     }
 
     public function cadastrar($nome, $email, $registro, $codigo_vinculo, $senha){
-        $query = 'INSERT INTO ' . $this->tabela . ' (nome, email, registro_profissional, codigo_vinculo, senha)
-                VALUES (:nome, :email, :registro, :codigo, :senha)';
-        
-        $stmt = $this->conn->prepare($query);
-
-        $nome = htmlspecialchars(strip_tags($nome));
-        $email = htmlspecialchars(strip_tags($email)); //higienização contra XSS
-        $registro = htmlspecialchars(strip_tags($registro));
-        $codigo_vinculo = htmlspecialchars(strip_tags($codigo_vinculo));
-
-        $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':registro', $registro);
-        $stmt->bindParam(':codigo', $codigo_vinculo);
-        $stmt->bindParam(':senha', $senha_hash);
-
-        if($stmt->execute()){
-            return true; //se inserido
-        }
-
-        return false;
-    }
-
-    public function buscarPorEmail($email){
-        $query = "SELECT * FROM " . $this->tabela . ' WHERE email = :email LIMIT 1';
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-
-        if($stmt->rowCount() > 0){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return false;
-    }
-
-    public function obterTotal(){
-        $query = "SELECT COUNT(id) as total FROM " . $this->tabela;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
-    }
-
-    public function obterEstatisticasMensais($inicio = null, $fim = null){
-        $where = '';
-        if($inicio && $fim){
-            $where = "WHERE DATE_FORMAT(data_cadastro, '%Y-%m') BETWEEN :inicio AND :fim";
-        }
-        
-        $query = "SELECT DATE_FORMAT(data_cadastro, '%m/%Y') as mes_ano, 
-                         DATE_FORMAT(data_cadastro, '%Y-%m') as ordenacao, 
-                         COUNT(id) as total
-                  FROM " . $this->tabela . "
-                  $where
-                  GROUP BY mes_ano, ordenacao
-                  ORDER BY ordenacao ASC";
-                  
-        if(!$inicio || !$fim){
-            $query .= " LIMIT 12"; // Predefinição: últimos 12 meses se não houver filtro
-        }
-        
-        $stmt = $this->conn->prepare($query);
-        
-        if($inicio && $fim){
-            $stmt->bindValue(':inicio', $inicio);
-            $stmt->bindValue(':fim', $fim);
-        }
-        
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->cadastrarConta([
+            'nome' => $nome,
+            'email' => $email,
+            'registro_profissional' => $registro,
+            'codigo_vinculo' => $codigo_vinculo,
+            'senha' => $senha
+        ]);
     }
 }

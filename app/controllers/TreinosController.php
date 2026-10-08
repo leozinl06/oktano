@@ -68,8 +68,8 @@ class TreinosController extends BaseController{
         
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $id_aluno = filter_input(INPUT_POST, 'id_aluno', FILTER_SANITIZE_NUMBER_INT);
-            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+            $titulo = trim($_POST['titulo'] ?? '');
+            $descricao = trim($_POST['descricao'] ?? '');
 
             $status = 'rascunho';
 
@@ -229,9 +229,9 @@ class TreinosController extends BaseController{
         
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
-            $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
-            $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_SPECIAL_CHARS);
+            $titulo = trim($_POST['titulo'] ?? '');
+            $descricao = trim($_POST['descricao'] ?? '');
+            $status = trim($_POST['status'] ?? '');
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
             
             $url_erro = '/oktano/public/treinos/editar-ficha?id=' . $id_ficha;
@@ -347,7 +347,7 @@ class TreinosController extends BaseController{
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $titulo = trim($_POST['titulo'] ?? '');
             $descricao = trim($_POST['descricao'] ?? '');
             
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
@@ -374,7 +374,7 @@ class TreinosController extends BaseController{
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            $titulo = filter_input(INPUT_POST, 'titulo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $titulo = trim($_POST['titulo'] ?? '');
             $descricao = trim($_POST['descricao'] ?? ''); // Preserva as quebras de linha reais
             
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;

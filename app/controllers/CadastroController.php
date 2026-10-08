@@ -30,10 +30,10 @@ class CadastroController extends BaseController{
 
             $url = '/oktano/public/cadastro';
 
-            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $nome = trim($_POST['nome'] ?? '');
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $registro = filter_input(INPUT_POST, 'registro', FILTER_SANITIZE_SPECIAL_CHARS);
-            $codigo_vinculo = filter_input(INPUT_POST, 'codigo_vinculo', FILTER_SANITIZE_SPECIAL_CHARS);
+            $registro = trim($_POST['registro'] ?? '');
+            $codigo_vinculo = trim($_POST['codigo_vinculo'] ?? '');
 
             $senha = $_POST['senha'] ?? '';
             $confirmarSenha = $_POST['confirmar-senha'] ?? '';

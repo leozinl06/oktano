@@ -26,7 +26,7 @@ class CadastroAdminController extends BaseController{
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $url = '/oktano/public/cadastro-admin';
             
-            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $nome = trim($_POST['nome'] ?? '');
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $senha = $_POST['senha'] ?? '';
             $confirmarSenha = $_POST['confirmar-senha'] ?? '';

@@ -35,7 +35,7 @@ class CadastroPraticanteController extends BaseController{
 
             $url = '/oktano/public/cadastro-praticante';
 
-            $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+            $nome = trim($_POST['nome'] ?? '');
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $codigo_personal = strtoupper(filter_input(INPUT_POST, 'codigo_personal', FILTER_SANITIZE_SPECIAL_CHARS));
 
