@@ -34,11 +34,4 @@ class Treino extends BaseModel{
             ['id_ficha_treino' => $id_ficha_treino]
         );
     }
-
-    public function atualizarOrdem($id_treino, $nova_ordem){
-        return $this->executar(
-            "UPDATE " . $this->tabela . " SET ordem = :ordem WHERE id = :id", 
-            ['ordem' => $nova_ordem, 'id' => $id_treino]
-        );
-    }
 }

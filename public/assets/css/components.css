@@ -1183,3 +1183,58 @@
     display: flex;
     justify-content: center;
 }
+
+/* ==========================================
+   LISTA E ITENS REORDENÁVEIS (TREINOS E EXERCÍCIOS)
+   ========================================== */
+.treino-card__rodape--acoes {
+    display: flex;
+    gap: var(--espaco-2);
+    flex-wrap: wrap;
+}
+
+.treino-card__btn-rodape {
+    flex: 1 1 200px;
+}
+
+.lista-reordenavel {
+    list-style: none;
+    padding: 0;
+    margin: var(--espaco-3) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-2);
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.item-reordenavel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--espaco-2);
+    padding: var(--espaco-2) var(--espaco-3);
+}
+
+.item-reordenavel__info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex: 1;
+}
+
+.item-reordenavel__titulo {
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+}
+
+.item-reordenavel__subtitulo {
+    color: var(--cor-primaria);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.item-reordenavel__acoes {
+    display: flex;
+    gap: var(--espaco-1);
+}

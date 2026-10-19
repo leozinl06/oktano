@@ -195,11 +195,30 @@ $paginaAtiva = 'treinos';
                                                 <?php endif; ?>
                                             </div>
 
-                                            <div class="treino-card__rodape">
+                                            <div class="treino-card__rodape treino-card__rodape--acoes">
                                                 <a href="<?= BASE_URL ?>/treinos/buscar-exercicios?id_treino=<?= $treino['id'] ?>"
-                                                    class="btn btn--primario btn--bloco">
+                                                    class="btn btn--primario treino-card__btn-rodape">
                                                     <i class="ph ph-plus"></i> Adicionar Exercícios
                                                 </a>
+
+                                                <?php if (count($treino['exercicios']) > 1): ?>
+                                                    <?php
+                                                        $exerciciosParaReordenar = array_map(function($ex) {
+                                                            return [
+                                                                'id' => (int)$ex['id'],
+                                                                'nome' => $ex['nome'],
+                                                                'nome_alternativo' => $ex['nome_alternativo'] ?? null
+                                                            ];
+                                                        }, $treino['exercicios']);
+                                                    ?>
+                                                    <button type="button"
+                                                        class="btn btn--secundario treino-card__btn-rodape js-btn-reordenar-exercicios"
+                                                        data-id-treino="<?= $treino['id'] ?>"
+                                                        data-titulo-treino="<?= htmlspecialchars($treino['titulo']) ?>"
+                                                        data-exercicios="<?= htmlspecialchars(json_encode($exerciciosParaReordenar), ENT_QUOTES, 'UTF-8') ?>">
+                                                        <i class="ph ph-arrows-down-up"></i> Reordenar Exercícios
+                                                    </button>
+                                                <?php endif; ?>
                                             </div>
 
                                         </div>
@@ -216,6 +235,7 @@ $paginaAtiva = 'treinos';
     <?php require __DIR__ . '/../components/modal_editar_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_excluir_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_reordenar_treinos.php'; ?>
+    <?php require __DIR__ . '/../components/modal_reordenar_exercicios.php'; ?>
 
     <script type="module" src="<?= BASE_URL ?>/assets/js/detalhes_ficha.js"></script>
 

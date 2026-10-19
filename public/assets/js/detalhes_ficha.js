@@ -151,13 +151,67 @@ export function configurarDetalhesFicha() {
     });
 
     // ==========================================
-    // 6. MODAL: REORDENAR TREINOS
+    // 6. FUNÇÃO COMPARTILHADA DE REORDENAÇÃO (DRY + FLIP)
+    // ==========================================
+    const configurarListaReordenavel = (listaElemento) => {
+        if (!listaElemento) return;
+
+        listaElemento.addEventListener('click', (e) => {
+            const btnUp = e.target.closest('.js-move-up');
+            const btnDown = e.target.closest('.js-move-down');
+            const liItem = e.target.closest('.item-reordenavel');
+
+            if (!liItem) return;
+
+            let sibling = null;
+            if (btnUp && liItem.previousElementSibling) {
+                sibling = liItem.previousElementSibling;
+            } else if (btnDown && liItem.nextElementSibling) {
+                sibling = liItem.nextElementSibling;
+            }
+
+            if (!sibling) return;
+
+            const liRect = liItem.getBoundingClientRect();
+            const siblingRect = sibling.getBoundingClientRect();
+
+            if (btnUp) {
+                listaElemento.insertBefore(liItem, sibling);
+            } else {
+                listaElemento.insertBefore(sibling, liItem);
+            }
+
+            const newLiRect = liItem.getBoundingClientRect();
+            const newSiblingRect = sibling.getBoundingClientRect();
+
+            liItem.animate([
+                { transform: `translateY(${liRect.top - newLiRect.top}px)` },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 250,
+                easing: 'ease-in-out'
+            });
+
+            sibling.animate([
+                { transform: `translateY(${siblingRect.top - newSiblingRect.top}px)` },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 250,
+                easing: 'ease-in-out'
+            });
+        });
+    };
+
+    // ==========================================
+    // 7. MODAL: REORDENAR TREINOS
     // ==========================================
     const modalReordenar = document.getElementById('modal-reordenar-treino');
     const btnAbrirReordenar = document.querySelector('.js-btn-reordenar-treino');
     const listaReordenar = document.getElementById('lista-reordenar-treinos');
 
     if (modalReordenar && btnAbrirReordenar && listaReordenar) {
+        configurarListaReordenavel(listaReordenar);
+
         btnAbrirReordenar.addEventListener('click', (e) => {
             e.preventDefault();
             modalReordenar.classList.remove('modal-overlay--oculto');
@@ -168,54 +222,84 @@ export function configurarDetalhesFicha() {
                 modalReordenar.classList.add('modal-overlay--oculto');
             });
         });
+    }
 
-        listaReordenar.addEventListener('click', (e) => {
-            const btnUp = e.target.closest('.js-move-up');
-            const btnDown = e.target.closest('.js-move-down');
-            const liItem = e.target.closest('.item-reordenavel');
+    // ==========================================
+    // 8. MODAL: REORDENAR EXERCÍCIOS DO TREINO
+    // ==========================================
+    const modalReordenarExercicios = document.getElementById('modal-reordenar-exercicios');
+    const listaReordenarExercicios = document.getElementById('lista-reordenar-exercicios');
+    const inputIdTreinoReordenar = document.getElementById('reordenar-exercicios-id-treino');
+    const subtituloModalReordenarEx = document.getElementById('subtitulo-modal-reordenar-exercicios');
 
-            if (!liItem) return;
+    if (modalReordenarExercicios && listaReordenarExercicios && inputIdTreinoReordenar) {
+        configurarListaReordenavel(listaReordenarExercicios);
 
-            // Identifica o elemento vizinho que vai trocar de lugar
-            let sibling = null;
-            if (btnUp && liItem.previousElementSibling) {
-                sibling = liItem.previousElementSibling;
-            } else if (btnDown && liItem.nextElementSibling) {
-                sibling = liItem.nextElementSibling;
-            }
+        document.querySelectorAll('.js-btn-reordenar-exercicios').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
 
-            if (!sibling) return; // Não faz nada se já está no topo ou no fundo
+                const idTreino = btn.getAttribute('data-id-treino');
+                const tituloTreino = btn.getAttribute('data-titulo-treino');
+                const exercicios = JSON.parse(btn.getAttribute('data-exercicios') || '[]');
 
-            // 1. Grava as posições originais na tela antes de mover (First)
-            const liRect = liItem.getBoundingClientRect();
-            const siblingRect = sibling.getBoundingClientRect();
+                inputIdTreinoReordenar.value = idTreino;
+                if (subtituloModalReordenarEx && tituloTreino) {
+                    subtituloModalReordenarEx.textContent = `Ajuste a ordem de execução dos exercícios de ${tituloTreino}.`;
+                }
 
-            // 2. Faz a troca no DOM instantaneamente
-            if (btnUp) {
-                listaReordenar.insertBefore(liItem, sibling);
-            } else {
-                listaReordenar.insertBefore(sibling, liItem);
-            }
+                listaReordenarExercicios.innerHTML = '';
+                const fragmento = document.createDocumentFragment();
 
-            // 3. Pega as novas posições após a troca (Last)
-            const newLiRect = liItem.getBoundingClientRect();
-            const newSiblingRect = sibling.getBoundingClientRect();
+                exercicios.forEach(ex => {
+                    const li = document.createElement('li');
+                    li.className = 'card item-reordenavel';
 
-            // 4. Cria a ilusão de animação movendo os itens de volta de onde vieram e deslizando para a posição atual (Invert & Play)
-            liItem.animate([
-                { transform: `translateY(${liRect.top - newLiRect.top}px)` },
-                { transform: 'translateY(0)' }
-            ], {
-                duration: 250, // Velocidade da animação em milissegundos
-                easing: 'ease-in-out'
+                    const inputHidden = document.createElement('input');
+                    inputHidden.type = 'hidden';
+                    inputHidden.name = 'exercicios_ordem[]';
+                    inputHidden.value = ex.id;
+
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'item-reordenavel__info';
+
+                    const strongNome = document.createElement('strong');
+                    strongNome.className = 'item-reordenavel__titulo';
+                    strongNome.textContent = ex.nome;
+                    infoDiv.appendChild(strongNome);
+
+                    if (ex.nome_alternativo) {
+                        const spanAlt = document.createElement('span');
+                        spanAlt.className = 'item-reordenavel__subtitulo';
+                        spanAlt.textContent = `Alternativo: ${ex.nome_alternativo}`;
+                        infoDiv.appendChild(spanAlt);
+                    }
+
+                    const acoesDiv = document.createElement('div');
+                    acoesDiv.className = 'item-reordenavel__acoes';
+                    acoesDiv.innerHTML = `
+                        <button type="button" class="btn btn--icone js-move-up" aria-label="Mover para cima">
+                            <i class="ph-bold ph-caret-up"></i>
+                        </button>
+                        <button type="button" class="btn btn--icone js-move-down" aria-label="Mover para baixo">
+                            <i class="ph-bold ph-caret-down"></i>
+                        </button>
+                    `;
+
+                    li.appendChild(inputHidden);
+                    li.appendChild(infoDiv);
+                    li.appendChild(acoesDiv);
+                    fragmento.appendChild(li);
+                });
+
+                listaReordenarExercicios.appendChild(fragmento);
+                modalReordenarExercicios.classList.remove('modal-overlay--oculto');
             });
+        });
 
-            sibling.animate([
-                { transform: `translateY(${siblingRect.top - newSiblingRect.top}px)` },
-                { transform: 'translateY(0)' }
-            ], {
-                duration: 250,
-                easing: 'ease-in-out'
+        document.querySelectorAll('.js-modal-fechar-reordenar-exercicios').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalReordenarExercicios.classList.add('modal-overlay--oculto');
             });
         });
     }

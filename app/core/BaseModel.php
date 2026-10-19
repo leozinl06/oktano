@@ -47,4 +47,11 @@ abstract class BaseModel{
     public function buscarPorId($id){ //busca por id
         return $this->buscarUm("SELECT * FROM " . $this->tabela . " WHERE id = :id LIMIT 1", ['id' => $id]);
     }
+
+    public function atualizarOrdem($id, $nova_ordem){
+        return $this->executar(
+            "UPDATE " . $this->tabela . " SET ordem = :ordem WHERE id = :id",
+            ['ordem' => (int)$nova_ordem, 'id' => (int)$id]
+        );
+    }
 }
