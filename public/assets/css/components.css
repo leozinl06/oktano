@@ -1070,3 +1070,110 @@
   font-size: 0.9rem;
   margin-bottom: var(--espaco-3);
 }
+
+/* ==========================================
+   EXERCÍCIO ALTERNATIVO (PERSONAL E PRATICANTE)
+   ========================================== */
+.lista-exercicios__grupo {
+    display: flex;
+    flex-direction: column;
+}
+
+.lista-exercicios__item--alternativo {
+    margin-left: var(--espaco-4);
+    margin-top: calc(var(--espaco-1) * -1);
+    border-left: 3px dashed var(--cor-primaria);
+    background-color: var(--cor-primaria-clara);
+    border-top-left-radius: 0;
+}
+
+.badge--alternativo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--espaco-1);
+    color: var(--cor-primaria);
+    background-color: var(--cor-primaria-clara);
+    border: 1px solid var(--cor-primaria);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+}
+
+.cartao-exercicio-expandido__topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espaco-3);
+    flex-wrap: wrap;
+}
+
+.cartao-exercicio-expandido__identificacao {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-2);
+    flex-wrap: wrap;
+}
+
+.cartao-exercicio-expandido__btn-trocar {
+    margin-left: auto;
+}
+
+.cartao-exercicio-expandido__obs-texto {
+    color: var(--cor-texto);
+}
+
+.cartao-exercicio-alternativo-preview {
+    margin-top: var(--espaco-3);
+    padding: var(--espaco-3);
+    border-left: 3px dashed var(--cor-primaria);
+    background-color: var(--cor-primaria-clara);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--espaco-3);
+    flex-wrap: wrap;
+}
+
+.cartao-exercicio-alternativo-preview__info {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-2);
+    flex-wrap: wrap;
+}
+
+.cartao-exercicio-alternativo-preview__nome {
+    color: var(--cor-texto);
+    font-size: 0.95rem;
+}
+
+.cartao-exercicio-alternativo-preview__params {
+    display: flex;
+    align-items: center;
+    gap: var(--espaco-2);
+}
+
+.metrica-box__valor--editada {
+    color: var(--cor-primaria);
+}
+
+.icone-alinhado-meio {
+    vertical-align: middle;
+}
+
+.modal__icone--primario {
+    color: var(--cor-primaria);
+    background-color: var(--cor-primaria-clara);
+}
+
+.form-grid-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--espaco-3);
+    text-align: left;
+}
+
+.form-group--esquerda {
+    text-align: left;
+}

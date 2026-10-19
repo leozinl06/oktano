@@ -14,8 +14,10 @@ class ExerciciosController extends BaseController {
         if(session_status() === PHP_SESSION_NONE) session_start();
 
         $id_treino = filter_input(INPUT_GET, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
-        if(!$id_treino) {
-            die("Treino não especificado.");
+        $id_treino_exercicio = filter_input(INPUT_GET, 'id_treino_exercicio', FILTER_SANITIZE_NUMBER_INT);
+
+        if(!$id_treino){
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Treino não especificado.');
         }
 
         $database = new Database();
@@ -25,7 +27,21 @@ class ExerciciosController extends BaseController {
         $treino = $treinoModel->buscarPorId($id_treino);
         
         if(!$treino) {
-            die("Treino não encontrado.");
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Treino não encontrado.');
+        }
+
+        $exercicioPai = null;
+        if($id_treino_exercicio){
+            $treinoExercicioModel = new TreinoExercicio($db);
+            $exercicioPai = $treinoExercicioModel->buscarPorIdETreino($id_treino_exercicio, $id_treino);
+
+            if(!$exercicioPai){
+                $this->redirecionarComResultado(
+                    '/oktano/public/treinos/detalhes?id=' . $treino['id_ficha_treino'],
+                    false,
+                    'Exercício principal não encontrado neste treino.'
+                );
+            }
         }
 
         $tituloPagina = 'Buscar Exercícios - ' . htmlspecialchars($treino['titulo']);
@@ -65,25 +81,28 @@ class ExerciciosController extends BaseController {
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
+            $id_treino_exercicio = filter_input(INPUT_POST, 'id_treino_exercicio', FILTER_SANITIZE_NUMBER_INT);
             $api_id = filter_input(INPUT_POST, 'api_id', FILTER_SANITIZE_SPECIAL_CHARS);
             $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
             $musculo = filter_input(INPUT_POST, 'musculo', FILTER_SANITIZE_SPECIAL_CHARS);
-
             $series = filter_input(INPUT_POST, 'series', FILTER_SANITIZE_NUMBER_INT);
             $repeticoes = filter_input(INPUT_POST, 'repeticoes', FILTER_SANITIZE_SPECIAL_CHARS);
             $descanso = filter_input(INPUT_POST, 'descanso', FILTER_SANITIZE_NUMBER_INT) ?: 60;
             $observacoes = filter_input(INPUT_POST, 'observacoes', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $url_retorno = '/oktano/public/treinos/buscar-exercicios?id_treino=' . $id_treino;
+            $queryAlternativo = $id_treino_exercicio ? '&id_treino_exercicio=' . $id_treino_exercicio : '';
+            $url_retorno_busca = '/oktano/public/treinos/buscar-exercicios?id_treino=' . $id_treino . $queryAlternativo;
 
             if(empty($api_id) || empty($series) || empty($repeticoes)) {
-                $this->redirecionarComResultado($url_retorno, false, 'Preencha as séries e repetições.');
+                $this->redirecionarComResultado($url_retorno_busca, false, 'Preencha as séries e repetições.');
             }
 
             $database = new Database();
             $db = $database->conectar();
+
             $exercicioModel = new Exercicio($db);
             $treinoExercicioModel = new TreinoExercicio($db);
+            $treinoModel = new Treino($db);
 
             // 1. Busca ou Cadastra o exercício base vindo da API
             $id_exercicio = $exercicioModel->buscarPorApiId($api_id);
@@ -91,15 +110,34 @@ class ExerciciosController extends BaseController {
                 $id_exercicio = $exercicioModel->cadastrar($api_id, $nome, $musculo);
             }
 
-            if($id_exercicio) {
-                // 2. Vincula o exercício à ficha de treino atual
-                if($treinoExercicioModel->cadastrar($id_treino, $id_exercicio, $series, $repeticoes, $descanso, $observacoes)) {
-                    $this->redirecionarComResultado($url_retorno, true, "Exercício '{$nome}' adicionado com sucesso!");
-                } else {
-                    $this->redirecionarComResultado($url_retorno, false, 'Falha ao vincular o exercício ao treino.');
+            if(!$id_exercicio){
+                $this->redirecionarComResultado($url_retorno_busca, false, 'Falha ao registrar o exercicio base no sistema.');
+            }
+
+            if(!empty($id_treino_exercicio)){
+                $exercicioPai = $treinoExercicioModel->buscarPorIdETreino($id_treino_exercicio, $id_treino);
+                if (!$exercicioPai) {
+                    $this->redirecionarComResultado($url_retorno_busca, false, 'Exercício principal inválido.');
                 }
-            } else {
-                $this->redirecionarComResultado($url_retorno, false, 'Falha ao registrar o exercício base no sistema.');
+
+                if ((int)$exercicioPai['id_exercicio'] === (int)$id_exercicio) {
+                    $this->redirecionarComResultado($url_retorno_busca, false, 'O exercício alternativo deve ser diferente do exercício principal.');
+                }
+
+                $treino = $treinoModel->buscarPorId($id_treino);
+                $url_detalhes = '/oktano/public/treinos/detalhes?id=' . $treino['id_ficha_treino'];
+
+                if ($treinoExercicioModel->salvarAlternativo($id_treino_exercicio, $id_treino, $id_exercicio, $series, $repeticoes, $descanso, $observacoes)) {
+                    $this->redirecionarComResultado($url_detalhes, true, "Exercício alternativo '{$nome}' vinculado com sucesso!");
+                } else {
+                    $this->redirecionarComResultado($url_retorno_busca, false, 'Falha ao vincular o exercício alternativo.');
+                }
+            } else{
+                if ($treinoExercicioModel->cadastrar($id_treino, $id_exercicio, $series, $repeticoes, $descanso, $observacoes)) {
+                    $this->redirecionarComResultado($url_retorno_busca, true, "Exercício '{$nome}' adicionado com sucesso!");
+                } else {
+                    $this->redirecionarComResultado($url_retorno_busca, false, 'Falha ao vincular o exercício ao treino.');
+                }
             }
         }
     }

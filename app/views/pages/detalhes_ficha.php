@@ -119,32 +119,77 @@ $paginaAtiva = 'treinos';
                                                     </div>
                                                 <?php else: ?>
                                                     <?php foreach ($treino['exercicios'] as $ex): ?>
-                                                        <div class="lista-exercicios__item">
-                                                            <div class="lista-exercicios__info">
-                                                                <div class="lista-exercicios__titulo-grupo">
-                                                                    <span class="lista-exercicios__ordem">
-                                                                        <?= $ex['ordem'] ?>
-                                                                    </span>
-                                                                    <strong class="lista-exercicios__nome">
-                                                                        <?= htmlspecialchars($ex['nome']) ?>
-                                                                    </strong>
+                                                        <div class="lista-exercicios__grupo">
+                                                            <!-- Exercício Principal -->
+                                                            <div class="lista-exercicios__item">
+                                                                <div class="lista-exercicios__info">
+                                                                    <div class="lista-exercicios__titulo-grupo">
+                                                                        <span class="lista-exercicios__ordem">
+                                                                            <?= $ex['ordem'] ?>
+                                                                        </span>
+                                                                        <strong class="lista-exercicios__nome">
+                                                                            <?= htmlspecialchars($ex['nome']) ?>
+                                                                        </strong>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="lista-exercicios__params">
+                                                                    <div class="param-badge param-badge--destaque"
+                                                                        title="Séries e Repetições">
+                                                                        <i class="ph ph-hash"></i>
+                                                                        <span>
+                                                                            <?= $ex['series'] ?>x<?= htmlspecialchars($ex['repeticoes']) ?>
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <div class="param-badge" title="Tempo de Descanso">
+                                                                        <i class="ph ph-timer"></i>
+                                                                        <span>
+                                                                            <?= $ex['tempo_descanso_seg'] ?>s
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <a href="<?= BASE_URL ?>/treinos/buscar-exercicios?id_treino=<?= $treino['id'] ?>&id_treino_exercicio=<?= $ex['id'] ?>"
+                                                                        class="btn btn--secundario btn--pequeno lista-exercicios__btn-alternativo"
+                                                                        title="<?= empty($ex['id_exercicio_alternativo']) ? 'Adicionar Exercício Alternativo' : 'Trocar Exercício Alternativo' ?>">
+                                                                        <i class="ph ph-arrows-left-right"></i>
+                                                                        <span><?= empty($ex['id_exercicio_alternativo']) ? 'Adicionar Alternativo' : 'Trocar Alternativo' ?></span>
+                                                                    </a>
                                                                 </div>
                                                             </div>
-                                                            <div class="lista-exercicios__params">
-                                                                <div class="param-badge param-badge--destaque"
-                                                                    title="Séries e Repetições">
-                                                                    <i class="ph ph-hash"></i>
-                                                                    <span>
-                                                                        <?= $ex['series'] ?>x<?= htmlspecialchars($ex['repeticoes']) ?>
-                                                                    </span>
+
+                                                            <!-- Exercício Alternativo Vinculado -->
+                                                            <?php if (!empty($ex['id_exercicio_alternativo'])): ?>
+                                                                <div class="lista-exercicios__item lista-exercicios__item--alternativo">
+                                                                    <div class="lista-exercicios__info">
+                                                                        <div class="lista-exercicios__titulo-grupo">
+                                                                            <span class="badge badge--alternativo">
+                                                                                <i class="ph-bold ph-arrows-left-right"></i> Alternativo
+                                                                            </span>
+                                                                            <strong class="lista-exercicios__nome">
+                                                                                <?= htmlspecialchars($ex['nome_alternativo']) ?>
+                                                                            </strong>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="lista-exercicios__params">
+                                                                        <div class="param-badge param-badge--destaque"
+                                                                            title="Séries e Repetições">
+                                                                            <i class="ph ph-hash"></i>
+                                                                            <span>
+                                                                                <?= $ex['series_alternativo'] ?>x<?= htmlspecialchars($ex['repeticoes_alternativo']) ?>
+                                                                            </span>
+                                                                        </div>
+
+                                                                        <div class="param-badge" title="Tempo de Descanso">
+                                                                            <i class="ph ph-timer"></i>
+                                                                            <span>
+                                                                                <?= $ex['tempo_descanso_seg_alternativo'] ?>s
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="param-badge" title="Tempo de Descanso">
-                                                                    <i class="ph ph-timer"></i>
-                                                                    <span>
-                                                                        <?= $ex['tempo_descanso_seg'] ?>s
-                                                                    </span>
-                                                                </div>
-                                                            </div>
+                                                            <?php endif; ?>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 <?php endif; ?>

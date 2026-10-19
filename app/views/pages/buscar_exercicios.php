@@ -7,12 +7,13 @@
     <?php require __DIR__ . '/../components/cabecalho.php'; ?>
     <main class="pagina">
         <div class="container">
-            <a href="<?= BASE_URL ?>/treinos/detalhes?id=<?= $treino['id_ficha_treino'] ?>" class="btn btn--texto btn--pequeno" style="padding-left:0; margin-bottom: var(--espaco-3);">
-                <i class="ph ph-arrow-left"></i> Voltar para a Ficha
-            </a>
+            <div class="ficha-voltar">
+                <a href="<?= BASE_URL ?>/treinos/detalhes?id=<?= $treino['id_ficha_treino'] ?>" class="btn btn--texto btn--pequeno ficha-voltar__btn">
+                    <i class="ph ph-arrow-left"></i> Voltar para a Ficha
+                </a>
+            </div>
 
-            <!-- EXIBIÇÃO DE ALERTAS DE SUCESSO/ERRO -->
-            <?php if(!empty($resultado)): ?>
+            <?php if (!empty($resultado)): ?>
             <div class="alerta alerta--<?= $resultado['sucesso'] ? 'sucesso' : 'erro' ?>" role="alert">
                 <i class="ph-bold ph-<?= $resultado['sucesso'] ? 'check-circle' : 'x-circle' ?>"></i>
                 <span><?= htmlspecialchars($resultado['mensagem']) ?></span>
@@ -21,13 +22,20 @@
 
             <div class="pagina__cabecalho">
                 <div>
-                    <h1>Pesquisar para: <?= htmlspecialchars($treino['titulo']) ?></h1>
-                    <?php if(!empty($treino['descricao'])): ?>
-                        <p class="ficha-detalhes__texto"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
+                    <?php if (!empty($exercicioPai)): ?>
+                        <span class="badge badge--alternativo">
+                            <i class="ph-bold ph-arrows-left-right"></i> Vinculando Exercício Alternativo
+                        </span>
+                        <h1>Alternativo para: <?= htmlspecialchars($exercicioPai['nome_principal']) ?></h1>
+                        <p class="ficha-detalhes__texto">Treino: <?= htmlspecialchars($treino['titulo']) ?></p>
+                    <?php else: ?>
+                        <h1>Pesquisar para: <?= htmlspecialchars($treino['titulo']) ?></h1>
+                        <?php if (!empty($treino['descricao'])): ?>
+                            <p class="ficha-detalhes__texto"><?= nl2br(htmlspecialchars($treino['descricao'])) ?></p>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
-
 
             <div class="card card-pesquisa-api">
                 <div class="campo-busca">
@@ -52,20 +60,20 @@
     <!-- MODAL DE CONFIGURAÇÃO DO EXERCÍCIO -->
     <div class="modal-overlay modal-overlay--oculto" id="modal-configurar-exercicio" role="dialog" aria-modal="true">
         <div class="modal">
-            <div class="modal__icone" style="color: var(--cor-primaria); background-color: var(--cor-primaria-clara);">
+            <div class="modal__icone modal__icone--primario">
                 <i class="ph-bold ph-sliders"></i>
             </div>
             <h3 class="modal__titulo" id="titulo-modal-exercicio">Configurar Exercício</h3>
             <p class="modal__texto">Defina a carga de trabalho para este exercício.</p>
             
             <form method="POST" action="<?= BASE_URL ?>/treinos/adicionar-exercicio" novalidate id="form-configurar-exercicio">
-                <!-- Campos Ocultos para o Backend -->
                 <input type="hidden" name="id_treino" value="<?= htmlspecialchars($treino['id']) ?>">
+                <input type="hidden" name="id_treino_exercicio" value="<?= htmlspecialchars($exercicioPai['id'] ?? '') ?>">
                 <input type="hidden" name="api_id" id="modal-exercicio-api_id" value="">
                 <input type="hidden" name="nome" id="modal-exercicio-nome" value="">
                 <input type="hidden" name="musculo" id="modal-exercicio-musculo" value="">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--espaco-3); text-align: left;">
+                <div class="form-grid-duplo">
                     <div class="form-group">
                         <label for="modal-series" class="form-label">Séries</label>
                         <input type="number" name="series" id="modal-series" class="form-input" placeholder="Ex: 3" required>
@@ -76,12 +84,12 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="text-align: left;">
+                <div class="form-group form-group--esquerda">
                     <label for="modal-descanso" class="form-label">Descanso (segundos)</label>
                     <input type="number" name="descanso" id="modal-descanso" class="form-input" placeholder="Ex: 60" value="60">
                 </div>
                 
-                <div class="form-group" style="text-align: left;">
+                <div class="form-group form-group--esquerda">
                     <label for="modal-observacoes" class="form-label">Observações <span class="opcional">(opcional)</span></label>
                     <textarea name="observacoes" id="modal-observacoes" class="form-textarea" placeholder="Dicas de execução, cadência..."></textarea>
                 </div>

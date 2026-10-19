@@ -1,15 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     // ==========================================
     // CONFIGURAÇÕES DE PERSISTÊNCIA (Local Storage)
     // ==========================================
     const urlParams = new URLSearchParams(window.location.search);
     const idTreino = urlParams.get('id_treino');
     
-    // Chaves únicas para salvar o estado deste treino específico no navegador
     const storageTimeKey = `oktano_treino_inicio_${idTreino}`;
     const storageCargasKey = `oktano_treino_cargas_${idTreino}`;
-
+    const storageTrocasKey = `oktano_treino_trocas_${idTreino}`;
 
     // ==========================================
     // 1. CRONÔMETRO PRINCIPAL E ESTADO DO TREINO
@@ -17,35 +15,97 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnIniciarTreino = document.getElementById('btn-iniciar-treino');
     const textoIniciar = document.getElementById('texto-iniciar');
     const btnFinalizarTreino = document.getElementById('btn-finalizar-treino');
-    const botoesEditarCarga = document.querySelectorAll('.js-editar-carga'); 
+    const botoesEditarCarga = document.querySelectorAll('.js-editar-carga');
+    const previewsAlternativo = document.querySelectorAll('.js-preview-alternativo');
+    const botoesTrocarExercicio = document.querySelectorAll('.js-btn-trocar-exercicio');
 
     let treinoInterval = null;
     let treinoSegundos = 0;
     let treinoEmAndamento = false;
 
-    // Função auxiliar para atualizar os números na tela
     const atualizarVisorTreino = () => {
         const min = String(Math.floor(treinoSegundos / 60)).padStart(2, '0');
         const seg = String(treinoSegundos % 60).padStart(2, '0');
         textoIniciar.textContent = `${min}:${seg}`;
     };
 
-    // Função que ativa a interface "Modo Treino"
+    const sincronizarCargaCard = (caixaMetrica, cargaPadrao) => {
+        const idExercicio = caixaMetrica.getAttribute('data-id-exercicio');
+        const targetValorCarga = caixaMetrica.querySelector('.js-valor-carga');
+        const cargasSalvas = JSON.parse(localStorage.getItem(storageCargasKey)) || {};
+
+        if (cargasSalvas[idExercicio] !== undefined) {
+            targetValorCarga.textContent = `${cargasSalvas[idExercicio]} kg`;
+            targetValorCarga.classList.add('metrica-box__valor--editada');
+        } else {
+            targetValorCarga.textContent = `${cargaPadrao} kg`;
+            targetValorCarga.classList.remove('metrica-box__valor--editada');
+        }
+    };
+
+    const aplicarDadosExercicioNoCard = (cartao, usarAlternativo) => {
+        const rawDados = usarAlternativo
+            ? cartao.getAttribute('data-alternativo')
+            : cartao.getAttribute('data-principal');
+
+        if (!rawDados) return;
+
+        const dados = JSON.parse(rawDados);
+        cartao.setAttribute('data-usando-alternativo', usarAlternativo ? 'true' : 'false');
+
+        // Atualiza título e badge indicativa
+        const elTitulo = cartao.querySelector('.js-exercicio-titulo');
+        const elBadgeAtivo = cartao.querySelector('.js-badge-alternativo-ativo');
+        if (elTitulo) elTitulo.textContent = dados.nome;
+        if (elBadgeAtivo) elBadgeAtivo.classList.toggle('is-hidden', !usarAlternativo);
+
+        // Atualiza métricas de séries, repetições e descanso
+        const elSeries = cartao.querySelector('.js-exercicio-series');
+        const elRepeticoes = cartao.querySelector('.js-exercicio-repeticoes');
+        const boxDescanso = cartao.querySelector('.js-abrir-descanso');
+        const elDescanso = cartao.querySelector('.js-exercicio-descanso');
+
+        if (elSeries) elSeries.textContent = dados.series;
+        if (elRepeticoes) elRepeticoes.textContent = dados.repeticoes;
+        if (boxDescanso) boxDescanso.setAttribute('data-tempo', dados.descanso);
+        if (elDescanso) elDescanso.textContent = `${dados.descanso}s`;
+
+        // Atualiza observações
+        const obsContainer = cartao.querySelector('.js-exercicio-obs-container');
+        const obsTexto = cartao.querySelector('.js-exercicio-obs-texto');
+        if (obsContainer && obsTexto) {
+            if (dados.observacoes && dados.observacoes.trim() !== '') {
+                obsTexto.textContent = dados.observacoes;
+                obsContainer.classList.remove('is-hidden');
+            } else {
+                obsTexto.textContent = '';
+                obsContainer.classList.add('is-hidden');
+            }
+        }
+
+        // Atualiza ID do exercício ativo na caixa de carga e sincroniza o peso
+        const caixaMetrica = cartao.querySelector('.metrica-carga');
+        if (caixaMetrica) {
+            caixaMetrica.setAttribute('data-id-exercicio', dados.id_exercicio);
+            sincronizarCargaCard(caixaMetrica, dados.carga);
+        }
+    };
+
     const ativarInterfaceTreino = () => {
         treinoEmAndamento = true;
 
-        // Transforma o botão primário em um display de cronômetro
         btnIniciarTreino.classList.remove('btn--primario');
         btnIniciarTreino.classList.add('btn--secundario');
         textoIniciar.classList.add('cronometro-ativo');
         
         atualizarVisorTreino();
 
-        // Revela o botão de finalizar e os lápis de edição
+        // Revela ações de execução: finalizar, editar carga e trocar exercício; esconde preview alternativo
         btnFinalizarTreino.classList.remove('is-hidden');
         botoesEditarCarga.forEach(btn => btn.classList.remove('is-hidden'));
+        previewsAlternativo.forEach(preview => preview.classList.add('is-hidden'));
+        botoesTrocarExercicio.forEach(btn => btn.classList.remove('is-hidden'));
 
-        // Inicia o cronômetro baseando-se no relógio interno do sistema (à prova de refresh)
         treinoInterval = setInterval(() => {
             const startTime = parseInt(localStorage.getItem(storageTimeKey), 10);
             treinoSegundos = Math.floor((Date.now() - startTime) / 1000);
@@ -53,40 +113,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     };
 
+    // Eventos de troca de exercício durante o treino
+    botoesTrocarExercicio.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!treinoEmAndamento) return;
+
+            const cartao = btn.closest('.js-cartao-exercicio');
+            if (!cartao) return;
+
+            const idTreinoExercicio = cartao.getAttribute('data-id-treino-exercicio');
+            const usandoAlternativo = cartao.getAttribute('data-usando-alternativo') === 'true';
+            const novoEstadoAlternativo = !usandoAlternativo;
+
+            aplicarDadosExercicioNoCard(cartao, novoEstadoAlternativo);
+
+            const trocasSalvas = JSON.parse(localStorage.getItem(storageTrocasKey)) || {};
+            trocasSalvas[idTreinoExercicio] = novoEstadoAlternativo;
+            localStorage.setItem(storageTrocasKey, JSON.stringify(trocasSalvas));
+        });
+    });
+
     // VERIFICAÇÃO DE REFRESH: A página foi recarregada no meio do treino?
     if (idTreino && localStorage.getItem(storageTimeKey)) {
-        // Resgata o tempo
         const startTime = parseInt(localStorage.getItem(storageTimeKey), 10);
         treinoSegundos = Math.floor((Date.now() - startTime) / 1000);
         
-        // Resgata as cargas já preenchidas
-        const cargasSalvas = JSON.parse(localStorage.getItem(storageCargasKey)) || {};
-        document.querySelectorAll('.metrica-carga').forEach(el => {
-            const idEx = el.getAttribute('data-id-exercicio');
-            if (cargasSalvas[idEx]) {
-                const targetValorCarga = el.querySelector('.js-valor-carga');
-                targetValorCarga.textContent = `${cargasSalvas[idEx]} kg`;
-                targetValorCarga.style.color = "var(--cor-primaria)";
-            }
+        const trocasSalvas = JSON.parse(localStorage.getItem(storageTrocasKey)) || {};
+        document.querySelectorAll('.js-cartao-exercicio').forEach(cartao => {
+            const idTe = cartao.getAttribute('data-id-treino-exercicio');
+            const usarAlt = Boolean(trocasSalvas[idTe]);
+            aplicarDadosExercicioNoCard(cartao, usarAlt);
         });
 
-        // Reativa a tela do jeito que estava
         ativarInterfaceTreino();
     }
 
-    // Ação de clicar no Iniciar
     if (btnIniciarTreino) {
         btnIniciarTreino.addEventListener('click', () => {
             if (treinoEmAndamento) return; 
             
-            // Marca o exato milissegundo de início e salva no storage
             localStorage.setItem(storageTimeKey, Date.now());
             treinoSegundos = 0;
             
             ativarInterfaceTreino();
         });
     }
-
 
     // ==========================================
     // 2. MODAL DE FADIGA E FINALIZAÇÃO
@@ -97,9 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnFinalizarTreino) {
         btnFinalizarTreino.addEventListener('click', () => {
-            clearInterval(treinoInterval); // Congela o tempo
+            clearInterval(treinoInterval);
             
-            // Injeta o tempo final no visor do modal de fadiga
             const displayTempoFinal = document.getElementById('tempo-final-treino');
             if (displayTempoFinal) displayTempoFinal.textContent = textoIniciar.textContent;
 
@@ -107,12 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fechar modal de fadiga se desistir
     document.querySelectorAll('.js-fechar-fadiga').forEach(btn => {
         btn.addEventListener('click', () => {
             modalFadiga.classList.add('modal-overlay--oculto');
             
-            // Retoma o cronômetro baseando-se no relógio do sistema para não perder tempo
             treinoInterval = setInterval(() => {
                 const startTime = parseInt(localStorage.getItem(storageTimeKey), 10);
                 treinoSegundos = Math.floor((Date.now() - startTime) / 1000);
@@ -121,13 +189,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Envio dos dados para o backend
     if (formFinalizar) {
         formFinalizar.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const fadigaSelecionada = document.querySelector('input[name="fadiga"]:checked');
-            if (!fadigaSelecionada) return; // Validação silenciosa
+            if (!fadigaSelecionada) return;
 
             const textoOriginalBtn = btnSalvarSessao.innerHTML;
             btnSalvarSessao.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Salvando...';
@@ -165,19 +232,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 
                 if (data.sucesso) {
-                    // LIMPEZA: O treino terminou, apagamos os rascunhos salvos no navegador
                     localStorage.removeItem(storageTimeKey);
                     localStorage.removeItem(storageCargasKey);
+                    localStorage.removeItem(storageTrocasKey);
                     
                     window.location.href = '/oktano/public/meus-treinos';
                 } else {
-                    alert(data.mensagem || "Erro ao salvar a sessão.");
+                    alert(data.mensagem || 'Erro ao salvar a sessão.');
                     btnSalvarSessao.innerHTML = textoOriginalBtn;
                     btnSalvarSessao.disabled = false;
                 }
             } catch (error) {
                 console.error(error);
-                alert("Ocorreu um erro de rede. Tente novamente.");
+                alert('Ocorreu um erro de rede. Tente novamente.');
                 btnSalvarSessao.innerHTML = textoOriginalBtn;
                 btnSalvarSessao.disabled = false;
             }
@@ -219,9 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (valor !== '' && targetValorCarga) {
                 targetValorCarga.textContent = `${valor} kg`;
-                targetValorCarga.style.color = "var(--cor-primaria)";
+                targetValorCarga.classList.add('metrica-box__valor--editada');
                 
-                // Salva a carga digitada no storage para protegê-la de refreshes
                 const cargasSalvas = JSON.parse(localStorage.getItem(storageCargasKey)) || {};
                 cargasSalvas[idExercicio] = valor;
                 localStorage.setItem(storageCargasKey, JSON.stringify(cargasSalvas));
@@ -230,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modalCarga.classList.add('modal-overlay--oculto');
         });
     }
-
 
     // ==========================================
     // 4. CRONÔMETRO DE DESCANSO REGRESSIVO
@@ -258,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
         descansoInterval = setInterval(() => {
             descansoSegundosAtuais--;
             atualizarDisplayDescanso();
-
             if (descansoSegundosAtuais <= 0) pararDescanso();
         }, 1000);
     };
@@ -270,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.querySelectorAll('.js-abrir-descanso').forEach(box => {
-        box.addEventListener('click', (e) => {
+        box.addEventListener('click', () => {
             const tempoStr = box.getAttribute('data-tempo');
             descansoSegundosAtuais = parseInt(tempoStr, 10);
             
@@ -280,8 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    if(btnPlayDescanso) btnPlayDescanso.addEventListener('click', iniciarDescanso);
-    if(btnPauseDescanso) btnPauseDescanso.addEventListener('click', pararDescanso);
+    if (btnPlayDescanso) btnPlayDescanso.addEventListener('click', iniciarDescanso);
+    if (btnPauseDescanso) btnPauseDescanso.addEventListener('click', pararDescanso);
 
     document.querySelectorAll('.js-fechar-descanso').forEach(btn => {
         btn.addEventListener('click', () => {

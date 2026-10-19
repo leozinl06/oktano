@@ -38,35 +38,75 @@
                     </div>
                 <?php else: ?>
                     <?php foreach ($exercicios as $ex): ?>
-                        <div class="card cartao-exercicio-expandido">
+                        <?php
+                            $cargaAtual = !empty($ex['ultima_carga']) ? (float)$ex['ultima_carga'] : 0;
+                            $cargaAlternativa = !empty($ex['ultima_carga_alternativo']) ? (float)$ex['ultima_carga_alternativo'] : 0;
+                            $temAlternativo = !empty($ex['id_exercicio_alternativo']);
+
+                            $dadosPrincipal = [
+                                'id_exercicio' => (int)$ex['id_exercicio'],
+                                'nome' => $ex['nome'],
+                                'series' => (int)$ex['series'],
+                                'repeticoes' => $ex['repeticoes'],
+                                'descanso' => (int)$ex['tempo_descanso_seg'],
+                                'carga' => $cargaAtual,
+                                'observacoes' => $ex['observacoes'] ?? ''
+                            ];
+
+                            $dadosAlternativo = $temAlternativo ? [
+                                'id_exercicio' => (int)$ex['id_exercicio_alternativo'],
+                                'nome' => $ex['nome_alternativo'],
+                                'series' => (int)$ex['series_alternativo'],
+                                'repeticoes' => $ex['repeticoes_alternativo'],
+                                'descanso' => (int)$ex['tempo_descanso_seg_alternativo'],
+                                'carga' => $cargaAlternativa,
+                                'observacoes' => $ex['observacoes_alternativo'] ?? ''
+                            ] : null;
+                        ?>
+                        <div class="card cartao-exercicio-expandido js-cartao-exercicio"
+                            data-id-treino-exercicio="<?= $ex['id'] ?>"
+                            data-usando-alternativo="false"
+                            data-principal="<?= htmlspecialchars(json_encode($dadosPrincipal), ENT_QUOTES, 'UTF-8') ?>"
+                            <?php if ($temAlternativo): ?>
+                            data-alternativo="<?= htmlspecialchars(json_encode($dadosAlternativo), ENT_QUOTES, 'UTF-8') ?>"
+                            <?php endif; ?>>
+
                             <div class="cartao-exercicio-expandido__topo">
-                                <span class="cartao-exercicio-expandido__ordem"><?= $ex['ordem'] ?></span>
-                                <h3 class="cartao-exercicio-expandido__titulo"><?= htmlspecialchars($ex['nome']) ?></h3>
+                                <div class="cartao-exercicio-expandido__identificacao">
+                                    <span class="cartao-exercicio-expandido__ordem"><?= $ex['ordem'] ?></span>
+                                    <h3 class="cartao-exercicio-expandido__titulo js-exercicio-titulo"><?= htmlspecialchars($ex['nome']) ?></h3>
+                                    <span class="badge badge--alternativo js-badge-alternativo-ativo is-hidden">Alternativo</span>
+                                </div>
+
+                                <?php if ($temAlternativo): ?>
+                                    <button type="button" class="btn btn--secundario btn--pequeno cartao-exercicio-expandido__btn-trocar js-btn-trocar-exercicio is-hidden" title="Alternar entre exercício principal e alternativo">
+                                        <i class="ph-bold ph-arrows-left-right"></i>
+                                        <span>Trocar Exercício</span>
+                                    </button>
+                                <?php endif; ?>
                             </div>
                             
                             <div class="cartao-exercicio-expandido__metricas">
                                 <div class="metrica-box">
-                                    <span class="metrica-box__valor"><?= $ex['series'] ?></span>
+                                    <span class="metrica-box__valor js-exercicio-series"><?= $ex['series'] ?></span>
                                     <span class="metrica-box__rotulo">Séries</span>
                                 </div>
+
                                 <div class="metrica-box">
-                                    <span class="metrica-box__valor"><?= htmlspecialchars($ex['repeticoes']) ?></span>
+                                    <span class="metrica-box__valor js-exercicio-repeticoes"><?= htmlspecialchars($ex['repeticoes']) ?></span>
                                     <span class="metrica-box__rotulo">Repetições</span>
                                 </div>
+
                                 <!-- Métrica Descanso Clicável -->
                                 <div class="metrica-box metrica-box--clicavel js-abrir-descanso" data-tempo="<?= $ex['tempo_descanso_seg'] ?>" title="Iniciar Cronômetro">
-                                    <span class="metrica-box__valor"><?= $ex['tempo_descanso_seg'] ?>s</span>
-                                    <span class="metrica-box__rotulo">Descanso <i class="ph-bold ph-play-circle" style="vertical-align: middle;"></i></span>
+                                    <span class="metrica-box__valor js-exercicio-descanso"><?= $ex['tempo_descanso_seg'] ?>s</span>
+                                    <span class="metrica-box__rotulo">Descanso <i class="ph-bold ph-play-circle icone-alinhado-meio"></i></span>
                                 </div>
+
                                 <!-- Métrica Carga -->
                                 <div class="metrica-box metrica-carga" data-id-treino-exercicio="<?= $ex['id'] ?>" data-id-exercicio="<?= $ex['id_exercicio'] ?>">
-                                    <?php 
-                                        // Formata a carga para remover casas decimais desnecessárias (ex: 20.00 vira 20)
-                                        $cargaAtual = !empty($ex['ultima_carga']) ? (float)$ex['ultima_carga'] : 0;
-                                    ?>
                                     <span class="metrica-box__valor js-valor-carga"><?= $cargaAtual ?> kg</span>
                                     
-                                    <!-- Rótulo e botão agrupados e centralizados abaixo do número -->
                                     <div class="metrica-box__acoes">
                                         <span class="metrica-box__rotulo">Carga</span>
                                         <button type="button" class="btn-metrica-editar js-editar-carga is-hidden" title="Editar Carga">
@@ -76,10 +116,32 @@
                                 </div>
                             </div>
 
-                            <?php if (!empty($ex['observacoes'])): ?>
-                                <div class="cartao-exercicio-expandido__obs">
-                                    <strong><i class="ph ph-info"></i> Observação:</strong><br>
-                                    <span class="form-hint" style="color: var(--cor-texto);"><?= nl2br(htmlspecialchars($ex['observacoes'])) ?></span>
+                            <div class="cartao-exercicio-expandido__obs js-exercicio-obs-container <?= empty($ex['observacoes']) ? 'is-hidden' : '' ?>">
+                                <strong><i class="ph ph-info"></i> Observação:</strong><br>
+                                <span class="form-hint cartao-exercicio-expandido__obs-texto js-exercicio-obs-texto"><?= nl2br(htmlspecialchars($ex['observacoes'] ?? '')) ?></span>
+                            </div>
+
+                            <!-- Preview do Exercício Alternativo (Visível apenas ANTES de iniciar o treino) -->
+                            <?php if ($temAlternativo): ?>
+                                <div class="cartao-exercicio-alternativo-preview js-preview-alternativo">
+                                    <div class="cartao-exercicio-alternativo-preview__info">
+                                        <span class="badge badge--alternativo">
+                                            <i class="ph-bold ph-arrows-left-right"></i> Exercício Alternativo
+                                        </span>
+                                        <strong class="cartao-exercicio-alternativo-preview__nome">
+                                            <?= htmlspecialchars($ex['nome_alternativo']) ?>
+                                        </strong>
+                                    </div>
+                                    <div class="cartao-exercicio-alternativo-preview__params">
+                                        <div class="param-badge param-badge--destaque" title="Séries e Repetições">
+                                            <i class="ph ph-hash"></i>
+                                            <span><?= $ex['series_alternativo'] ?>x<?= htmlspecialchars($ex['repeticoes_alternativo']) ?></span>
+                                        </div>
+                                        <div class="param-badge" title="Tempo de Descanso">
+                                            <i class="ph ph-timer"></i>
+                                            <span><?= $ex['tempo_descanso_seg_alternativo'] ?>s</span>
+                                        </div>
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         </div>
