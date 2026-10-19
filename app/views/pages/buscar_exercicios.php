@@ -51,14 +51,51 @@
             
             <div id="estado-vazio-api" class="card estado-vazio">
                 <i class="ph ph-barbell"></i>
-                <h3>Nenhum exercício pesquisado</h3>
-                <p>Digite o nome do exercício acima para buscar na base de dados.</p>
+                <h3 id="estado-vazio-titulo">Nenhum exercício pesquisado</h3>
+                <p id="estado-vazio-texto">Digite o nome do exercício acima para buscar na base de dados.</p>
+                <div id="estado-vazio-acoes" class="estado-vazio__acoes is-hidden">
+                    <button type="button" class="btn btn--primario" id="btn-criar-exercicio-customizado">
+                        <i class="ph ph-plus"></i> Criar Exercício Customizado
+                    </button>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- MODAL DE CONFIGURAÇÃO DO EXERCÍCIO -->
-    <div class="modal-overlay modal-overlay--oculto" id="modal-configurar-exercicio" role="dialog" aria-modal="true">
+    <!-- MODAL 1: CRIAR EXERCÍCIO CUSTOMIZADO -->
+    <div class="modal-overlay modal-overlay--oculto" id="modal-exercicio-customizado" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-customizado">
+        <div class="modal">
+            <div class="modal__icone modal__icone--primario">
+                <i class="ph-bold ph-barbell"></i>
+            </div>
+            <h3 class="modal__titulo" id="titulo-modal-customizado">Criar Exercício Customizado</h3>
+            <p class="modal__texto">Informe os dados básicos do exercício para continuar com a prescrição.</p>
+
+            <form id="form-exercicio-customizado" novalidate>
+                <div class="form-group form-group--esquerda">
+                    <label for="custom-exercicio-nome" class="form-label">Nome do exercício</label>
+                    <input type="text" id="custom-exercicio-nome" class="form-input" placeholder="Ex: Elevação pélvica na máquina" required>
+                    <span class="form-error-msg"></span>
+                </div>
+
+                <div class="form-group form-group--esquerda">
+                    <label for="custom-exercicio-musculo" class="form-label">Músculo alvo / Grupo muscular</label>
+                    <input type="text" id="custom-exercicio-musculo" class="form-input" placeholder="Ex: Glúteos" required>
+                    <span class="form-error-msg"></span>
+                </div>
+
+                <div class="modal__acoes">
+                    <button type="button" class="btn btn--secundario js-modal-fechar-customizado">Cancelar</button>
+                    <button type="submit" class="btn btn--primario">
+                        Continuar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CONFIGURAÇÃO DE CARGA DE TRABALHO DO EXERCÍCIO -->
+    <div class="modal-overlay modal-overlay--oculto" id="modal-configurar-exercicio" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-exercicio">
         <div class="modal">
             <div class="modal__icone modal__icone--primario">
                 <i class="ph-bold ph-sliders"></i>
@@ -77,16 +114,19 @@
                     <div class="form-group">
                         <label for="modal-series" class="form-label">Séries</label>
                         <input type="number" name="series" id="modal-series" class="form-input" placeholder="Ex: 3" required>
+                        <span class="form-error-msg"></span>
                     </div>
                     <div class="form-group">
                         <label for="modal-repeticoes" class="form-label">Repetições</label>
                         <input type="text" name="repeticoes" id="modal-repeticoes" class="form-input" placeholder="Ex: 10-12" required>
+                        <span class="form-error-msg"></span>
                     </div>
                 </div>
 
                 <div class="form-group form-group--esquerda">
                     <label for="modal-descanso" class="form-label">Descanso (segundos)</label>
                     <input type="number" name="descanso" id="modal-descanso" class="form-input" placeholder="Ex: 60" value="60">
+                    <span class="form-error-msg"></span>
                 </div>
                 
                 <div class="form-group form-group--esquerda">

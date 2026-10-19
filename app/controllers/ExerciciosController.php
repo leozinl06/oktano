@@ -93,7 +93,7 @@ class ExerciciosController extends BaseController {
             $queryAlternativo = $id_treino_exercicio ? '&id_treino_exercicio=' . $id_treino_exercicio : '';
             $url_retorno_busca = '/oktano/public/treinos/buscar-exercicios?id_treino=' . $id_treino . $queryAlternativo;
 
-            if(empty($api_id) || empty($series) || empty($repeticoes)) {
+            if(empty($nome) || empty($musculo) || empty($series) || empty($repeticoes)) {
                 $this->redirecionarComResultado($url_retorno_busca, false, 'Preencha as séries e repetições.');
             }
 
@@ -104,12 +104,9 @@ class ExerciciosController extends BaseController {
             $treinoExercicioModel = new TreinoExercicio($db);
             $treinoModel = new Treino($db);
 
-            // 1. Busca ou Cadastra o exercício base vindo da API
-            $id_exercicio = $exercicioModel->buscarPorApiId($api_id);
-            if(!$id_exercicio) {
-                $id_exercicio = $exercicioModel->cadastrar($api_id, $nome, $musculo);
-            }
-
+            // 1. Busca ou Cadastra o exercício base (da API ou custom)
+            $id_exercicio = $exercicioModel->obterOuCadastrar($api_id, $nome, $musculo);
+            
             if(!$id_exercicio){
                 $this->redirecionarComResultado($url_retorno_busca, false, 'Falha ao registrar o exercicio base no sistema.');
             }

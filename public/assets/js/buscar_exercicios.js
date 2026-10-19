@@ -1,25 +1,62 @@
 import { configurarValidacaoGlobal } from "./validador.js";
 
-configurarValidacaoGlobal();
+const { definirErro, removerErro, configurarLimpezaAoDigitar } = configurarValidacaoGlobal();
 
 document.addEventListener('DOMContentLoaded', () => {
     const inputPesquisa = document.getElementById('input-pesquisa-api');
     const gradeResultados = document.getElementById('grade-resultados');
     const estadoVazio = document.getElementById('estado-vazio-api');
+    const estadoVazioTitulo = document.getElementById('estado-vazio-titulo');
+    const estadoVazioTexto = document.getElementById('estado-vazio-texto');
+    const estadoVazioAcoes = document.getElementById('estado-vazio-acoes');
+    const btnCriarCustomizado = document.getElementById('btn-criar-exercicio-customizado');
     const loader = document.getElementById('loader-pesquisa');
+
+    const modalCustomizado = document.getElementById('modal-exercicio-customizado');
+    const formCustomizado = document.getElementById('form-exercicio-customizado');
+    const inputCustomNome = document.getElementById('custom-exercicio-nome');
+    const inputCustomMusculo = document.getElementById('custom-exercicio-musculo');
+
+    const modalConfigurar = document.getElementById('modal-configurar-exercicio');
+    const formConfigurar = document.getElementById('form-configurar-exercicio');
+    const inputSeries = document.getElementById('modal-series');
+    const inputRepeticoes = document.getElementById('modal-repeticoes');
+    const inputDescanso = document.getElementById('modal-descanso');
+
+    const camposCustomizado = [inputCustomNome, inputCustomMusculo];
+    const camposConfigurar = [inputSeries, inputRepeticoes, inputDescanso];
+
+    configurarLimpezaAoDigitar([...camposCustomizado, ...camposConfigurar]);
 
     let timeoutId;
 
+    const capitalizarTexto = (texto) => {
+        const limpo = texto.trim();
+        return limpo ? limpo.charAt(0).toUpperCase() + limpo.slice(1) : '';
+    };
+
+    const atualizarEstadoVazio = ({ titulo, texto, exibirBotaoCustomizado = false }) => {
+        estadoVazio.classList.remove('is-hidden');
+        estadoVazioTitulo.textContent = titulo;
+        estadoVazioTexto.textContent = texto;
+        estadoVazioAcoes.classList.toggle('is-hidden', !exibirBotaoCustomizado);
+    };
+
+    // ==========================================
+    // 1. PESQUISA NA API
+    // ==========================================
     if (inputPesquisa) {
         inputPesquisa.addEventListener('input', (e) => {
             clearTimeout(timeoutId);
             const termo = e.target.value.trim();
 
-            if (termo.length < 3) { 
+            if (termo.length < 3) {
                 gradeResultados.innerHTML = '';
-                estadoVazio.classList.remove('is-hidden');
-                estadoVazio.querySelector('h3').textContent = 'Nenhum exercício pesquisado';
-                estadoVazio.querySelector('p').textContent = 'Digite o nome do exercício acima para buscar.';
+                atualizarEstadoVazio({
+                    titulo: 'Nenhum exercício pesquisado',
+                    texto: 'Digite o nome do exercício acima para buscar na base de dados.',
+                    exibirBotaoCustomizado: false
+                });
                 return;
             }
 
@@ -46,9 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!dados || dados.length === 0) {
-                estadoVazio.classList.remove('is-hidden');
-                estadoVazio.querySelector('h3').textContent = 'Nenhum resultado encontrado';
-                estadoVazio.querySelector('p').textContent = `Não encontramos o exercício "${termo}". Lembre-se de pesquisar termos em inglês, ex: "Squat" ou "Curl".`;
+                atualizarEstadoVazio({
+                    titulo: 'Nenhum resultado encontrado',
+                    texto: `Não encontramos o exercício "${termo}". Crie um exercício customizado para adicioná-lo ao treino.`,
+                    exibirBotaoCustomizado: true
+                });
                 return;
             }
 
@@ -60,9 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // (Mantenha o código existente que busca os dados intacto)
-
-    // Modifique levemente a injeção do HTML no renderizarResultados para enviar mais dados (data-musculo):
     function renderizarResultados(exercicios) {
         const fragmento = document.createDocumentFragment();
 
@@ -73,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const parteDoCorpo = ex.bodyPart || 'Não classificado';
             const alvo = ex.target || 'Diversos';
             const equipamento = ex.equipment || 'Sem equipamento';
-            const nomeCapitalizado = ex.name.charAt(0).toUpperCase() + ex.name.slice(1);
+            const nomeCapitalizado = capitalizarTexto(ex.name);
 
             cartao.innerHTML = `
                 <div class="cartao-exercicio-api__corpo">
@@ -91,58 +127,151 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                 </div>
             `;
+
             fragmento.appendChild(cartao);
         });
 
         gradeResultados.appendChild(fragmento);
     }
 
-    // LÓGICA DO MODAL
-    const modalConfigurar = document.getElementById('modal-configurar-exercicio');
-    const formConfigurar = document.getElementById('form-configurar-exercicio');
-    
-    // Event Delegation para capturar cliques nos botões recém-criados
-    gradeResultados.addEventListener('click', (e) => {
-        const btn = e.target.closest('.js-selecionar-exercicio');
-        if(btn) {
-            // Preenche os campos ocultos com os dados da API
-            document.getElementById('modal-exercicio-api_id').value = btn.getAttribute('data-api-id');
-            document.getElementById('modal-exercicio-nome').value = btn.getAttribute('data-nome');
-            document.getElementById('modal-exercicio-musculo').value = btn.getAttribute('data-musculo');
-            
-            // Atualiza o título do Modal
-            document.getElementById('titulo-modal-exercicio').textContent = btn.getAttribute('data-nome');
-            
-            // Exibe o modal
-            modalConfigurar.classList.remove('modal-overlay--oculto');
-        }
-    });
+    // ==========================================
+    // 2. FUNÇÕES COMPARTILHADAS DE MODAL (DRY)
+    // ==========================================
+    const fecharModal = (modal, form, campos = []) => {
+        if (!modal) return;
+        modal.classList.add('modal-overlay--oculto');
+        if (form) form.reset();
+        campos.forEach(removerErro);
+    };
 
-    // Fechar modal
-    document.querySelectorAll('.js-modal-fechar-configurar').forEach(btn => {
-        btn.addEventListener('click', () => {
-            modalConfigurar.classList.add('modal-overlay--oculto');
-            formConfigurar.reset();
+    const vincularFechamentoModal = (modal, form, seletorBtnFechar, campos = []) => {
+        if (!modal) return;
+
+        document.querySelectorAll(seletorBtnFechar).forEach(btn => {
+            btn.addEventListener('click', () => fecharModal(modal, form, campos));
         });
-    });
 
-    // Fechar ao clicar fora ou apertar ESC
-    modalConfigurar.addEventListener('click', (e) => {
-        if(e.target === modalConfigurar) {
-            modalConfigurar.classList.add('modal-overlay--oculto');
-            formConfigurar.reset();
-        }
-    });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) fecharModal(modal, form, campos);
+        });
+    };
+
+    const abrirModalConfigurar = ({ apiId = '', nome, musculo }) => {
+        document.getElementById('modal-exercicio-api_id').value = apiId;
+        document.getElementById('modal-exercicio-nome').value = nome;
+        document.getElementById('modal-exercicio-musculo').value = musculo;
+        document.getElementById('titulo-modal-exercicio').textContent = nome;
+
+        modalConfigurar.classList.remove('modal-overlay--oculto');
+        if (inputSeries) inputSeries.focus();
+    };
+
+    vincularFechamentoModal(modalCustomizado, formCustomizado, '.js-modal-fechar-customizado', camposCustomizado);
+    vincularFechamentoModal(modalConfigurar, formConfigurar, '.js-modal-fechar-configurar', camposConfigurar);
 
     document.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && !modalConfigurar.classList.contains('modal-overlay--oculto')){
-            modalConfigurar.classList.add('modal-overlay--oculto');
-            formConfigurar.reset();
+        if (e.key === 'Escape') {
+            if (modalCustomizado && !modalCustomizado.classList.contains('modal-overlay--oculto')) {
+                fecharModal(modalCustomizado, formCustomizado, camposCustomizado);
+            }
+            if (modalConfigurar && !modalConfigurar.classList.contains('modal-overlay--oculto')) {
+                fecharModal(modalConfigurar, formConfigurar, camposConfigurar);
+            }
         }
     });
 
-    // Fechar modal ao submeter
-    formConfigurar.addEventListener('submit', () => {
-        modalConfigurar.classList.add('modal-overlay--oculto');
+    // ==========================================
+    // 3. FLUXO: EXERCÍCIO DA API -> CONFIGURAR
+    // ==========================================
+    gradeResultados.addEventListener('click', (e) => {
+        const btn = e.target.closest('.js-selecionar-exercicio');
+        if (btn) {
+            abrirModalConfigurar({
+                apiId: btn.getAttribute('data-api-id'),
+                nome: btn.getAttribute('data-nome'),
+                musculo: btn.getAttribute('data-musculo')
+            });
+        }
     });
+
+    // ==========================================
+    // 4. FLUXO: EXERCÍCIO CUSTOMIZADO -> CONFIGURAR
+    // ==========================================
+    if (btnCriarCustomizado && modalCustomizado) {
+        btnCriarCustomizado.addEventListener('click', () => {
+            camposCustomizado.forEach(removerErro);
+            const termoAtual = inputPesquisa ? capitalizarTexto(inputPesquisa.value) : '';
+            inputCustomNome.value = termoAtual;
+            inputCustomMusculo.value = '';
+
+            modalCustomizado.classList.remove('modal-overlay--oculto');
+            if (termoAtual) {
+                inputCustomMusculo.focus();
+            } else {
+                inputCustomNome.focus();
+            }
+        });
+    }
+
+    if (formCustomizado) {
+        formCustomizado.addEventListener('submit', (e) => {
+            e.preventDefault();
+            camposCustomizado.forEach(removerErro);
+
+            const nome = capitalizarTexto(inputCustomNome.value);
+            const musculo = capitalizarTexto(inputCustomMusculo.value);
+            let valido = true;
+
+            if (!nome) {
+                definirErro(inputCustomNome, 'Informe o nome do exercício.');
+                valido = false;
+            }
+
+            if (!musculo) {
+                definirErro(inputCustomMusculo, 'Informe o músculo alvo ou grupo muscular.');
+                valido = false;
+            }
+
+            if (!valido) return;
+
+            fecharModal(modalCustomizado, formCustomizado, camposCustomizado);
+
+            // Segue exatamente o mesmo fluxo de configuração de exercício
+            abrirModalConfigurar({
+                apiId: '',
+                nome: nome,
+                musculo: musculo
+            });
+        });
+    }
+
+    // Validação do formulário de configuração antes de enviar
+    if (formConfigurar) {
+        formConfigurar.addEventListener('submit', (e) => {
+            camposConfigurar.forEach(removerErro);
+            let valido = true;
+
+            const valorSeries = inputSeries.value.trim();
+            if (!valorSeries || Number(valorSeries) <= 0) {
+                definirErro(inputSeries, 'Informe um número válido de séries.');
+                valido = false;
+            }
+
+            if (!inputRepeticoes.value.trim()) {
+                definirErro(inputRepeticoes, 'Informe as repetições.');
+                valido = false;
+            }
+
+            const valorDescanso = inputDescanso ? inputDescanso.value.trim() : '60';
+            if (inputDescanso && (valorDescanso === '' || Number(valorDescanso) < 0)) {
+                definirErro(inputDescanso, 'Informe o tempo de descanso em segundos.');
+                valido = false;
+            }
+
+            if (!valido) {
+                e.preventDefault();
+                return;
+            }
+        });
+    }
 });

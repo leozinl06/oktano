@@ -1177,3 +1177,9 @@
 .form-group--esquerda {
     text-align: left;
 }
+
+.estado-vazio__acoes {
+    margin-top: var(--espaco-4);
+    display: flex;
+    justify-content: center;
+}
