@@ -3,7 +3,7 @@
    ========================================================= */
 
 /* ---------- Botões ---------- */
-.btn{
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -16,74 +16,121 @@
   transition: background-color var(--transicao-rapida), border-color var(--transicao-rapida), color var(--transicao-rapida), transform var(--transicao-rapida);
   white-space: nowrap;
 }
-.btn:active{ transform: scale(0.98); }
-.btn--primario{
+
+.btn:active { transform: scale(0.98); }
+
+.btn--primario {
   background-color: var(--cor-primaria);
   color: var(--cor-primaria-texto);
 }
-.btn--primario:hover{ background-color: var(--cor-primaria-hover); }
-.btn--secundario{
+.btn--primario:hover { background-color: var(--cor-primaria-hover); }
+
+.btn--secundario {
   background-color: var(--cor-secundaria);
   color: var(--cor-secundaria-texto);
   border-color: var(--cor-borda);
 }
-.btn--secundario:hover{ background-color: var(--cor-secundaria-hover); }
-.btn--perigo{
+.btn--secundario:hover { background-color: var(--cor-secundaria-hover); }
+
+.btn--perigo {
   background-color: var(--erro);
   color: #fff;
 }
-.btn--perigo:hover{ background-color: var(--erro-hover); }
-.btn--texto{
+.btn--perigo:hover { background-color: var(--erro-hover); }
+
+.btn--texto {
   background: transparent;
   color: var(--cor-texto-secundario);
 }
-.btn--texto:hover{ color: var(--cor-texto); }
-.btn--bloco{ width: 100%; }
-.btn--pequeno{ padding: 0.5rem 0.85rem; font-size: 0.85rem; }
-.btn--icone{
+.btn--texto:hover { color: var(--cor-texto); }
+
+.btn--bloco { width: 100%; }
+.btn--pequeno { padding: 0.5rem 0.85rem; font-size: 0.85rem; }
+
+.btn--icone {
   padding: 0.5rem;
   border-radius: var(--raio-sm);
   color: var(--cor-texto-secundario);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn--icone:hover{ 
-   background-color: var(--cor-superficie-alta); 
-   color: var(--cor-texto); 
+.btn--icone:hover {
+  background-color: var(--cor-superficie-alta);
+  color: var(--cor-texto);
 }
+
 .btn--icone-perigo:hover {
   color: var(--erro);
   background-color: var(--fundo-erro);
 }
-.cabecalho__acao-sair:hover{
+
+.cabecalho__acao-sair:hover {
   background-color: var(--fundo-erro);
   color: var(--erro);
 }
-.js-btn-excluir-ficha:hover{
+
+.js-btn-excluir-ficha:hover {
   color: var(--erro);
 }
-.btn:disabled, .btn[disabled]{
+
+.btn:disabled, .btn[disabled] {
   background-color: var(--cor-indisponivel);
   color: var(--cor-texto-indisponivel);
   border-color: var(--borda-desabilitado);
   cursor: not-allowed;
 }
 
+.btn--gigante {
+  padding: 1.25rem;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .btn--gigante {
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
 /* ---------- Formulários ---------- */
-.form-group{
+.form-group {
   display: flex;
   flex-direction: column;
   gap: var(--espaco-2);
   margin-bottom: var(--espaco-4);
 }
-.form-label{
+
+.form-group--esquerda {
+  text-align: left;
+}
+
+.form-grid-duplo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espaco-3);
+  text-align: left;
+}
+
+@media (max-width: 480px) {
+  .form-grid-duplo {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.form-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--cor-texto);
 }
-.form-label .opcional{
+
+.form-label .opcional {
   font-weight: 400;
   color: var(--cor-texto-terciario);
 }
-.form-input, .form-select, .form-textarea{
+
+.form-input, .form-select, .form-textarea {
   width: 100%;
   background-color: var(--cor-superficie);
   border: 1.5px solid var(--borda-campo);
@@ -92,40 +139,51 @@
   color: var(--cor-texto);
   transition: border-color var(--transicao-rapida), box-shadow var(--transicao-rapida), background-color var(--transicao-rapida);
 }
-.form-textarea{ resize: vertical; min-height: 7rem; }
-.form-input::placeholder, .form-textarea::placeholder{ color: var(--cor-texto-terciario); }
-.form-input:hover, .form-select:hover, .form-textarea:hover{ border-color: var(--borda-hover); }
-.form-input:focus, .form-select:focus, .form-textarea:focus{
+
+.form-textarea { resize: vertical; min-height: 7rem; }
+
+.form-input::placeholder, .form-textarea::placeholder { color: var(--cor-texto-terciario); }
+
+.form-input:hover, .form-select:hover, .form-textarea:hover { border-color: var(--borda-hover); }
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
   border-color: var(--anel-foco);
   box-shadow: 0 0 0 3px var(--anel-foco-sombra);
 }
-.form-input:disabled, .form-select:disabled, .form-textarea:disabled{
+
+.form-input:disabled, .form-select:disabled, .form-textarea:disabled {
   background-color: var(--cor-indisponivel);
   color: var(--cor-texto-indisponivel);
   border-color: var(--borda-desabilitado);
   cursor: not-allowed;
 }
-.form-input.is-invalid, .form-select.is-invalid, .form-textarea.is-invalid{
+
+.form-input.is-invalid, .form-select.is-invalid, .form-textarea.is-invalid {
   border-color: var(--erro);
   background-color: var(--fundo-erro);
 }
-.form-input.is-invalid:focus, .form-select.is-invalid:focus, .form-textarea.is-invalid:focus{
+
+.form-input.is-invalid:focus, .form-select.is-invalid:focus, .form-textarea.is-invalid:focus {
   box-shadow: 0 0 0 3px rgba(255, 93, 93, 0.25);
 }
-.form-error-msg{
+
+.form-error-msg {
   min-height: 1.1em;
   font-size: 0.82rem;
   color: var(--texto-erro);
 }
-.form-hint{
+
+.form-hint {
   font-size: 0.8rem;
   color: var(--cor-texto-terciario);
 }
-.campo-senha{
+
+.campo-senha {
   position: relative;
 }
-.campo-senha__alternar{
+
+.campo-senha__alternar {
   position: absolute;
   right: 0.6rem;
   top: 0.55rem;
@@ -134,28 +192,32 @@
 }
 
 /* --- Indicador de força de senha --- */
-.forca-senha{
+.forca-senha {
   display: flex;
   gap: 6px;
   margin-top: 2px;
 }
-.forca-senha span{
+
+.forca-senha span {
   height: 4px;
   flex: 1;
   border-radius: var(--raio-pill);
   background-color: var(--cor-borda);
   transition: background-color var(--transicao-rapida);
 }
-.forca-senha.senha-fraca span:nth-child(1){ background-color: var(--erro); }
-.forca-senha.senha-media span:nth-child(1), .forca-senha.senha-media span:nth-child(2){ background-color: var(--aviso); }
-.forca-senha.senha-forte span{ background-color: var(--sucesso); }
-.forca-senha-texto{
+
+.forca-senha.senha-fraca span:nth-child(1) { background-color: var(--erro); }
+.forca-senha.senha-media span:nth-child(1),
+.forca-senha.senha-media span:nth-child(2) { background-color: var(--aviso); }
+.forca-senha.senha-forte span { background-color: var(--sucesso); }
+
+.forca-senha-texto {
   font-size: 0.8rem;
   color: var(--cor-texto-terciario);
 }
 
 /* ---------- Alertas ---------- */
-.alerta{
+.alerta {
   display: flex;
   align-items: flex-start;
   gap: var(--espaco-3);
@@ -166,15 +228,18 @@
   font-size: 0.9rem;
   transition: opacity 400ms ease, transform 400ms ease;
 }
-.alerta-oculto{ opacity: 0; transform: translateY(-6px); }
-.alerta--sucesso{ background-color: var(--sucesso-fundo); border-color: var(--sucesso); color: var(--sucesso); }
-.alerta--erro{ background-color: var(--fundo-erro); border-color: var(--erro); color: var(--texto-erro); }
-.alerta--aviso{ background-color: var(--aviso-fundo); border-color: var(--aviso); color: var(--aviso); }
-.alerta--info{ background-color: var(--info-fundo); border-color: var(--info); color: var(--info); }
-.alerta i{ font-size: 1.2rem; flex-shrink: 0; }
+
+.alerta-oculto { opacity: 0; transform: translateY(-6px); }
+
+.alerta--sucesso { background-color: var(--sucesso-fundo); border-color: var(--sucesso); color: var(--sucesso); }
+.alerta--erro { background-color: var(--fundo-erro); border-color: var(--erro); color: var(--texto-erro); }
+.alerta--aviso { background-color: var(--aviso-fundo); border-color: var(--aviso); color: var(--aviso); }
+.alerta--info { background-color: var(--info-fundo); border-color: var(--info); color: var(--info); }
+
+.alerta i { font-size: 1.2rem; flex-shrink: 0; }
 
 /* ---------- Badges de status ---------- */
-.badge{
+.badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -184,27 +249,49 @@
   font-weight: 600;
   white-space: nowrap;
 }
-.badge--ativa{ background-color: var(--sucesso-fundo); color: var(--sucesso); }
-.badge--rascunho{ background-color: var(--aviso-fundo); color: var(--aviso); }
-.badge--arquivada{ background-color: var(--cor-indisponivel); color: var(--cor-texto-indisponivel); }
+
+.badge--ativa { background-color: var(--sucesso-fundo); color: var(--sucesso); }
+.badge--rascunho { background-color: var(--aviso-fundo); color: var(--aviso); }
+.badge--arquivada { background-color: var(--cor-indisponivel); color: var(--cor-texto-indisponivel); }
+
+.badge--alternativo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-1);
+  color: var(--cor-primaria);
+  background-color: var(--cor-primaria-clara);
+  border: 1px solid var(--cor-primaria);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
 
 /* ---------- Cards ---------- */
-.card{
+.card {
   background-color: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-lg);
   padding: var(--espaco-5);
 }
-.card--interativo{
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--espaco-4);
+  }
+}
+
+.card--interativo {
   transition: border-color var(--transicao-rapida), background-color var(--transicao-rapida);
 }
-.card--interativo:hover{
+
+.card--interativo:hover {
   border-color: var(--cor-borda-forte);
   background-color: var(--cor-superficie-alta);
 }
 
 /* ---------- Cabeçalho / navegação ---------- */
-.cabecalho{
+.cabecalho {
   position: sticky;
   top: 0;
   z-index: 40;
@@ -215,7 +302,8 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--cor-borda);
 }
-.cabecalho__conteudo{
+
+.cabecalho__conteudo {
   width: 100%;
   max-width: var(--largura-conteudo);
   margin-inline: auto;
@@ -225,7 +313,8 @@
   justify-content: space-between;
   gap: var(--espaco-4);
 }
-.cabecalho__logo{
+
+.cabecalho__logo {
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
@@ -233,28 +322,35 @@
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--cor-texto);
+  flex-shrink: 0;
 }
-.cabecalho__logo img{ height: 28px; width: auto; }
-.cabecalho__toggle{
+
+.cabecalho__logo img { height: 28px; width: auto; }
+
+.cabecalho__toggle {
   display: inline-flex;
   color: var(--cor-texto);
   font-size: 1.5rem;
   padding: var(--espaco-1);
 }
-@media (min-width: 641px){
-  .cabecalho__toggle{ display: none; }
+
+@media (min-width: 901px) {
+  .cabecalho__toggle { display: none; }
 }
-.cabecalho__nav{
+
+.cabecalho__nav {
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
 }
-.cabecalho__links{
+
+.cabecalho__links {
   display: flex;
   align-items: center;
   gap: var(--espaco-1);
 }
-.cabecalho__link{
+
+.cabecalho__link {
   padding: 0.55rem 0.9rem;
   border-radius: var(--raio-sm);
   color: var(--cor-texto-secundario);
@@ -263,11 +359,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
   transition: background-color var(--transicao-rapida), color var(--transicao-rapida);
 }
-.cabecalho__link:hover{ background-color: var(--cor-superficie-alta); color: var(--cor-texto); }
-.cabecalho__link.is-ativo{ background-color: var(--cor-superficie-alta); color: var(--cor-primaria-hover); }
-.cabecalho__usuario{
+
+.cabecalho__link:hover { background-color: var(--cor-superficie-alta); color: var(--cor-texto); }
+.cabecalho__link.is-ativo { background-color: var(--cor-superficie-alta); color: var(--cor-primaria-hover); }
+
+.cabecalho__usuario {
   display: flex;
   align-items: center;
   gap: var(--espaco-2);
@@ -276,37 +375,63 @@
   border-left: 1px solid var(--cor-borda);
   font-size: 0.9rem;
   color: var(--cor-texto-secundario);
+  max-width: 240px;
 }
-@media (max-width: 640px){
-  .cabecalho__nav{
+
+.cabecalho__usuario span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .cabecalho__nav {
     position: fixed;
     inset: var(--altura-cabecalho) 0 0 0;
+    height: calc(100dvh - var(--altura-cabecalho));
     background-color: var(--cor-fundo);
     flex-direction: column;
     align-items: stretch;
+    justify-content: flex-start;
     padding: var(--espaco-4);
+    overflow-y: auto;
     transform: translateY(-8px);
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--transicao-padrao), transform var(--transicao-padrao), visibility var(--transicao-padrao);
   }
-  .cabecalho__nav.is-aberto{
+
+  .cabecalho__nav.is-aberto {
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
   }
-  .cabecalho__links{ flex-direction: column; align-items: stretch; }
-  .cabecalho__link{ padding: 0.85rem 1rem; }
-  .cabecalho__usuario{
+
+  .cabecalho__links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cabecalho__link {
+    padding: 0.85rem 1rem;
+  }
+
+  .cabecalho__usuario {
     border-left: none;
     border-top: 1px solid var(--cor-borda);
     margin: var(--espaco-3) 0 0;
     padding: var(--espaco-3) 0 0;
+    max-width: 100%;
+    justify-content: space-between;
+  }
+
+  .cabecalho__usuario span {
+    flex: 1;
   }
 }
 
 /* ---------- Modais ---------- */
-.modal-overlay{
+.modal-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -318,13 +443,17 @@
   opacity: 1;
   transition: opacity var(--transicao-padrao);
 }
-.modal-overlay--oculto{
+
+.modal-overlay--oculto {
   opacity: 0;
   pointer-events: none;
 }
-.modal{
+
+.modal {
   width: 100%;
   max-width: 420px;
+  max-height: calc(100dvh - var(--espaco-6));
+  overflow-y: auto;
   background-color: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-lg);
@@ -333,557 +462,36 @@
   transform: scale(1);
   transition: transform var(--transicao-padrao);
 }
-.modal-overlay--oculto .modal{ transform: scale(0.94); }
-.modal__icone{
-  width: 48px; height: 48px;
+
+.modal-overlay--oculto .modal { transform: scale(0.94); }
+
+.modal--pequeno {
+  max-width: 340px;
+  margin-inline: auto;
+}
+
+.modal__icone {
+  width: 48px;
+  height: 48px;
   border-radius: var(--raio-md);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: var(--espaco-4);
-}
-.modal__icone--aviso{ background-color: var(--aviso-fundo); color: var(--aviso); }
-.modal__icone--perigo{ background-color: var(--fundo-erro); color: var(--erro); }
-.modal__titulo{ margin-bottom: var(--espaco-2); }
-.modal__texto{ color: var(--cor-texto-secundario); margin-bottom: var(--espaco-5); font-size: 0.92rem; }
-.modal__acoes{
-  display: flex;
-  gap: var(--espaco-3);
-  justify-content: flex-end;
-}
-@media (max-width: 480px){
-  .modal__acoes{ flex-direction: column-reverse; }
-  .modal__acoes .btn{ width: 100%; }
-}
-
-/* ---------- Tabela responsiva / cards no mobile ---------- */
-.tabela-wrapper{
-  background-color: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio-lg);
-  overflow: hidden;
-}
-.tabela{
-  width: 100%;
-  border-collapse: collapse;
-}
-.tabela thead th{
-  text-align: left;
-  font-size: 0.78rem;
-  text-transform: none;
-  color: var(--cor-texto-terciario);
-  font-weight: 600;
-  padding: var(--espaco-3) var(--espaco-4);
-  border-bottom: 1px solid var(--cor-borda);
-}
-.tabela tbody td{
-  padding: var(--espaco-4);
-  border-bottom: 1px solid var(--cor-borda);
-  font-size: 0.92rem;
-  vertical-align: middle;
-}
-.tabela tbody tr:last-child td{ border-bottom: none; }
-.tabela tbody tr{ transition: background-color var(--transicao-rapida); }
-.tabela tbody tr:hover{ background-color: var(--cor-superficie-alta); }
-.tabela__acoes{
-  display: flex;
-  gap: var(--espaco-2);
-  justify-content: flex-end;
-}
-.tabela__titulo-principal{ font-weight: 600; color: var(--cor-texto); }
-.tabela__subtexto{ color: var(--cor-texto-terciario); font-size: 0.82rem; }
-.tabela__ficha-link {
-    text-decoration: none;
-    color: var(--cor-texto);
-    display: inline-block;
-    transition: color 0.2s ease-in-out;
-}
-.tabela__ficha-link:hover {
-    color: var(--cor-primaria);
-}
-@media (max-width: 768px){
-  .tabela thead{ display: none; }
-  .tabela, .tabela tbody, .tabela tbody tr, .tabela tbody td{ display: block; width: 100%; }
-  .tabela-wrapper{ background-color: transparent; border: none; }
-  .tabela tbody tr{
-    background-color: var(--cor-superficie);
-    border: 1px solid var(--cor-borda);
-    border-radius: var(--raio-md);
-    margin-bottom: var(--espaco-3);
-    padding: var(--espaco-4);
-  }
-  .tabela tbody td{
-    border-bottom: none;
-    padding: var(--espaco-1) 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--espaco-3);
-  }
-  .tabela tbody td::before{
-    content: attr(data-rotulo);
-    font-size: 0.75rem;
-    color: var(--cor-texto-terciario);
-    font-weight: 600;
-  }
-  .tabela__acoes{ justify-content: flex-start; padding-top: var(--espaco-2); }
-}
-
-/* ---------- Item expansível (accordion) página Alunos ---------- */
-.aluno-item{
-  background-color: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio-md);
-  margin-bottom: var(--espaco-3);
-  overflow: hidden;
-  transition: border-color var(--transicao-rapida);
-}
-.aluno-item.is-open{ border-color: var(--cor-borda-forte); }
-.aluno-item__cabecalho{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-3);
-  padding: var(--espaco-4);
-  text-align: left;
-}
-.aluno-item__identidade{
-  display: flex;
-  align-items: center;
-  gap: var(--espaco-3);
-}
-.aluno-item__avatar{
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background-color: var(--cor-superficie-alta);
-  color: var(--cor-primaria-hover);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.aluno-item__nome{ font-weight: 600; }
-.aluno-item__meta{ font-size: 0.8rem; color: var(--cor-texto-terciario); }
-.aluno-item__chevron{
-  transition: transform var(--transicao-rapida);
-  color: var(--cor-texto-secundario);
-}
-.aluno-item.is-open .aluno-item__chevron{ transform: rotate(180deg); }
-.aluno-item__corpo{
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--transicao-padrao);
-}
-.aluno-item.is-open .aluno-item__corpo{ grid-template-rows: 1fr; }
-.aluno-item__conteudo{
-  min-height: 0;
-  overflow: hidden;
-  padding: 0 var(--espaco-4);
-  border-top: 1px solid transparent;
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-  opacity: 0;
-  visibility: hidden;
-  transition: padding var(--transicao-padrao), opacity var(--transicao-padrao), border-color var(--transicao-padrao), visibility var(--transicao-padrao);
-}
-.aluno-item.is-open .aluno-item__conteudo {
-  padding: var(--espaco-4);
-  border-top-color: var(--cor-borda);
-  opacity: 1;
-  visibility: visible;
-}
-.aluno-item__ficha-info {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-2);
-}
-.aluno-item__ficha{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espaco-3);
-  padding: var(--espaco-3);
-  background-color: var(--cor-superficie-alta);
-  border-radius: var(--raio-sm);
-}
-.aluno-item__ficha-titulo {
-    font-weight: 600;
-    color: var(--cor-texto);
-}
-.aluno-item.is-hidden{ display: none; }
-
-/* ---------- Estado vazio ---------- */
-.estado-vazio{
-  text-align: center;
-  padding: var(--espaco-7) var(--espaco-4);
-  color: var(--cor-texto-secundario);
-}
-.estado-vazio i{
-  font-size: 2.5rem;
-  color: var(--cor-texto-terciario);
-  margin-bottom: var(--espaco-3);
-}
-.estado-vazio h3{ margin-bottom: var(--espaco-2); }
-.estado-vazio--pequeno {
-  padding: var(--espaco-4);
-}
-
-/* ---------- Campo de busca ---------- */
-.campo-busca{
-  position: relative;
-  max-width: 360px;
-}
-.campo-busca i{
-  position: absolute;
-  left: 0.85rem; top: 50%;
-  transform: translateY(-50%);
-  color: var(--cor-texto-terciario);
-}
-.campo-busca input{ padding-left: 2.4rem; }
-
-/* =========================================
-   LISTA E CARDS DE TREINOS (detalhes_ficha)
-   ========================================= */
-.treinos-lista {
-    margin-top: var(--espaco-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-3);
-}
-.treinos-lista__cabecalho {
-    margin-bottom: var(--espaco-2);
-}
-.grade-treinos {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-3);
-}
-
-.card-pesquisa-api {
-    margin-bottom: var(--espaco-4);
-}
-.loader-pesquisa {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-2);
-    color: var(--cor-primaria);
-    font-weight: 600;
-    margin-top: var(--espaco-3);
-}
-.grade-busca-exercicios {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--espaco-3);
-    margin-bottom: var(--espaco-5);
-}
-.cartao-exercicio-api {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    overflow: hidden;
-}
-.cartao-exercicio-api__imagem img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-bottom: 1px solid var(--cor-borda);
-}
-.cartao-exercicio-api__corpo {
-    padding: var(--espaco-3);
-    flex-grow: 1;
-}
-.cartao-exercicio-api__titulo {
-    font-size: 1.1rem;
-    margin-bottom: var(--espaco-2);
-    color: var(--cor-texto);
-}
-.cartao-exercicio-api__rodape {
-    padding: var(--espaco-3);
-    border-top: 1px solid var(--cor-borda);
-    background-color: var(--cor-fundo-secundario);
-}
-
-/* Posicionamento do erro de API para ocupar toda a grade */
-.erro-grid-inteiro {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: var(--espaco-4);
-}
-.cartao-exercicio-api__musculos {
-    font-size: 0.85rem;
-    margin-bottom: var(--espaco-2);
-}
-
-/* --- Acordeão de Treinos Refatorado --- */
-.treino-card {
-    padding: 0;
-    margin-bottom: var(--espaco-4);
-    border: 1px solid var(--cor-borda);
-    border-radius: var(--raio-lg);
-    background-color: var(--cor-superficie);
-    transition: border-color 0.3s ease;
-}
-
-.treino-card.is-open {
-    border-color: var(--cor-primaria);
-}
-
-.treino-card__topo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: var(--espaco-4);
-}
-
-.treino-card__cabecalho {
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: none;
-    border: none;
-    padding: var(--espaco-4) var(--espaco-5);
-    cursor: pointer;
-    text-align: left;
-    border-radius: var(--raio-lg) 0 0 var(--raio-lg);
-    transition: background-color 0.2s;
-}
-
-.treino-card__cabecalho:hover {
-    background-color: var(--cor-superficie-alta);
-}
-
-.treino-card__info {
-    flex: 1;
-}
-
-.treino-card__titulo {
-    margin-bottom: var(--espaco-1);
-    color: var(--cor-texto);
-}
-
-.treino-card__chevron {
-    transition: transform var(--transicao-rapida);
-    color: var(--cor-texto-secundario);
-    font-size: 1.2rem;
-}
-
-.treino-card.is-open .treino-card__chevron {
-    transform: rotate(180deg);
-}
-
-.treino-card__acoes-icones {
-    display: flex;
-    gap: var(--espaco-2);
-    padding-left: var(--espaco-3);
-}
-
-/* Animação com CSS Grid para expansão fluida */
-.treino-card__corpo {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s ease-out;
-}
-
-.treino-card.is-open .treino-card__corpo {
-    grid-template-rows: 1fr;
-}
-
-.treino-card__conteudo {
-    overflow: hidden;
-}
-
-.treino-card__conteudo-interno {
-    padding: var(--espaco-4) var(--espaco-5) var(--espaco-5) var(--espaco-5);
-    border-top: 1px solid var(--cor-borda);
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-4);
-}
-
-.treino-card__desc {
-    display: flex;
-    gap: var(--espaco-2);
-    color: var(--cor-texto-secundario);
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-.treino-card__rodape {
-    padding-top: var(--espaco-2);
-}
-
-/* --- Lista de Exercícios --- */
-.lista-exercicios {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-3);
-}
-
-.lista-exercicios__item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--espaco-3) var(--espaco-4);
-    background-color: var(--cor-superficie-alta);
-    border-radius: var(--raio-md);
-    border: 1px solid var(--cor-borda);
-    border-left: 4px solid var(--cor-primaria);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.lista-exercicios__item:hover {
-    transform: translateY(-2px);
-}
-
-.lista-exercicios__info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-1);
-}
-
-.lista-exercicios__titulo-grupo {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-3);
-}
-
-.lista-exercicios__ordem {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--cor-texto-terciario);
-    background-color: var(--cor-borda);
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.lista-exercicios__nome {
-    font-size: 1.05rem;
-    color: var(--cor-texto);
-}
-
-.lista-exercicios__musculo {
-    align-self: flex-start;
-    font-size: 0.75rem;
-    margin-left: 36px;
-}
-
-/* --- Badges de Parâmetros --- */
-.lista-exercicios__params {
-    display: flex;
-    gap: var(--espaco-3);
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-}
-
-.param-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
-    color: var(--cor-texto-secundario);
-    background-color: var(--cor-superficie);
-    padding: 6px 12px;
-    border-radius: var(--raio-sm);
-    border: 1px solid var(--cor-borda);
-}
-
-.param-badge--destaque {
-    color: var(--cor-primaria);
-    background-color: var(--cor-primaria-clara);
-    border-color: transparent;
-    font-weight: 600;
-}
-
-/* ---------- Modificadores de Botão Adicionais ---------- */
-.btn--gigante {
-  padding: 1.25rem;
-  font-size: 1.25rem;
-}
-
-/* =========================================
-   CARTÃO DE EXERCÍCIO EXPANDIDO (Execução)
-   ========================================= */
-.cartao-exercicio-expandido {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaco-3);
-  width: 100%;
-}
-.cartao-exercicio-expandido__topo {
-  display: flex;
-  align-items: center;
-  gap: var(--espaco-3);
-  border-bottom: 1px solid var(--cor-borda);
-  padding-bottom: var(--espaco-3);
-}
-.cartao-exercicio-expandido__ordem {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  background-color: var(--cor-superficie-alta);
-  color: var(--cor-primaria-hover);
-  border-radius: 50%;
-  font-weight: 700;
-  font-size: 1.25rem;
-  flex-shrink: 0;
+  font-size: 1.4rem;
+  margin-bottom: var(--espaco-4);
 }
-.cartao-exercicio-expandido__titulo {
-  font-size: 1.25rem;
-  color: var(--cor-texto);
-  line-height: 1.3;
-}
-.cartao-exercicio-expandido__metricas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+.modal__icone--primario { color: var(--cor-primaria); background-color: var(--cor-primaria-clara); }
+.modal__icone--aviso { background-color: var(--aviso-fundo); color: var(--aviso); }
+.modal__icone--perigo { background-color: var(--fundo-erro); color: var(--erro); }
+
+.modal__titulo { margin-bottom: var(--espaco-2); }
+.modal__texto { color: var(--cor-texto-secundario); margin-bottom: var(--espaco-5); font-size: 0.92rem; }
+
+.modal__acoes {
+  display: flex;
   gap: var(--espaco-3);
-  margin-top: var(--espaco-2);
-}
-.metrica-box {
-  background-color: var(--cor-fundo);
-  padding: var(--espaco-3);
-  border-radius: var(--raio-sm);
-  text-align: center;
-  border: 1px solid var(--cor-borda);
-}
-.metrica-box__valor {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--cor-texto);
-  margin-bottom: 4px;
-}
-.metrica-box__rotulo {
-  font-size: 0.75rem;
-  color: var(--cor-texto-terciario);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.cartao-exercicio-expandido__obs {
-  background-color: var(--cor-fundo);
-  padding: var(--espaco-3);
-  border-radius: var(--raio-sm);
-  border-left: 4px solid var(--cor-primaria);
-  margin-top: var(--espaco-2);
-}
-
-/* =========================================
-   COMPONENTES DE EXECUÇÃO DE TREINO
-   ========================================= */
-
-/* Modificador para modais compactos */
-.modal--pequeno {
-  max-width: 320px;
-  margin-inline: auto;
-  max-height: 90vh;
-  overflow-y: auto;
+  justify-content: flex-end;
 }
 
 .modal--pequeno .modal__acoes {
@@ -895,11 +503,785 @@
   justify-content: center;
 }
 
-/* Modificadores para a caixa de métricas */
+/* Exceção para manter os botões redondos do cronômetro de descanso lado a lado */
+#modal-descanso .modal__acoes {
+  flex-direction: row;
+  justify-content: center;
+}
+
+#modal-descanso .modal__acoes .btn {
+  width: auto;
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: var(--espaco-3);
+  }
+
+  .modal {
+    padding: var(--espaco-4);
+  }
+
+  .modal__acoes {
+    flex-direction: column-reverse;
+  }
+
+  .modal__acoes .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Tabela responsiva / cards no mobile ---------- */
+.tabela-wrapper {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-lg);
+  overflow: hidden;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela thead th {
+  text-align: left;
+  font-size: 0.78rem;
+  text-transform: none;
+  color: var(--cor-texto-terciario);
+  font-weight: 600;
+  padding: var(--espaco-3) var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela tbody td {
+  padding: var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda);
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+
+.tabela tbody tr:last-child td { border-bottom: none; }
+.tabela tbody tr { transition: background-color var(--transicao-rapida); }
+.tabela tbody tr:hover { background-color: var(--cor-superficie-alta); }
+
+.tabela__acoes {
+  display: flex;
+  gap: var(--espaco-2);
+  justify-content: flex-end;
+}
+
+.tabela__titulo-principal { font-weight: 600; color: var(--cor-texto); }
+.tabela__subtexto { color: var(--cor-texto-terciario); font-size: 0.82rem; margin-top: 2px; }
+
+.tabela__ficha-link {
+  text-decoration: none;
+  color: var(--cor-texto);
+  display: inline-block;
+  transition: color 0.2s ease-in-out;
+}
+.tabela__ficha-link:hover {
+  color: var(--cor-primaria);
+}
+
+@media (max-width: 768px) {
+  .tabela thead { display: none; }
+  .tabela, .tabela tbody, .tabela tbody tr, .tabela tbody td { display: block; width: 100%; }
+  .tabela-wrapper { background-color: transparent; border: none; }
+
+  .tabela tbody tr {
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-md);
+    margin-bottom: var(--espaco-3);
+    padding: var(--espaco-4);
+  }
+
+  .tabela tbody td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: var(--espaco-2) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--espaco-2);
+    text-align: right;
+  }
+
+  .tabela tbody td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .tabela tbody td::before {
+    content: attr(data-rotulo);
+    font-size: 0.78rem;
+    color: var(--cor-texto-terciario);
+    font-weight: 600;
+    text-align: left;
+    margin-right: auto;
+  }
+
+  .tabela tbody td[data-rotulo="Ficha"] .tabela__subtexto {
+    width: 100%;
+    text-align: right;
+  }
+
+  .tabela__acoes {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- Item expansível (accordion) página Alunos e Sessões ---------- */
+.aluno-item {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-md);
+  margin-bottom: var(--espaco-3);
+  overflow: hidden;
+  transition: border-color var(--transicao-rapida);
+}
+
+.aluno-item.is-open { border-color: var(--cor-borda-forte); }
+
+.aluno-item__cabecalho {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  padding: var(--espaco-4);
+  text-align: left;
+}
+
+.aluno-item__identidade {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-width: 0;
+}
+
+.aluno-item__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--cor-superficie-alta);
+  color: var(--cor-primaria-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.aluno-item__nome {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.aluno-item__meta { font-size: 0.8rem; color: var(--cor-texto-terciario); }
+
+.aluno-item__chevron {
+  transition: transform var(--transicao-rapida);
+  color: var(--cor-texto-secundario);
+  flex-shrink: 0;
+}
+
+.aluno-item.is-open .aluno-item__chevron { transform: rotate(180deg); }
+
+.aluno-item__corpo {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transicao-padrao);
+}
+
+.aluno-item.is-open .aluno-item__corpo { grid-template-rows: 1fr; }
+
+.aluno-item__conteudo {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 var(--espaco-4);
+  border-top: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  opacity: 0;
+  visibility: hidden;
+  transition: padding var(--transicao-padrao), opacity var(--transicao-padrao), border-color var(--transicao-padrao), visibility var(--transicao-padrao);
+}
+
+.aluno-item.is-open .aluno-item__conteudo {
+  padding: var(--espaco-4);
+  border-top-color: var(--cor-borda);
+  opacity: 1;
+  visibility: visible;
+}
+
+.aluno-item__ficha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  padding: var(--espaco-3);
+  background-color: var(--cor-superficie-alta);
+  border-radius: var(--raio-sm);
+}
+
+.aluno-item__ficha-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  min-width: 0;
+}
+
+.aluno-item__ficha-titulo {
+  font-weight: 600;
+  color: var(--cor-texto);
+  word-break: break-word;
+}
+
+.aluno-item.is-hidden { display: none; }
+
+@media (max-width: 640px) {
+  .aluno-item__ficha {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .aluno-item__ficha .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .aluno-item__conteudo > .btn {
+    width: 100% !important;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ---------- Estado vazio ---------- */
+.estado-vazio {
+  text-align: center;
+  padding: var(--espaco-7) var(--espaco-4);
+  color: var(--cor-texto-secundario);
+}
+
+.estado-vazio i {
+  font-size: 2.5rem;
+  color: var(--cor-texto-terciario);
+  margin-bottom: var(--espaco-3);
+}
+
+.estado-vazio h3 { margin-bottom: var(--espaco-2); }
+
+.estado-vazio--pequeno {
+  padding: var(--espaco-4);
+}
+
+.estado-vazio__acoes {
+  margin-top: var(--espaco-4);
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .estado-vazio__acoes .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- Campo de busca ---------- */
+.campo-busca {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+}
+
+.card-pesquisa-api .campo-busca {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .campo-busca {
+    max-width: 100%;
+  }
+}
+
+.campo-busca i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cor-texto-terciario);
+}
+
+.campo-busca input { padding-left: 2.4rem; }
+
+/* =========================================
+   LISTA E CARDS DE TREINOS (detalhes_ficha)
+   ========================================= */
+.treinos-lista {
+  margin-top: var(--espaco-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.treinos-lista__cabecalho {
+  margin-bottom: var(--espaco-2);
+}
+
+.grade-treinos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.card-pesquisa-api {
+  margin-bottom: var(--espaco-4);
+}
+
+.loader-pesquisa {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  color: var(--cor-primaria);
+  font-weight: 600;
+  margin-top: var(--espaco-3);
+}
+
+.grade-busca-exercicios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--espaco-3);
+  margin-bottom: var(--espaco-5);
+}
+
+.cartao-exercicio-api {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.cartao-exercicio-api__imagem img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.cartao-exercicio-api__corpo {
+  padding: var(--espaco-4);
+  flex-grow: 1;
+}
+
+.cartao-exercicio-api__titulo {
+  font-size: 1.1rem;
+  margin-bottom: var(--espaco-2);
+  color: var(--cor-texto);
+}
+
+.cartao-exercicio-api__rodape {
+  padding: var(--espaco-3) var(--espaco-4);
+  border-top: 1px solid var(--cor-borda);
+  background-color: var(--cor-fundo-secundario);
+}
+
+.erro-grid-inteiro {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--espaco-4);
+}
+
+.cartao-exercicio-api__musculos {
+  font-size: 0.85rem;
+  margin-bottom: var(--espaco-2);
+}
+
+/* --- Acordeão de Treinos --- */
+.treino-card {
+  padding: 0;
+  margin-bottom: var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-lg);
+  background-color: var(--cor-superficie);
+  transition: border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.treino-card.is-open {
+  border-color: var(--cor-primaria);
+}
+
+.treino-card__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: var(--espaco-4);
+}
+
+.treino-card__cabecalho {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-3);
+  background: none;
+  border: none;
+  padding: var(--espaco-4) var(--espaco-5);
+  cursor: pointer;
+  text-align: left;
+  border-radius: var(--raio-lg) 0 0 var(--raio-lg);
+  transition: background-color 0.2s;
+}
+
+.treino-card__cabecalho:hover {
+  background-color: var(--cor-superficie-alta);
+}
+
+.treino-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.treino-card__titulo {
+  margin-bottom: var(--espaco-1);
+  color: var(--cor-texto);
+  word-break: break-word;
+}
+
+.treino-card__chevron {
+  transition: transform var(--transicao-rapida);
+  color: var(--cor-texto-secundario);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.treino-card.is-open .treino-card__chevron {
+  transform: rotate(180deg);
+}
+
+.treino-card__acoes-icones {
+  display: flex;
+  gap: var(--espaco-1);
+  padding-left: var(--espaco-2);
+  flex-shrink: 0;
+}
+
+.treino-card__corpo {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+
+.treino-card.is-open .treino-card__corpo {
+  grid-template-rows: 1fr;
+}
+
+.treino-card__conteudo {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.treino-card__conteudo-interno {
+  padding: var(--espaco-4) var(--espaco-5) var(--espaco-5) var(--espaco-5);
+  border-top: 1px solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-4);
+}
+
+.treino-card__desc {
+  display: flex;
+  gap: var(--espaco-2);
+  color: var(--cor-texto-secundario);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.treino-card__rodape {
+  padding-top: var(--espaco-2);
+}
+
+.treino-card__rodape--acoes {
+  display: flex;
+  gap: var(--espaco-2);
+  flex-wrap: wrap;
+}
+
+.treino-card__btn-rodape {
+  flex: 1 1 200px;
+}
+
+@media (max-width: 640px) {
+  .treino-card__topo {
+    padding-right: var(--espaco-3);
+  }
+
+  .treino-card__cabecalho {
+    padding: var(--espaco-3) var(--espaco-4);
+  }
+
+  .treino-card__conteudo-interno {
+    padding: var(--espaco-3) var(--espaco-4) var(--espaco-4);
+  }
+
+  .treino-card__btn-rodape {
+    flex: 1 1 100%;
+  }
+}
+
+/* --- Lista de Exercícios --- */
+.lista-exercicios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+}
+
+.lista-exercicios__grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.lista-exercicios__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-3);
+  padding: var(--espaco-3) var(--espaco-4);
+  background-color: var(--cor-superficie-alta);
+  border-radius: var(--raio-md);
+  border: 1px solid var(--cor-borda);
+  border-left: 4px solid var(--cor-primaria);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lista-exercicios__item:hover {
+  transform: translateY(-2px);
+}
+
+.lista-exercicios__item--alternativo {
+  margin-left: var(--espaco-4);
+  margin-top: calc(var(--espaco-1) * -1);
+  border-left: 3px dashed var(--cor-primaria);
+  background-color: var(--cor-primaria-clara);
+  border-top-left-radius: 0;
+}
+
+.lista-exercicios__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.lista-exercicios__titulo-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  min-width: 0;
+}
+
+.lista-exercicios__ordem {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cor-texto-terciario);
+  background-color: var(--cor-borda);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.lista-exercicios__nome {
+  font-size: 1.05rem;
+  color: var(--cor-texto);
+  word-break: break-word;
+}
+
+.lista-exercicios__musculo {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  margin-left: 36px;
+}
+
+/* --- Badges de Parâmetros --- */
+.lista-exercicios__params {
+  display: flex;
+  gap: var(--espaco-2);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.param-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+  background-color: var(--cor-superficie);
+  padding: 6px 12px;
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--cor-borda);
+}
+
+.param-badge--destaque {
+  color: var(--cor-primaria);
+  background-color: var(--cor-primaria-clara);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .lista-exercicios__item,
+  .lista-exercicios__item--alternativo {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--espaco-3);
+  }
+
+  .lista-exercicios__item--alternativo {
+    margin-left: var(--espaco-2);
+  }
+
+  .lista-exercicios__titulo-grupo {
+    flex-wrap: wrap;
+    gap: var(--espaco-2);
+  }
+
+  .lista-exercicios__params {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .lista-exercicios__btn-alternativo {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =========================================
+   CARTÃO DE EXERCÍCIO EXPANDIDO (Execução)
+   ========================================= */
+.cartao-exercicio-expandido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  width: 100%;
+}
+
+.cartao-exercicio-expandido__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--cor-borda);
+  padding-bottom: var(--espaco-3);
+}
+
+.cartao-exercicio-expandido__identificacao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-3);
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.cartao-exercicio-expandido__ordem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--cor-superficie-alta);
+  color: var(--cor-primaria-hover);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.cartao-exercicio-expandido__titulo {
+  font-size: 1.2rem;
+  color: var(--cor-texto);
+  line-height: 1.3;
+  flex: 1;
+  min-width: 140px;
+}
+
+.cartao-exercicio-expandido__btn-trocar {
+  margin-left: auto;
+}
+
+.cartao-exercicio-expandido__metricas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-2);
+}
+
+@media (max-width: 640px) {
+  .cartao-exercicio-expandido__btn-trocar {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .cartao-exercicio-expandido__metricas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--espaco-2);
+  }
+}
+
+.metrica-box {
+  background-color: var(--cor-fundo);
+  padding: var(--espaco-3);
+  border-radius: var(--raio-sm);
+  text-align: center;
+  border: 1px solid var(--cor-borda);
+}
+
+.metrica-box__valor {
+  display: block;
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  font-weight: 700;
+  color: var(--cor-texto);
+  margin-bottom: 4px;
+}
+
+.metrica-box__valor--editada {
+  color: var(--cor-primaria);
+}
+
+.metrica-box__rotulo {
+  font-size: 0.75rem;
+  color: var(--cor-texto-terciario);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .metrica-box--clicavel {
   cursor: pointer;
   transition: border-color var(--transicao-rapida), background-color var(--transicao-rapida);
 }
+
 .metrica-box--clicavel:hover {
   border-color: var(--cor-primaria);
   background-color: var(--cor-superficie-alta);
@@ -922,21 +1304,71 @@
   border-radius: 4px;
   transition: background-color var(--transicao-rapida), color var(--transicao-rapida);
 }
+
 .btn-metrica-editar:hover {
   color: var(--cor-primaria);
   background-color: var(--cor-borda);
 }
 
-/* Cronômetro tabular (evita o botão tremer quando os números mudam) */
+.cartao-exercicio-expandido__obs {
+  background-color: var(--cor-fundo);
+  padding: var(--espaco-3);
+  border-radius: var(--raio-sm);
+  border-left: 4px solid var(--cor-primaria);
+  margin-top: var(--espaco-2);
+}
+
+.cartao-exercicio-expandido__obs-texto {
+  color: var(--cor-texto);
+}
+
+.cartao-exercicio-alternativo-preview {
+  margin-top: var(--espaco-3);
+  padding: var(--espaco-3);
+  border-left: 3px dashed var(--cor-primaria);
+  background-color: var(--cor-primaria-clara);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-3);
+  flex-wrap: wrap;
+}
+
+.cartao-exercicio-alternativo-preview__info {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  flex-wrap: wrap;
+}
+
+.cartao-exercicio-alternativo-preview__nome {
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+}
+
+.cartao-exercicio-alternativo-preview__params {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+.icone-alinhado-meio {
+  vertical-align: middle;
+}
+
+/* =========================================
+   COMPONENTES DE EXECUÇÃO DE TREINO
+   ========================================= */
 .cronometro-ativo {
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
 }
 
-/* Display gigante para o modal de descanso */
 .cronometro-display {
   font-family: var(--fonte-titulo);
-  font-size: 4rem;
+  font-size: clamp(2.5rem, 10vw, 4rem);
   font-weight: 700;
   text-align: center;
   color: var(--cor-texto);
@@ -944,7 +1376,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Área inferior da tela de treino */
 .execucao-rodape {
   margin-top: var(--espaco-6);
   display: flex;
@@ -958,12 +1389,14 @@
   gap: var(--espaco-2);
   margin-bottom: var(--espaco-4);
 }
+
 .fadiga-opcao input[type="radio"] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
+
 .fadiga-opcao label {
   display: block;
   padding: var(--espaco-3);
@@ -976,9 +1409,11 @@
   font-weight: 500;
   color: var(--cor-texto-secundario);
 }
+
 .fadiga-opcao input[type="radio"]:focus-visible + label {
   box-shadow: 0 0 0 3px var(--anel-foco-sombra);
 }
+
 .fadiga-opcao input[type="radio"]:checked + label {
   background-color: var(--cor-primaria-clara);
   border-color: var(--cor-primaria);
@@ -992,6 +1427,7 @@
 .historico-ficha {
   margin-bottom: var(--espaco-5);
 }
+
 .historico-ficha__titulo {
   margin-bottom: var(--espaco-3);
   padding-bottom: var(--espaco-2);
@@ -999,6 +1435,7 @@
   font-size: 1.1rem;
   color: var(--cor-texto);
 }
+
 .historico-treino {
   padding: var(--espaco-4);
   margin-bottom: var(--espaco-3);
@@ -1006,10 +1443,17 @@
   background-color: var(--cor-superficie);
   border-radius: var(--raio-md);
 }
+
 .historico-treino__titulo {
   margin-bottom: var(--espaco-3);
   color: var(--cor-primaria-hover);
   font-size: 1.05rem;
+}
+
+@media (max-width: 640px) {
+  .historico-treino {
+    padding: var(--espaco-3);
+  }
 }
 
 /* =========================================
@@ -1019,6 +1463,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--espaco-3);
   margin-bottom: var(--espaco-4);
 }
 
@@ -1034,7 +1480,7 @@
 }
 
 .grafico-card__total {
-  font-size: 2.25rem;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 700;
   color: var(--cor-texto);
 }
@@ -1043,6 +1489,12 @@
   position: relative;
   height: 300px;
   width: 100%;
+}
+
+@media (max-width: 480px) {
+  .grafico-card__canvas-wrapper {
+    height: 240px;
+  }
 }
 
 /* =========================================
@@ -1060,11 +1512,13 @@
   padding: var(--espaco-4);
   z-index: 10;
 }
+
 .grafico-estado-vazio i {
   font-size: 2.5rem;
   color: var(--cor-texto-terciario);
   margin-bottom: var(--espaco-3);
 }
+
 .grafico-estado-vazio p {
   color: var(--cor-texto-secundario);
   font-size: 0.9rem;
@@ -1072,169 +1526,49 @@
 }
 
 /* ==========================================
-   EXERCÍCIO ALTERNATIVO (PERSONAL E PRATICANTE)
-   ========================================== */
-.lista-exercicios__grupo {
-    display: flex;
-    flex-direction: column;
-}
-
-.lista-exercicios__item--alternativo {
-    margin-left: var(--espaco-4);
-    margin-top: calc(var(--espaco-1) * -1);
-    border-left: 3px dashed var(--cor-primaria);
-    background-color: var(--cor-primaria-clara);
-    border-top-left-radius: 0;
-}
-
-.badge--alternativo {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--espaco-1);
-    color: var(--cor-primaria);
-    background-color: var(--cor-primaria-clara);
-    border: 1px solid var(--cor-primaria);
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-}
-
-.cartao-exercicio-expandido__topo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--espaco-3);
-    flex-wrap: wrap;
-}
-
-.cartao-exercicio-expandido__identificacao {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-2);
-    flex-wrap: wrap;
-}
-
-.cartao-exercicio-expandido__btn-trocar {
-    margin-left: auto;
-}
-
-.cartao-exercicio-expandido__obs-texto {
-    color: var(--cor-texto);
-}
-
-.cartao-exercicio-alternativo-preview {
-    margin-top: var(--espaco-3);
-    padding: var(--espaco-3);
-    border-left: 3px dashed var(--cor-primaria);
-    background-color: var(--cor-primaria-clara);
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--espaco-3);
-    flex-wrap: wrap;
-}
-
-.cartao-exercicio-alternativo-preview__info {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-2);
-    flex-wrap: wrap;
-}
-
-.cartao-exercicio-alternativo-preview__nome {
-    color: var(--cor-texto);
-    font-size: 0.95rem;
-}
-
-.cartao-exercicio-alternativo-preview__params {
-    display: flex;
-    align-items: center;
-    gap: var(--espaco-2);
-}
-
-.metrica-box__valor--editada {
-    color: var(--cor-primaria);
-}
-
-.icone-alinhado-meio {
-    vertical-align: middle;
-}
-
-.modal__icone--primario {
-    color: var(--cor-primaria);
-    background-color: var(--cor-primaria-clara);
-}
-
-.form-grid-duplo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--espaco-3);
-    text-align: left;
-}
-
-.form-group--esquerda {
-    text-align: left;
-}
-
-.estado-vazio__acoes {
-    margin-top: var(--espaco-4);
-    display: flex;
-    justify-content: center;
-}
-
-/* ==========================================
    LISTA E ITENS REORDENÁVEIS (TREINOS E EXERCÍCIOS)
    ========================================== */
-.treino-card__rodape--acoes {
-    display: flex;
-    gap: var(--espaco-2);
-    flex-wrap: wrap;
-}
-
-.treino-card__btn-rodape {
-    flex: 1 1 200px;
-}
-
 .lista-reordenavel {
-    list-style: none;
-    padding: 0;
-    margin: var(--espaco-3) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--espaco-2);
-    max-height: 55vh;
-    overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: var(--espaco-3) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-2);
+  max-height: 55vh;
+  overflow-y: auto;
 }
 
 .item-reordenavel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--espaco-2);
-    padding: var(--espaco-2) var(--espaco-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espaco-2);
+  padding: var(--espaco-2) var(--espaco-3);
 }
 
 .item-reordenavel__info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
 }
 
 .item-reordenavel__titulo {
-    color: var(--cor-texto);
-    font-size: 0.95rem;
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+  word-break: break-word;
 }
 
 .item-reordenavel__subtitulo {
-    color: var(--cor-primaria);
-    font-size: 0.75rem;
-    font-weight: 500;
+  color: var(--cor-primaria);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .item-reordenavel__acoes {
-    display: flex;
-    gap: var(--espaco-1);
+  display: flex;
+  gap: var(--espaco-1);
+  flex-shrink: 0;
 }

@@ -6,9 +6,10 @@
    de cores de feedback (sucesso/erro/aviso/info).
    ========================================================= */
 
-:root{
+:root {
   /* --- Cor: base --- */
   --cor-fundo: #12141a;
+  --cor-fundo-secundario: #161922;
   --cor-superficie: #1b1e27;
   --cor-superficie-alta: #242838;
   --cor-superficie-hover: #2a2f42;
@@ -16,7 +17,9 @@
   /* --- Cor: ação primária/secundária --- */
   --cor-primaria: #6c5ce7;
   --cor-primaria-hover: #7d6ff0;
+  --cor-primaria-clara: rgba(108, 92, 231, 0.14);
   --cor-primaria-texto: #ffffff;
+
   --cor-secundaria: #2a2e3a;
   --cor-secundaria-hover: #343a4a;
   --cor-secundaria-texto: #e7e9f0;
@@ -44,12 +47,15 @@
   /* --- Cor: feedback semântico --- */
   --sucesso: #3ddc97;
   --sucesso-fundo: rgba(61, 220, 151, 0.12);
+
   --erro: #ff5d5d;
   --erro-hover: #e64545;
   --fundo-erro: rgba(255, 93, 93, 0.12);
   --texto-erro: #ff8f8f;
+
   --aviso: #ffb443;
   --aviso-fundo: rgba(255, 180, 67, 0.12);
+
   --info: #4ea1f7;
   --info-fundo: rgba(78, 161, 247, 0.12);
 
