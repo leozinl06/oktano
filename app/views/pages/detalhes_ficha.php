@@ -155,6 +155,12 @@ $paginaAtiva = 'treinos';
                                                                         <i class="ph ph-arrows-left-right"></i>
                                                                         <span><?= empty($ex['id_exercicio_alternativo']) ? 'Adicionar Alternativo' : 'Trocar Alternativo' ?></span>
                                                                     </a>
+                                                                    <button type="button"
+                                                                        class="btn btn--icone btn--icone-perigo js-btn-excluir-exercicio"
+                                                                        data-id="<?= $ex['id'] ?>"
+                                                                        title="Excluir Exercício">
+                                                                        <i class="ph ph-trash"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
 
@@ -234,6 +240,7 @@ $paginaAtiva = 'treinos';
     <?php require __DIR__ . '/../components/modal_adicionar_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_editar_treino.php'; ?>
     <?php require __DIR__ . '/../components/modal_excluir_treino.php'; ?>
+    <?php require __DIR__ . '/../components/modal_excluir_exercicio.php'; ?>
     <?php require __DIR__ . '/../components/modal_reordenar_treinos.php'; ?>
     <?php require __DIR__ . '/../components/modal_reordenar_exercicios.php'; ?>
 

@@ -79,27 +79,43 @@ export function configurarDetalhesFicha() {
     }
 
     // ==========================================
-    // 3. MODAL: EXCLUIR TREINO
+    // 3. MODAIS DE EXCLUSÃO: TREINO E EXERCÍCIO 
     // ==========================================
-    const modalExcluir = document.getElementById('modal-excluir-treino');
-    const inputIdTreinoExcluir = document.getElementById('excluir-treino-id');
+    const configurarModalConfirmacaoExclusao = ({ idModal, idInput, seletorAbrir, seletorFechar }) => {
+        const modal = document.getElementById(idModal);
+        const inputId = document.getElementById(idInput);
 
-    if (modalExcluir && inputIdTreinoExcluir) {
-        document.querySelectorAll('.js-btn-excluir-treino').forEach(btn => {
+        if (!modal || !inputId) return;
+
+        document.querySelectorAll(seletorAbrir).forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                inputIdTreinoExcluir.value = btn.dataset.id;
-                modalExcluir.classList.remove('modal-overlay--oculto');
+                inputId.value = btn.dataset.id;
+                modal.classList.remove('modal-overlay--oculto');
             });
         });
 
-        document.querySelectorAll('.js-modal-fechar-excluir-treino').forEach(btn => {
+        document.querySelectorAll(seletorFechar).forEach(btn => {
             btn.addEventListener('click', () => {
-                modalExcluir.classList.add('modal-overlay--oculto');
-                inputIdTreinoExcluir.value = '';
+                modal.classList.add('modal-overlay--oculto');
+                inputId.value = '';
             });
         });
-    }
+    };
+
+    configurarModalConfirmacaoExclusao({
+        idModal: 'modal-excluir-treino',
+        idInput: 'excluir-treino-id',
+        seletorAbrir: '.js-btn-excluir-treino',
+        seletorFechar: '.js-modal-fechar-excluir-treino'
+    });
+
+    configurarModalConfirmacaoExclusao({
+        idModal: 'modal-excluir-exercicio',
+        idInput: 'excluir-exercicio-id',
+        seletorAbrir: '.js-btn-excluir-exercicio',
+        seletorFechar: '.js-modal-fechar-excluir-exercicio'
+    });
 
     // ==========================================
     // 4. LÓGICA DE FECHAMENTO GLOBAL

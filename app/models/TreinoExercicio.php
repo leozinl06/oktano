@@ -85,4 +85,8 @@ class TreinoExercicio extends BaseModel{
             ['id_treino' => $id_treino]
         );
     }
+
+    public function excluir($id){
+        return $this->excluirPorId($id);
+    }
 }

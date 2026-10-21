@@ -444,4 +444,44 @@ class TreinosController extends BaseController{
             }
         }
     }
+
+    public function excluirExercicio(){
+        if(session_status() === PHP_SESSION_NONE) session_start();
+
+        $id_personal = $_SESSION['usuario_id'] ?? null;
+        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
+            header('Location: /oktano/public/login/acesso?tipo=personal');
+            exit;
+        }
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id_treino_exercicio = filter_input(INPUT_POST, 'id_treino_exercicio', FILTER_SANITIZE_NUMBER_INT);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
+
+            if(empty($id_treino_exercicio)){
+                $this->redirecionarComResultado($url_retorno, false, 'ID do exercício não fornecido.');
+            }
+
+            $database = new Database();
+            $db = $database->conectar();
+            $treinoExercicioModel = new TreinoExercicio($db);
+
+            $exercicio = $treinoExercicioModel->buscarPorId($id_treino_exercicio);
+            if(!$exercicio){
+                $this->redirecionarComResultado($url_retorno, false, 'Exercício não encontrado neste treino.');
+            }
+
+            if($treinoExercicioModel->excluir($id_treino_exercicio)){
+                $exerciciosRestantes = $treinoExercicioModel->buscarPorTreino($exercicio['id_treino']);
+                if(!empty($exerciciosRestantes)){
+                    $idsRestantes = array_column($exerciciosRestantes, 'id');
+                    $this->processarNovaOrdem($treinoExercicioModel, $idsRestantes);
+                }
+
+                $this->redirecionarComResultado($url_retorno, true, 'Exercício excluído do treino com sucesso!');
+            } else{
+                $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir o exercício.');
+            }
+        }
+    }
 }
