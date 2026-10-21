@@ -67,13 +67,9 @@ $urlRetorno = $urlAtual;
                         </td>
                         <td data-rotulo="Ações">
                             <div class="tabela__acoes">
-                                <form method="POST" action="<?= BASE_URL ?>/treinos/desarquivar-ficha" onsubmit="return confirm('Restaurar esta ficha para rascunho?');">
-                                    <input type="hidden" name="id_ficha" value="<?= $ficha['id'] ?>">
-                                    <input type="hidden" name="url_retorno" value="<?= htmlspecialchars($urlAtual) ?>">
-                                    <button type="submit" class="btn btn--icone" title="Restaurar ficha">
-                                        <i class="ph ph-arrow-counter-clockwise"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn--icone js-btn-desarquivar-ficha" data-id="<?= $ficha['id'] ?>" title="Restaurar ficha">
+                                    <i class="ph ph-arrow-counter-clockwise"></i>
+                                </button>
                                 <button type="button" class="btn btn--icone js-btn-excluir-ficha" data-id="<?= $ficha['id'] ?>" title="Excluir ficha">
                                     <i class="ph ph-trash"></i>
                                 </button>
@@ -88,8 +84,11 @@ $urlRetorno = $urlAtual;
     </div>
 </main>
 
+<?php require __DIR__ . '/../components/modal_desarquivar.php'; ?>
 <?php require __DIR__ . '/../components/modal_excluir.php'; ?>
 
+<script type="module" src="<?= BASE_URL ?>/assets/js/treinos.js"></script>
+<script type="module" src="<?= BASE_URL ?>/assets/js/modal_arquivar.js"></script>
 <script type="module" src="<?= BASE_URL ?>/assets/js/modal_exclusao.js"></script>
 
 </body>
