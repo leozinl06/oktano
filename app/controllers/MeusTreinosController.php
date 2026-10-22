@@ -91,7 +91,7 @@ class MeusTreinosController extends BaseController{
         require_once __DIR__ . '/../models/Sessao.php';
         require_once __DIR__ . '/../models/ExercicioSessao.php';
         
-        $sessaoModel = new Sessao($$this->db);
+        $sessaoModel = new Sessao($this->db);
         $esModel = new ExercicioSessao($this->db);
 
         try{
@@ -121,7 +121,7 @@ class MeusTreinosController extends BaseController{
             $_SESSION['resultado'] = ['sucesso' => true, 'mensagem' => 'Treino finalizado com sucesso!'];
             echo json_encode(['sucesso' => true]);
         } catch (Exception $e){
-            $db->rollBack();
+            $this->db->rollBack();
             echo json_encode(['sucesso' => false, 'mensagem' => 'Erro interno ao salvar: ' . $e->getMessage()]);
         }
     }
