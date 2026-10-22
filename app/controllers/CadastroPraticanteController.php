@@ -15,11 +15,7 @@ class CadastroPraticanteController extends BaseController{
     }
 
     public function index(){
-        $resultado = null;
-        if(isset($_SESSION['resultado'])){
-            $resultado = $_SESSION['resultado'];
-            unset($_SESSION['resultado']);
-        }
+        $resultado = $this->obterResultadoSessao();
 
         $dadosForm = null;
         if(isset($_SESSION['dados_form'])){

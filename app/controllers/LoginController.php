@@ -1,12 +1,12 @@
 <?php
-
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Personal.php';
 require_once __DIR__ . '/../models/Praticante.php';
 require_once __DIR__ . '/../models/Administrador.php';
 require_once __DIR__ . '/../core/RateLimiter.php';
+require_once __DIR__ . '/../core/BaseController.php';
 
-class LoginController{
+class LoginController extends BaseController{
 
     public function index(){
         require_once __DIR__ . '/../views/pages/selecao_login.php';
@@ -18,11 +18,7 @@ class LoginController{
         if($tipo === 'personal' || $tipo === 'praticante' || $tipo === 'administrador'){
             $tipo_usuario = $tipo;
 
-            $resultado = null;
-            if(isset($_SESSION['resultado'])){
-                $resultado = $_SESSION['resultado'];
-                unset($_SESSION['resultado']);
-            }
+            $resultado = $this->obterResultadoSessao();
 
             require_once __DIR__ . '/../views/pages/login.php';
         } else{

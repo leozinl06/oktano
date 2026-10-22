@@ -4,9 +4,7 @@ require_once __DIR__ . '/../core/BaseController.php';
 class LogoutController extends BaseController{
 
     public function index(){
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
+        $this->iniciarSessao();
 
         $_SESSION = []; //esvazia array de dados de sessão
 

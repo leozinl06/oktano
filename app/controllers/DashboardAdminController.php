@@ -5,32 +5,27 @@ require_once __DIR__ . '/../models/Personal.php';
 require_once __DIR__ . '/../models/Praticante.php';
 
 class DashboardAdminController extends BaseController {
-    
-    // Método que carrega a página inicial do Dashboard
-    public function index(){
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
+    private $db;
+    private $personalModel;
+    private $praticanteModel;
 
-        $id_admin = $_SESSION['usuario_id'] ?? null;
-        if(!$id_admin || $_SESSION['usuario_tipo'] !== 'administrador'){
-            header('Location: /oktano/public/login/acesso?tipo=administrador');
-            exit;
-        }
-
+    public function __construct() {
         $database = new Database();
-        $db = $database->conectar();
-
-        $personalModel = new Personal($db);
-        $praticanteModel = new Praticante($db);
+        $this->db = $database->conectar();
+        $this->personalModel = new Personal($this->db);
+        $this->praticanteModel = new Praticante($this->db);
+    }
+    
+    public function index(){
+        $this->exigirAutenticacao('administrador');
 
         // Buscando dados de Personal
-        $totalPersonais = $personalModel->obterTotal();
-        $statsPersonais = $personalModel->obterEstatisticasMensais();
+        $totalPersonais = $this->personalModel->obterTotal();
+        $statsPersonais = $this->personalModel->obterEstatisticasMensais();
 
         // Buscando dados de Praticantes (Alunos)
-        $totalPraticantes = $praticanteModel->obterTotal();
-        $statsPraticantes = $praticanteModel->obterEstatisticasMensais();
+        $totalPraticantes = $this->praticanteModel->obterTotal();
+        $statsPraticantes = $this->praticanteModel->obterEstatisticasMensais();
 
         // Formatando arrays para o Chart.js do Frontend
         $dadosGraficoPersonais = ['labels' => [], 'data' => []];
@@ -50,7 +45,7 @@ class DashboardAdminController extends BaseController {
 
     // Método da API que responde ao filtro do JavaScript
     public function apiEstatisticas() {
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->iniciarSessao();
         header('Content-Type: application/json');
         
         if(empty($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'administrador'){
@@ -63,17 +58,11 @@ class DashboardAdminController extends BaseController {
         $inicio = $_GET['inicio'] ?? null;
         $fim = $_GET['fim'] ?? null;
 
-        $database = new Database();
-        $db = $database->conectar();
-
         try {
-            $dados = [];
             if ($tipo === 'personais') {
-                $model = new Personal($db);
-                $dados = $model->obterEstatisticasMensais($inicio, $fim);
+                $dados = $this->personalModel->obterEstatisticasMensais($inicio, $fim);
             } elseif ($tipo === 'praticantes') {
-                $model = new Praticante($db);
-                $dados = $model->obterEstatisticasMensais($inicio, $fim);
+                $dados = $this->praticanteModel->obterEstatisticasMensais($inicio, $fim);
             } else {
                 http_response_code(400);
                 echo json_encode(['erro' => 'Tipo inválido']);

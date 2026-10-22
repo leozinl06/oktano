@@ -2,39 +2,43 @@
 require_once __DIR__ . '/../core/BaseController.php';
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Treino.php';
-// Importa o novo serviço da ExerciseDB
 require_once __DIR__ . '/../core/ExerciseDBService.php';
-
 require_once __DIR__ . '/../models/Exercicio.php';
 require_once __DIR__ . '/../models/TreinoExercicio.php';
 
 
 class ExerciciosController extends BaseController {
-    public function index() {
-        if(session_status() === PHP_SESSION_NONE) session_start();
+    private $db;
+    private $treinoModel;
+    private $treinoExercicioModel;
+    private $exercicioModel;
 
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->conectar();
+        $this->treinoModel = new Treino($this->db);
+        $this->treinoExercicioModel = new TreinoExercicio($this->db);
+        $this->exercicioModel = new Exercicio($this->db);
+    }
+
+    public function index() {
+        $this->exigirAutenticacao('personal');
+        
         $id_treino = filter_input(INPUT_GET, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
         $id_treino_exercicio = filter_input(INPUT_GET, 'id_treino_exercicio', FILTER_SANITIZE_NUMBER_INT);
-
+        
         if(!$id_treino){
             $this->redirecionarComResultado('/oktano/public/treinos', false, 'Treino não especificado.');
         }
 
-        $database = new Database();
-        $db = $database->conectar();
-        $treinoModel = new Treino($db);
-        
-        $treino = $treinoModel->buscarPorId($id_treino);
-        
+        $treino = $this->treinoModel->buscarPorId($id_treino);
         if(!$treino) {
             $this->redirecionarComResultado('/oktano/public/treinos', false, 'Treino não encontrado.');
         }
 
         $exercicioPai = null;
         if($id_treino_exercicio){
-            $treinoExercicioModel = new TreinoExercicio($db);
-            $exercicioPai = $treinoExercicioModel->buscarPorIdETreino($id_treino_exercicio, $id_treino);
-
+            $exercicioPai = $this->treinoExercicioModel->buscarPorIdETreino($id_treino_exercicio, $id_treino);
             if(!$exercicioPai){
                 $this->redirecionarComResultado(
                     '/oktano/public/treinos/detalhes?id=' . $treino['id_ficha_treino'],
@@ -46,38 +50,32 @@ class ExerciciosController extends BaseController {
 
         $tituloPagina = 'Buscar Exercícios - ' . htmlspecialchars($treino['titulo']);
         $paginaAtiva = 'treinos';
-
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
+        $resultado = $this->obterResultadoSessao();
         
         require_once __DIR__ . '/../views/pages/buscar_exercicios.php';
     }
 
     public function pesquisarApi() {
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->iniciarSessao();
         header('Content-Type: application/json');
-
+        
         $termo = filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS);
         if(empty($termo)) {
             echo json_encode([]);
             return;
         }
 
-        // Instancia o novo serviço
         $api = new ExerciseDBService();
         $resultados = $api->buscarExercicios($termo);
-
+        
         if (isset($resultados['erro'])) {
             http_response_code(400);
-            echo json_encode($resultados);
-            return;
         }
-
         echo json_encode($resultados);
     }
 
     public function adicionarAoTreino() {
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
@@ -105,7 +103,7 @@ class ExerciciosController extends BaseController {
             $treinoModel = new Treino($db);
 
             // 1. Busca ou Cadastra o exercício base (da API ou custom)
-            $id_exercicio = $exercicioModel->obterOuCadastrar($api_id, $nome, $musculo);
+            $id_exercicio = $this->exercicioModel->obterOuCadastrar($api_id, $nome, $musculo);
             
             if(!$id_exercicio){
                 $this->redirecionarComResultado($url_retorno_busca, false, 'Falha ao registrar o exercicio base no sistema.');

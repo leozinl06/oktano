@@ -5,48 +5,36 @@ require_once __DIR__ . '/../models/FichaTreino.php';
 require_once __DIR__ . '/../core/BaseController.php';
 
 class AlunosController extends BaseController{
+    private $db;
+    private $praticanteModel;
+    private $fichaTreinoModel;
 
-    public function index(){
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
-
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
-
+    public function __construct() {
         $database = new Database();
-        $db = $database->conectar();
+        $this->db = $database->conectar();
+        $this->praticanteModel = new Praticante($this->db);
+        $this->fichaTreinoModel = new FichaTreino($this->db);
+    }
 
-        $praticanteModel = new Praticante($db);
-        $fichaTreinoModel = new FichaTreino($db);
+    public function index() {
+        $id_personal = $this->exigirAutenticacao('personal');
 
-        $alunos_bruto = $praticanteModel->buscarAlunosPorPersonal($id_personal);
+        $alunos_bruto = $this->praticanteModel->buscarAlunosPorPersonal($id_personal);
         $alunos_limpo = [];
-
+        
         foreach($alunos_bruto as $aluno){
             $partes_nome = explode(' ', trim($aluno['nome']));
-            $nome_exibicao = $partes_nome[0];
-            if(count($partes_nome) > 1){
-                $nome_exibicao .= ' ' . end($partes_nome);
-            }
-
-            $fichas = $fichaTreinoModel->buscarFichasPorAluno($aluno['id']);
-
+            $nome_exibicao = $partes_nome[0] . (count($partes_nome) > 1 ? ' ' . end($partes_nome) : '');
+            
             $alunos_limpo[] = [
                 'id' => $aluno['id'],
                 'nome_exibicao' => $nome_exibicao,
-                'fichas' => $fichas
+                'fichas' => $this->fichaTreinoModel->buscarFichasPorAluno($aluno['id'])
             ];
         }
-
         $alunos = $alunos_limpo;
-
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
-
+        
+        $resultado = $this->obterResultadoSessao();
         require_once __DIR__ . '/../views/pages/alunos.php';
     }
 }

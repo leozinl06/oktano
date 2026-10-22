@@ -4,22 +4,21 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Sessao.php';
 
 class SessoesController extends BaseController{
-    public function index(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
+    private $db;
+    private $sessaoModel;
 
+    public function __construct() {
         $database = new Database();
-        $db = $database->conectar();
-        
-        $sessaoModel = new Sessao($db);
-        $sessoesBrutas = $sessaoModel->buscarSessoesPorPersonal($id_personal);
+        $this->db = $database->conectar();
+        $this->sessaoModel = new Sessao($this->db);
+    }
 
+    public function index(){
+        $id_personal = $this->exigirAutenticacao('personal');
+
+        $sessoesBrutas = $this->sessaoModel->buscarSessoesPorPersonal($id_personal);
         $historico = [];
+        
         foreach($sessoesBrutas as $row) {
             $alunoId = $row['aluno_id'];
             $fichaId = $row['ficha_id'];

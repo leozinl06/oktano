@@ -4,28 +4,59 @@ require_once __DIR__ . '/../models/FichaTreino.php';
 require_once __DIR__ . '/../models/Praticante.php';
 require_once __DIR__ . '/../core/BaseController.php';
 require_once __DIR__ . '/../models/TreinoExercicio.php';
-
 require_once __DIR__ . '/../models/Treino.php';
 
 class TreinosController extends BaseController{
+    private $db;
+    private $fichaTreinoModel;
+    private $praticanteModel;
+    private $treinoModel;
+    private $treinoExercicioModel;
 
-    public function index(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
+    public function __construct(){
+        $database = new Database();
+        $this->db = $database->conectar();
+        $this->fichaTreinoModel = new FichaTreino($this->db);
+        $this->praticanteModel = new Praticante($this->db);
+        $this->treinoModel = new Treino($this->db);
+        $this->treinoExercicioModel = new TreinoExercicio($this->db);
+    }
+
+    private function buscarFichaAutorizada(int $id_personal): array {
+        $id_ficha = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if (!$id_ficha) {
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha não especificada.');
         }
 
-        $database = new Database();
-        $db = $database->conectar();
-        $fichaTreinoModel = new FichaTreino($db);
-        
-        $fichas = $fichaTreinoModel->buscarFichasPorPersonal($id_personal);
-        
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
+        $ficha = $this->fichaTreinoModel->buscarPorId($id_ficha);
+        $aluno = $ficha ? $this->praticanteModel->buscarPorId($ficha['id_praticante']) : false;
+
+        if (!$ficha || !$aluno || (int)$aluno['id_personal'] !== $id_personal) {
+            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
+        }
+
+        return [$ficha, $aluno];
+    }
+
+    private function alterarStatusFicha(string $novoStatus, string $urlPadrao, string $msgSucesso, string $msgErro): void {
+        $this->exigirAutenticacao('personal');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
+            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: $urlPadrao;
+
+            if ($this->fichaTreinoModel->alterarStatusArquivamento($id_ficha, $novoStatus)) {
+                $this->redirecionarComResultado($url_retorno, true, $msgSucesso);
+            } else {
+                $this->redirecionarComResultado($url_retorno, false, $msgErro);
+            }
+        }
+    }
+
+    public function index(){
+        $id_personal = $this->exigirAutenticacao('personal');
+        $fichas = $this->fichaTreinoModel->buscarFichasPorPersonal($id_personal);
+        $resultado = $this->obterResultadoSessao();
 
         require_once __DIR__ . '/../views/pages/treinos.php';
     }
@@ -33,190 +64,84 @@ class TreinosController extends BaseController{
     //-----------------FICHA-----------------
 
     public function novaFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
-
+        $id_personal = $this->exigirAutenticacao('personal');
         $id_aluno = filter_input(INPUT_GET, 'aluno_id', FILTER_SANITIZE_NUMBER_INT);
-        
-        if(!$id_aluno){
+
+        if (!$id_aluno) {
             $this->redirecionarComResultado('/oktano/public/alunos', false, 'Aluno não especificado.');
         }
 
-        $database = new Database();
-        $db = $database->conectar();
-        $praticanteModel = new Praticante($db);
-        
-        $aluno = $praticanteModel->buscarPorId($id_aluno);
-
-        if(!$aluno || $aluno['id_personal'] != $id_personal){
+        $aluno = $this->praticanteModel->buscarPorId($id_aluno);
+        if (!$aluno || (int)$aluno['id_personal'] !== $id_personal) {
             $this->redirecionarComResultado('/oktano/public/alunos', false, 'Aluno inválido ou não autorizado.');
         }
 
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
-
+        $resultado = $this->obterResultadoSessao();
         require_once __DIR__ . '/../views/pages/nova_ficha.php';
     }
 
     public function criarFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $this->exigirAutenticacao('personal');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_aluno = filter_input(INPUT_POST, 'id_aluno', FILTER_SANITIZE_NUMBER_INT);
             $titulo = trim($_POST['titulo'] ?? '');
             $descricao = trim($_POST['descricao'] ?? '');
-
-            $status = 'rascunho';
-
             $url = '/oktano/public/treinos/nova-ficha?aluno_id=' . $id_aluno;
 
-            if(empty($titulo)){
-                $this->redirecionarComResultado($url, false, 'Título e status são obrigatórios.');
+            if (empty($titulo)) {
+                $this->redirecionarComResultado($url, false, 'Título é obrigatório.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $fichaTreinoModel = new FichaTreino($db);
-
-            $id_nova_ficha = $fichaTreinoModel->cadastrar($id_aluno, $titulo, $descricao, $status);
-
-            if($id_nova_ficha){
+            $id_nova_ficha = $this->fichaTreinoModel->cadastrar($id_aluno, $titulo, $descricao, 'rascunho');
+            if ($id_nova_ficha) {
                 $this->redirecionarComResultado('/oktano/public/treinos/detalhes?id=' . $id_nova_ficha, true, 'Ficha criada com sucesso!');
-            } else{
+            } else {
                 $this->redirecionarComResultado($url, false, 'Erro ao criar a ficha.');
             }
         }
     }
 
     public function editarFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
+        $id_personal = $this->exigirAutenticacao('personal');
+        [$ficha, $aluno] = $this->buscarFichaAutorizada($id_personal);
 
-        $id_ficha = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-        
-        if(!$id_ficha){
-            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha não especificada.');
-        }
-
-        $database = new Database();
-        $db = $database->conectar();
-        $fichaTreinoModel = new FichaTreino($db);
-        $praticanteModel = new Praticante($db);
-        
-        $ficha = $fichaTreinoModel->buscarPorId($id_ficha);
-
-        if ($ficha) {
-            $aluno = $praticanteModel->buscarPorId($ficha['id_praticante']);
-        }
-        
-        if(!$ficha || !$aluno || $aluno['id_personal'] != $id_personal){
-            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
-        }
-
-        $treinoModel = new Treino($db);
-        $treinosDaFicha = $treinoModel->buscarPorFicha($id_ficha);
+        $treinosDaFicha = $this->treinoModel->buscarPorFicha($ficha['id']);
         $podeAtivar = count($treinosDaFicha) > 0;
-
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
-   
+        $resultado = $this->obterResultadoSessao();
         $url_origem = $_SERVER['HTTP_REFERER'] ?? '/oktano/public/treinos';
 
         require_once __DIR__ . '/../views/pages/editar_ficha.php';
     }
 
     public function arquivados(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
+        $id_personal = $this->exigirAutenticacao('personal');
+        $fichas = $this->fichaTreinoModel->buscarFichasArquivadasPorPersonal($id_personal);
+        $resultado = $this->obterResultadoSessao();
 
-        $database = new Database();
-        $db = $database->conectar();
-        $fichaTreinoModel = new FichaTreino($db);
-        
-        $fichas = $fichaTreinoModel->buscarFichasArquivadasPorPersonal($id_personal);
-        
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
-        
         require_once __DIR__ . '/../views/pages/treinos_arquivados.php';
     }
 
-    public function arquivarFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
-
-            $database = new Database();
-            $db = $database->conectar();
-            $fichaTreinoModel = new FichaTreino($db);
-
-            if($fichaTreinoModel->alterarStatusArquivamento($id_ficha, 'arquivada')){
-                $this->redirecionarComResultado($url_retorno, true, 'Ficha arquivada com sucesso!');
-            } else {
-                $this->redirecionarComResultado($url_retorno, false, 'Falha ao arquivar a ficha.');
-            }
-        }
+    public function arquivarFicha() {
+        $this->alterarStatusFicha('arquivada', '/oktano/public/treinos', 'Ficha arquivada com sucesso!', 'Falha ao arquivar a ficha.');
     }
 
-    public function desarquivarFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/arquivados';
-
-            $database = new Database();
-            $db = $database->conectar();
-            $fichaTreinoModel = new FichaTreino($db);
-
-            if($fichaTreinoModel->alterarStatusArquivamento($id_ficha, 'rascunho')){
-                $this->redirecionarComResultado($url_retorno, true, 'Ficha restaurada para rascunho com sucesso!');
-            } else {
-                $this->redirecionarComResultado($url_retorno, false, 'Falha ao restaurar a ficha.');
-            }
-        }
+    public function desarquivarFicha() {
+        $this->alterarStatusFicha('rascunho', '/oktano/public/treinos/arquivados', 'Ficha restaurada para rascunho com sucesso!', 'Falha ao restaurar a ficha.');
     }
 
     public function excluirFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
+        $this->exigirAutenticacao('personal');
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
-            
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
 
-            if(empty($id_ficha)){
+            if (empty($id_ficha)) {
                 $this->redirecionarComResultado($url_retorno, false, 'ID da ficha não fornecido para exclusão.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $fichaTreinoModel = new FichaTreino($db);
-
-            if($fichaTreinoModel->excluir($id_ficha)){
+            if ($this->fichaTreinoModel->excluir($id_ficha)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Ficha excluída permanentemente com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir a ficha. Tente novamente.');
@@ -225,35 +150,25 @@ class TreinosController extends BaseController{
     }
 
     public function atualizarFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $this->exigirAutenticacao('personal');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
             $titulo = trim($_POST['titulo'] ?? '');
             $descricao = trim($_POST['descricao'] ?? '');
             $status = trim($_POST['status'] ?? '');
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
-            
             $url_erro = '/oktano/public/treinos/editar-ficha?id=' . $id_ficha;
 
-            if(empty($titulo) || empty($status) || empty($id_ficha)){
+            if (empty($titulo) || empty($status) || empty($id_ficha)) {
                 $this->redirecionarComResultado($url_erro, false, 'Título e status são obrigatórios.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-
-            if($status === 'ativa'){
-                $treinoModel = new Treino($db);
-                $treinosDaFicha = $treinoModel->buscarPorFicha($id_ficha);
-                if(empty($treinosDaFicha)){
-                    $this->redirecionarComResultado($url_erro, false, 'A ficha precisa ter ao menos um treino.');
-                }
+            if ($status === 'ativa' && empty($this->treinoModel->buscarPorFicha($id_ficha))) {
+                $this->redirecionarComResultado($url_erro, false, 'A ficha precisa ter ao menos um treino.');
             }
 
-            $fichaTreinoModel = new FichaTreino($db);
-
-            if($fichaTreinoModel->atualizar($id_ficha, $titulo, $descricao, $status)){
+            if ($this->fichaTreinoModel->atualizar($id_ficha, $titulo, $descricao, $status)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Ficha atualizada com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_erro, false, 'Erro ao atualizar a ficha.');
@@ -262,56 +177,24 @@ class TreinosController extends BaseController{
     }
 
     public function detalhesFicha(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $id_personal = $this->exigirAutenticacao('personal');
+        [$ficha, $aluno] = $this->buscarFichaAutorizada($id_personal);
 
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
-
-        $id_ficha = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-
-        if(!$id_ficha){
-            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha não especificada.');
-        }
-
-        $database = new Database();
-        $db = $database->conectar();
-        $fichaTreinoModel = new FichaTreino($db);
-        $praticanteModel = new Praticante($db);
-        
-
-        $ficha = $fichaTreinoModel->buscarPorId($id_ficha);
-        if($ficha){
-            $aluno = $praticanteModel->buscarPorId($ficha['id_praticante']);
-        }
-
-        if(!$ficha || !$aluno || $aluno['id_personal'] != $id_personal){
-            $this->redirecionarComResultado('/oktano/public/treinos', false, 'Ficha inválida ou não autorizada.');
-        }
-
-        $treinoModel = new Treino($db);
-        $treinoExercicioModel = new TreinoExercicio($db);
-
-        $treinosBrutos = $treinoModel->buscarPorFicha($id_ficha);
+        $treinosBrutos = $this->treinoModel->buscarPorFicha($ficha['id']);
         $treinos = [];
-        foreach($treinosBrutos as $t){
-            $t['exercicios'] = $treinoExercicioModel->buscarPorTreino($t['id']);
+        foreach ($treinosBrutos as $t) {
+            $t['exercicios'] = $this->treinoExercicioModel->buscarPorTreino($t['id']);
             $treinos[] = $t;
         }
 
-        $resultado = $_SESSION['resultado'] ?? null;
-        unset($_SESSION['resultado']);
-
+        $resultado = $this->obterResultadoSessao();
         require_once __DIR__ . '/../views/pages/detalhes_ficha.php';
     }
 
     private function processarNovaOrdem(BaseModel $model, array $itensOrdem): bool {
         $sucesso = true;
-        foreach($itensOrdem as $index => $idItem){
-            $novaOrdem = $index + 1;
-            if(!$model->atualizarOrdem($idItem, $novaOrdem)){
+        foreach ($itensOrdem as $index => $idItem) {
+            if (!$model->atualizarOrdem($idItem, $index + 1)) {
                 $sucesso = false;
             }
         }
@@ -319,9 +202,9 @@ class TreinosController extends BaseController{
     }
 
     public function reordenarTreinos(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
             $ordem_treinos = $_POST['treinos_ordem'] ?? [];
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
@@ -330,11 +213,7 @@ class TreinosController extends BaseController{
                 $this->redirecionarComResultado($url_retorno, false, 'Nenhuma ordem recebida.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoModel = new Treino($db);
-
-            if ($this->processarNovaOrdem($treinoModel, $ordem_treinos)) {
+            if ($this->processarNovaOrdem($this->treinoModel, $ordem_treinos)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Ordem dos treinos atualizada com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao salvar a nova ordem de alguns treinos.');
@@ -343,7 +222,7 @@ class TreinosController extends BaseController{
     }
 
     public function reordenarExercicios(){
-        if (session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
@@ -355,11 +234,7 @@ class TreinosController extends BaseController{
                 $this->redirecionarComResultado($url_retorno, false, 'Nenhuma ordem de exercícios recebida.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoExercicioModel = new TreinoExercicio($db);
-
-            if ($this->processarNovaOrdem($treinoExercicioModel, $ordem_exercicios)) {
+            if ($this->processarNovaOrdem($this->treinoExercicioModel, $ordem_exercicios)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Ordem dos exercícios atualizada com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao salvar a nova ordem de alguns exercícios.');
@@ -370,51 +245,41 @@ class TreinosController extends BaseController{
     //-----------------TREINO DA FICHA-----------------
     
     public function adicionarTreino(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
             $titulo = trim($_POST['titulo'] ?? '');
             $descricao = trim($_POST['descricao'] ?? '');
-            
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
-            
-            if(empty($titulo) || empty($id_ficha)){
+
+            if (empty($titulo) || empty($id_ficha)) {
                 $this->redirecionarComResultado($url_retorno, false, 'O título do treino é obrigatório.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoModel = new Treino($db);
-
-            if($treinoModel->cadastrar($id_ficha, $titulo, $descricao)){
+            if ($this->treinoModel->cadastrar($id_ficha, $titulo, $descricao)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Treino adicionado com sucesso!');
-            } else{
+            } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao adicionar o treino. Tente novamente.');
             }
         }
     }
 
     public function editarTreino(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
             $id_ficha = filter_input(INPUT_POST, 'id_ficha', FILTER_SANITIZE_NUMBER_INT);
             $titulo = trim($_POST['titulo'] ?? '');
-            $descricao = trim($_POST['descricao'] ?? ''); // Preserva as quebras de linha reais
-            
+            $descricao = trim($_POST['descricao'] ?? '');
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos/detalhes?id=' . $id_ficha;
-            
-            if(empty($titulo) || empty($id_treino)){
+
+            if (empty($titulo) || empty($id_treino)) {
                 $this->redirecionarComResultado($url_retorno, false, 'O título do treino é obrigatório.');
             }
-            
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoModel = new Treino($db);
 
-            if($treinoModel->atualizar($id_treino, $titulo, $descricao)){
+            if ($this->treinoModel->atualizar($id_treino, $titulo, $descricao)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Treino atualizado com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao atualizar o treino.');
@@ -423,21 +288,17 @@ class TreinosController extends BaseController{
     }
 
     public function excluirTreino(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
-        
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $this->exigirAutenticacao('personal');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_treino = filter_input(INPUT_POST, 'id_treino', FILTER_SANITIZE_NUMBER_INT);
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
-            
-            if(empty($id_treino)){
+
+            if (empty($id_treino)) {
                 $this->redirecionarComResultado($url_retorno, false, 'ID do treino não fornecido.');
             }
-            
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoModel = new Treino($db);
-            
-            if($treinoModel->excluir($id_treino)){
+
+            if ($this->treinoModel->excluir($id_treino)) {
                 $this->redirecionarComResultado($url_retorno, true, 'Treino excluído com sucesso!');
             } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir o treino.');
@@ -446,40 +307,30 @@ class TreinosController extends BaseController{
     }
 
     public function excluirExercicio(){
-        if(session_status() === PHP_SESSION_NONE) session_start();
+        $this->exigirAutenticacao('personal');
 
-        $id_personal = $_SESSION['usuario_id'] ?? null;
-        if(!$id_personal || $_SESSION['usuario_tipo'] !== 'personal'){
-            header('Location: /oktano/public/login/acesso?tipo=personal');
-            exit;
-        }
-
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_treino_exercicio = filter_input(INPUT_POST, 'id_treino_exercicio', FILTER_SANITIZE_NUMBER_INT);
             $url_retorno = filter_input(INPUT_POST, 'url_retorno', FILTER_SANITIZE_URL) ?: '/oktano/public/treinos';
 
-            if(empty($id_treino_exercicio)){
+            if (empty($id_treino_exercicio)) {
                 $this->redirecionarComResultado($url_retorno, false, 'ID do exercício não fornecido.');
             }
 
-            $database = new Database();
-            $db = $database->conectar();
-            $treinoExercicioModel = new TreinoExercicio($db);
-
-            $exercicio = $treinoExercicioModel->buscarPorId($id_treino_exercicio);
-            if(!$exercicio){
+            $exercicio = $this->treinoExercicioModel->buscarPorId($id_treino_exercicio);
+            if (!$exercicio) {
                 $this->redirecionarComResultado($url_retorno, false, 'Exercício não encontrado neste treino.');
             }
 
-            if($treinoExercicioModel->excluir($id_treino_exercicio)){
-                $exerciciosRestantes = $treinoExercicioModel->buscarPorTreino($exercicio['id_treino']);
-                if(!empty($exerciciosRestantes)){
+            if ($this->treinoExercicioModel->excluir($id_treino_exercicio)) {
+                $exerciciosRestantes = $this->treinoExercicioModel->buscarPorTreino($exercicio['id_treino']);
+                if (!empty($exerciciosRestantes)) {
                     $idsRestantes = array_column($exerciciosRestantes, 'id');
-                    $this->processarNovaOrdem($treinoExercicioModel, $idsRestantes);
+                    $this->processarNovaOrdem($this->treinoExercicioModel, $idsRestantes);
                 }
 
                 $this->redirecionarComResultado($url_retorno, true, 'Exercício excluído do treino com sucesso!');
-            } else{
+            } else {
                 $this->redirecionarComResultado($url_retorno, false, 'Falha ao excluir o exercício.');
             }
         }
