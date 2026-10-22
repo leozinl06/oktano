@@ -1,10 +1,4 @@
 <?php
-/**
- * Partial: modal_excluir
- * Espera (opcional): $urlRetorno — para onde redirecionar após a ação.
- * Acionado por qualquer botão com classe .js-btn-excluir-ficha e data-id="<id da ficha>".
- * Lógica de abrir/fechar em public/assets/js/modal_exclusao.js
- */
 if(!defined('BASE_URL')){
     define('BASE_URL', '/oktano/public');
 }

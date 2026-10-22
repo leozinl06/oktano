@@ -59,7 +59,7 @@ $paginaAtiva = 'alunos';
     </div>
 </main>
 
-<script type="module" src="<?= BASE_URL ?>/assets/js/nova_ficha.js"></script>
+<script type="module" src="<?= BASE_URL ?>/assets/js/form_ficha.js"></script>
 
 </body>
 </html>

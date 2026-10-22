@@ -6,22 +6,21 @@ const form = document.querySelector('form');
 const inputTitulo = document.getElementById('titulo');
 const selectStatus = document.getElementById('status');
 
-const campos = [inputTitulo, selectStatus];
+const campos = [inputTitulo, selectStatus].filter(Boolean);
 
 configurarLimpezaAoDigitar(campos);
 
 if (form) {
     form.addEventListener('submit', (e) => {
         let formularioValido = true;
-
         campos.forEach(removerErro);
 
-        if (inputTitulo.value.trim() === '') {
-            definirErro(inputTitulo, 'O título da ficha não pode ficar em branco.');
+        if (inputTitulo && inputTitulo.value.trim() === '') {
+            definirErro(inputTitulo, 'O título da ficha é obrigatório.');
             formularioValido = false;
         }
 
-        if (selectStatus.value.trim() === '') {
+        if (selectStatus && selectStatus.value.trim() === '') {
             definirErro(selectStatus, 'Por favor, selecione o status da ficha.');
             formularioValido = false;
         }

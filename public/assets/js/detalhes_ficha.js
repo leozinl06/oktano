@@ -1,4 +1,5 @@
 import { configurarValidacaoGlobal } from "./validador.js";
+import { vincularModalAcao } from "./modal.js";
 
 export function configurarDetalhesFicha() {
     const { definirErro, removerErro, configurarLimpezaAoDigitar } = configurarValidacaoGlobal();
@@ -81,40 +82,18 @@ export function configurarDetalhesFicha() {
     // ==========================================
     // 3. MODAIS DE EXCLUSÃO: TREINO E EXERCÍCIO 
     // ==========================================
-    const configurarModalConfirmacaoExclusao = ({ idModal, idInput, seletorAbrir, seletorFechar }) => {
-        const modal = document.getElementById(idModal);
-        const inputId = document.getElementById(idInput);
-
-        if (!modal || !inputId) return;
-
-        document.querySelectorAll(seletorAbrir).forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                inputId.value = btn.dataset.id;
-                modal.classList.remove('modal-overlay--oculto');
-            });
-        });
-
-        document.querySelectorAll(seletorFechar).forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal.classList.add('modal-overlay--oculto');
-                inputId.value = '';
-            });
-        });
-    };
-
-    configurarModalConfirmacaoExclusao({
+   vincularModalAcao({
         idModal: 'modal-excluir-treino',
-        idInput: 'excluir-treino-id',
         seletorAbrir: '.js-btn-excluir-treino',
-        seletorFechar: '.js-modal-fechar-excluir-treino'
+        seletorFechar: '.js-modal-fechar-excluir-treino',
+        idInput: 'excluir-treino-id'
     });
 
-    configurarModalConfirmacaoExclusao({
+    vincularModalAcao({
         idModal: 'modal-excluir-exercicio',
-        idInput: 'excluir-exercicio-id',
         seletorAbrir: '.js-btn-excluir-exercicio',
-        seletorFechar: '.js-modal-fechar-excluir-exercicio'
+        seletorFechar: '.js-modal-fechar-excluir-exercicio',
+        idInput: 'excluir-exercicio-id'
     });
 
     // ==========================================

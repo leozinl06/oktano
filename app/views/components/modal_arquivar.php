@@ -1,10 +1,4 @@
 <?php
-/**
- * Partial: modal_arquivar
- * Espera (opcional): $urlRetorno — para onde redirecionar após a ação.
- * Acionado por qualquer botão com classe .js-btn-arquivar-ficha e data-id="<id da ficha>".
- * Lógica de abrir/fechar em public/assets/js/modal_arquivar.js
- */
 if(!defined('BASE_URL')){
     define('BASE_URL', '/oktano/public');
 }

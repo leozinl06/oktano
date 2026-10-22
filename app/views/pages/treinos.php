@@ -100,8 +100,6 @@ $urlRetorno = $urlAtual;
 <?php require __DIR__ . '/../components/modal_excluir.php'; ?>
 
 <script type="module" src="<?= BASE_URL ?>/assets/js/treinos.js"></script>
-<script type="module" src="<?= BASE_URL ?>/assets/js/modal_arquivar.js"></script>
-<script type="module" src="<?= BASE_URL ?>/assets/js/modal_exclusao.js"></script>
 
 </body>
 </html>

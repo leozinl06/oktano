@@ -80,7 +80,6 @@ $urlVoltar = $url_origem ?? (BASE_URL . '/treinos');
     </div>
 </main>
 
-<script type="module" src="<?= BASE_URL ?>/assets/js/editar_ficha.js"></script>
-
+<script type="module" src="<?= BASE_URL ?>/assets/js/form_ficha.js"></script>
 </body>
 </html>
